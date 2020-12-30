@@ -1,6 +1,6 @@
 # Project Name
 
-(short, 1-3 sentenced, description of the project)
+Code Samples of Azure JavaScript SDK Management Libraries
 
 ## Features
 
