@@ -506,9 +506,11 @@ class Test_virtualMachineScaleSetVMs{
        }catch(error){
            console.log(error)
        }
-       for await (let item of this.compute_client.virtualMachineScaleSetVMs.list(this.resourceName,this.virtual_machine_scale_set_name)){
-           console.log(item)
-       };
+       await this.compute_client.virtualMachineScaleSetVMs.list(this.resourceName,this.virtual_machine_scale_set_name).then(
+           response => {
+               console.log(response)
+           }
+       )
     }
 
     //virtualMachineScaleSetVMs.get
@@ -834,7 +836,7 @@ class Test_virtualMachineScaleSets{
 
     //virtualMachineScaleSets.listOSUpgradeHistory
     public test_listOSUpgradeHistory(){
-        const result =  this.compute_client.virtualMachineScaleSets.listOSUpgradeHistory(this.resourceName, this.virtual_machine_scale_set_name);
+        const result =  this.compute_client.virtualMachineScaleSets.getOSUpgradeHistory(this.resourceName, this.virtual_machine_scale_set_name);
         return result;
     }
 
@@ -849,30 +851,38 @@ class Test_virtualMachineScaleSets{
 
     //virtualMachineScaleSets.list
     public async test_list(){
-        for await (let item of this.compute_client.virtualMachineScaleSets.list(this.resourceName)){
-            console.log(item);
-        }
+        await this.compute_client.virtualMachineScaleSets.list(this.resourceName).then(
+            response => {
+                console.log(response)
+            }
+        )
     }
 
     //virtualMachineScaleSetExtensions.list
     public async test_ScaleSetExtensions_list(){
-        for await (let item of this.compute_client.virtualMachineScaleSetExtensions.list(this.resourceName,this.virtual_machine_scale_set_name)){
-            console.log(item);
-        }
+        await this.compute_client.virtualMachineScaleSetExtensions.list(this.resourceName,this.virtual_machine_scale_set_name).then(
+            response => {
+                console.log(response)
+            }
+        )
     }
 
     //virtualMachineScaleSets.listAll
     public async test_listAll(){
-        for await (let item of this.compute_client.virtualMachineScaleSets.listAll()){
-            console.log(item);
-        }
+        await this.compute_client.virtualMachineScaleSets.listAll().then(
+            response => {
+                console.log(response)
+            }
+        )
     }
 
     //virtualMachineScaleSets.listSkus
     public async test_listSkus(){
-        for await (let item of this.compute_client.virtualMachineScaleSets.listSkus(this.resourceName,this.virtual_machine_scale_set_name)){
-            console.log(item);
-        }
+        await this.compute_client.virtualMachineScaleSets.listSkus(this.resourceName,this.virtual_machine_scale_set_name).then(
+            response => {
+                console.log(response)
+            }
+        )
     }
 
     //virtualMachineScaleSetRollingUpgrades.startExtensionUpgrade
@@ -1448,7 +1458,7 @@ class Test_computeVmssPerformMaintenance{
         try{
             await this.compute_client.virtualMachineScaleSets.performMaintenance(this.resourceName,this.virtual_machine_scale_set_name)
         }catch(error){
-            var errorInfoJson = JSON.parse(error.message);
+            const errorInfoJson = JSON.parse(error.message);
             console.assert(errorInfoJson.error.code.startsWith("OperationNotAllowed"))
             console.assert(errorInfoJson.error.message.startsWith("Operation 'performMaintenance' is not allowed on"))
         }
@@ -1460,7 +1470,7 @@ class Test_computeVmssPerformMaintenance{
         try{
             await this.compute_client.virtualMachineScaleSetVMs.performMaintenance(this.resourceName,this.virtual_machine_scale_set_name,instanceId.toString())
         }catch(error){
-            var errorInfoJson = JSON.parse(error.message);
+            const errorInfoJson = JSON.parse(error.message);
             console.assert(errorInfoJson.error.code.startsWith("OperationNotAllowed"))
             console.assert(errorInfoJson.error.message.startsWith("Operation 'performMaintenance' is not allowed on"))
         }

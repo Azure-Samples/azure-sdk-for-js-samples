@@ -10,7 +10,7 @@ const credential = new DefaultAzureCredential();
  */
 class Test_AvailabilitySets{ 
     private client = new ComputeManagementClient(credential, subscriptionId);
-    private resourceName = "resourceName";
+    private resourceName = "qiaozhatest";
     private availabilitySetName = "availabilitySets";
     private location = "eastus";
 
@@ -70,26 +70,31 @@ class Test_AvailabilitySets{
 
     //list
     public async test_list(){
-        for await (let item of this.client.availabilitySets.list(this.resourceName)){
-            console.log(item)
-        };
+        await this.client.availabilitySets.list(this.resourceName).then(
+            response => {
+                console.log(response)
+            }
+        )
     }
 
     //listAvailableSizes
     public async test_listAvailableSizes(){
-        for await (let item of this.client.availabilitySets.listAvailableSizes(this.resourceName,this.availabilitySetName)){
-            console.log(item)
-        };
+        await this.client.availabilitySets.listAvailableSizes(this.resourceName,this.availabilitySetName).then(
+            response => {
+                console.log(response)
+            }
+        )
     }
 
     //listBySubscription
     public async test_listBySubscription(){
-        for await (let item of this.client.availabilitySets.listBySubscription()){
-            console.log(item)
-        };
+        await this.client.availabilitySets.listBySubscription().then(
+            response => {
+                console.log(response)
+            }
+        )
     }
 }
         
- 
-// const t = new Test_AvailabilitySets();
-// console.log(t.test_delete());
+const t = new Test_AvailabilitySets();
+console.log(t.test_createOrUpate());

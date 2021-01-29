@@ -9,7 +9,7 @@ const credential = new DefaultAzureCredential();
  */
 class Test_proximityPlacementGroups{
     private compute_client = new ComputeManagementClient(credential, subscriptionId);
-    private resourceName = "resourceName";
+    private resourceName = "qiaozhatest";
     private proximityPlacementGroupName = "proximiityplacementgroups";
     
     //create or update
@@ -36,16 +36,20 @@ class Test_proximityPlacementGroups{
     
     //listByResourceGroup
     public async test_listByResourceGroup(){
-        for await (let item of this.compute_client.proximityPlacementGroups.listByResourceGroup(this.resourceName)){
-            console.log(item)
-        };
+        await this.compute_client.proximityPlacementGroups.listByResourceGroup(this.resourceName).then(
+            response => {
+                console.log(response)
+            }
+        )
     }
 
     //listBySubscriptio
     public async test_listBySubscriptio(){
-        for await (let item of this.compute_client.proximityPlacementGroups.listBySubscription()){
-            console.log(item)
-        };
+        await this.compute_client.proximityPlacementGroups.listBySubscription().then(
+            response => {
+                console.log(response)
+            }
+        )
     }
 
     //update
@@ -72,5 +76,5 @@ class Test_proximityPlacementGroups{
     }       
 }
 
-// const t = new Test_proximityPlacementGroups();
-// console.log(t.test_delete())
+const t = new Test_proximityPlacementGroups();
+console.log(t.test_createOrUpdate())
