@@ -19,7 +19,7 @@ var keyvault_client = new KeyVaultManagementClient(credential,subscriptionId);
 class Test_disks{
     private compute_client = new ComputeManagementClient(credential, subscriptionId);
     private resource_client = new ResourceManagementClient(credential, subscriptionId);
-    private resourceName = "wwwww";
+    private resourceName = "qiaozhatest";
     private disk_name = "disknamex"
     
 
@@ -55,20 +55,16 @@ class Test_disks{
 
     //disks.listByResourceGroup
     public async test_disks_listByResourceGroup(){
-        await this.compute_client.disks.listByResourceGroup(this.resourceName).then(
-            response => {
-                console.log(response)
-            } 
-        )
+        for await (let item of this.compute_client.disks.listByResourceGroup(this.resourceName)){
+            console.log(item)
+        }
     }
 
     //disks.list
     public async test_disks_list(){
-        await this.compute_client.disks.list().then(
-            response => {
-                console.log(response)
-            } 
-        )
+        for await (let item of this.compute_client.disks.list()){
+            console.log(item)
+        }
     }
 
     //disks.update
@@ -124,7 +120,7 @@ class Test_disks_encryption{
     private compute_client = new ComputeManagementClient(credential, subscriptionId);
     private resource_client = new ResourceManagementClient(credential, subscriptionId);
     private resourceName = "qiaozhatest";
-    private keyvault_name = "keyvaultxmm";
+    private keyvault_name = "keyvaultxm";
     private disk_encryption_name = "diskencryptionset"
 
 
@@ -185,7 +181,7 @@ class Test_disks_encryption{
                 enabledForDiskEncryption: true
             } 
         };
-        await keyvault_client.vaults.createOrUpdate(this.resourceName,this.keyvault_name,parameter).then(
+        await keyvault_client.vaults.delete(this.resourceName,this.keyvault_name).then(
             response => {
                 console.log(response)
             }
@@ -230,20 +226,16 @@ class Test_disks_encryption{
 
     //diskEncryptionSets.listByResourceGroup
     public async test_listByResourceGroup(){
-        await this.compute_client.diskEncryptionSets.listByResourceGroup(this.resourceName).then(
-            response => {
-                console.log(response)
-            }
-        )
+        for await (let item of this.compute_client.diskEncryptionSets.listByResourceGroup(this.resourceName)){
+            console.log(item)
+        }
     }
 
     //diskEncryptionSets.list
     public async test_list(){
-        await this.compute_client.diskEncryptionSets.list().then(
-            response => {
-                console.log(response)
-            }
-        )
+        for await (let item of this.compute_client.diskEncryptionSets.list()){
+            console.log(item)
+        }
     }
 
     //diskEncryptionSets.update
@@ -360,38 +352,30 @@ class Test_snapshots{
 
     //images.listByResourceGroup
     public async test_images_listByResourceGroup(){
-        await this.compute_client.images.listByResourceGroup(this.resourceName).then(
-            response => {
-                console.log(response)
-            }
-        ) 
+        for await (let item of this.compute_client.images.listByResourceGroup(this.resourceName)){
+            console.log(item)
+        } 
     }
 
     //snapshots.listByResourceGroup
     public async test_snapshots_listByResourceGroup(){
-        await this.compute_client.snapshots.listByResourceGroup(this.resourceName).then(
-            response => {
-                console.log(response)
-            }
-        ) 
+        for await (let item of this.compute_client.snapshots.listByResourceGroup(this.resourceName)){
+            console.log(item)
+        } 
     }
 
     //snapshots.list
     public async test_snapshots_list(){
-        await this.compute_client.snapshots.list().then(
-            response => {
-                console.log(response)
-            }
-        ) 
+        for await (let item of this.compute_client.snapshots.list()){
+            console.log(item)
+        } 
     }
 
     //images.list
     public async test_images_list(){
-        await this.compute_client.images.list().then(
-            response => {
-                console.log(response)
-            }
-        ) 
+        for await (let item of this.compute_client.images.list()){
+            console.log(item)
+        } 
     }
 
     //images.update
@@ -463,4 +447,4 @@ class Test_snapshots{
     }
 }
 const t = new Test_disks();
-t.resource_groups_createOrUpdate()
+t.test_disks_createOrUpdate()

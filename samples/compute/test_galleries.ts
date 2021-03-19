@@ -96,7 +96,8 @@ class Test_galleries{
         )
     }
 
-    public async test_(){
+    //galleryApplicationVersions.createOrUpdate
+    public async test_galleryApplicationVersions_createOrUpdate(){
         const parameter:GalleryApplicationVersion = {
             location: "eastus",
 

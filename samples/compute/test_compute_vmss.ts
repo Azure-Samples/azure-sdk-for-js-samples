@@ -616,7 +616,7 @@ class Test_virtualMachineScaleSetVMs{
     //virtualMachineScaleSetVMs.redeploy
     public async test_redeploy(){
         const instanceId = await this.test_getInstanceView();
-        await this.compute_client.virtualMachineScaleSetVMs.simulateEviction(this.resourceName,this.virtual_machine_scale_set_name,instanceId.toString()).then(
+        await this.compute_client.virtualMachineScaleSetVMs.redeploy(this.resourceName,this.virtual_machine_scale_set_name,instanceId.toString()).then(
             response => {
                 console.log(response);
             }
@@ -834,11 +834,11 @@ class Test_virtualMachineScaleSets{
         )
     }
 
-    //virtualMachineScaleSets.listOSUpgradeHistory
-    public test_listOSUpgradeHistory(){
-        const result =  this.compute_client.virtualMachineScaleSets.getOSUpgradeHistory(this.resourceName, this.virtual_machine_scale_set_name);
-        return result;
-    }
+    // //virtualMachineScaleSets.listOSUpgradeHistory
+    // public test_listOSUpgradeHistory(){
+    //     const result =  this.compute_client.virtualMachineScaleSets.getOSUpgradeHistory(this.resourceName, this.virtual_machine_scale_set_name);
+    //     return result;
+    // }
 
     //virtualMachineScaleSets.getInstanceView
     public async test_getInstanceView(){
@@ -1302,25 +1302,25 @@ class Test_virtualMachineScaleSets2{
         )
     }
 
-    // //Force recovery service fabric platform update domain walk
-    // public async test_forceRecoveryServiceFabricPlatformUpdateDomainWalk(){
-    //     await this.compute_client.virtualMachineScaleSets.forceRecoveryServiceFabricPlatformUpdateDomainWalk(this.resourceName,this.virtual_machine_scale_set_name,1).then(
-    //         response => {
-    //             console.log(response);
-    //         }
-    //     )
-    // }
+    //Force recovery service fabric platform update domain walk
+    public async test_forceRecoveryServiceFabricPlatformUpdateDomainWalk(){
+        await this.compute_client.virtualMachineScaleSets.forceRecoveryServiceFabricPlatformUpdateDomainWalk(this.resourceName,this.virtual_machine_scale_set_name,1).then(
+            response => {
+                console.log(response);
+            }
+        )
+    }
 
-    // //Convert to single placement virtual machine scale sets
-    // public async test_convertToSinglePlacementGroup(){
-    //     const parameter: VMScaleSetConvertToSinglePlacementGroupInput={
-    //     };
-    //     await this.compute_client.virtualMachineScaleSets.convertToSinglePlacementGroup(this.resourceName,this.virtual_machine_scale_set_name,parameter).then(
-    //         response => {
-    //             console.log(response);
-    //         }
-    //     )
-    // }
+    //Convert to single placement virtual machine scale sets
+    public async test_convertToSinglePlacementGroup(){
+        const parameter: VMScaleSetConvertToSinglePlacementGroupInput={
+        };
+        await this.compute_client.virtualMachineScaleSets.convertToSinglePlacementGroup(this.resourceName,this.virtual_machine_scale_set_name,parameter).then(
+            response => {
+                console.log(response);
+            }
+        )
+    }
 
     //delete scale set
     public async test_delete(){
