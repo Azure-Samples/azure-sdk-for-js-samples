@@ -1,0 +1,16 @@
+{
+  "name": "test-locks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@azure/arm-locks": "D:\\dev\\azure-samples-js-management\\samples\\locks\\azure-arm-locks-1.0.0.tgz",
+    "@azure/arm-resources": "D:\\dev\\azure-samples-js-management\\samples\\locks\\azure-arm-resources-1.0.0.tgz",
+    "@azure/identity": "^1.2.4"
+  }
+}

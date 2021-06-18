@@ -1,0 +1,15 @@
+{
+  "name": "test-features",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@azure/identity": "^1.3.0",
+    "azure-arm-features": "D:\\mydev\\test-samples\\features\\featureClient-1.0.0-beta.1-2015-12.tgz"
+  }
+}

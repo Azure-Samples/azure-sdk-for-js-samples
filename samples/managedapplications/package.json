@@ -1,0 +1,17 @@
+{
+  "name": "test-managedapplications",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@azure/arm-managedapplications": "D:\\dev\\azure-samples-js-management\\samples\\managedapplications\\azure-arm-managedapplications-1.0.0.tgz",
+    "@azure/arm-resources": "D:\\dev\\azure-samples-js-management\\samples\\managedapplications\\azure-arm-resources-1.0.0.tgz",
+    "@azure/arm-managementgroups": "D:\\dev\\azure-samples-js-management\\samples\\managedapplications\\azure-arm-managementgroups-1.0.0.tgz",
+    "@azure/identity": "^1.2.5"
+  }
+}

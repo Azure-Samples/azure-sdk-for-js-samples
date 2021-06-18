@@ -56,21 +56,13 @@ var TestTagsOperation = /** @class */ (function () {
     }
     //tags.createOrUpdate
     TestTagsOperation.prototype.tags_createOrUpdate = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var tag;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.resourceClient.tags.createOrUpdate(this.tagName)];
-                    case 1:
-                        tag = _a.sent();
-                        console.assert(tag.tagName === this.tagName); // if not same will return  "Assertion failed"
-                        return [2 /*return*/];
-                }
-            });
+        var _this = this;
+        this.resourceClient.tags.createOrUpdate(this.tagName).then(function (result) {
+            console.assert(result.tagName === _this.tagName);
         });
     };
     //tags.createOrUpdateValue
-    TestTagsOperation.prototype.testtags_createOrUpdateValue = function () {
+    TestTagsOperation.prototype.test_tags_createOrUpdateValue = function () {
         return __awaiter(this, void 0, void 0, function () {
             var tag;
             return __generator(this, function (_a) {
@@ -534,7 +526,7 @@ var TestResources = /** @class */ (function () {
             var create_result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.resourceClient.resources.createOrUpdate(this.resourceGroupName, "Microsoft.Compute", "", "availabilitySets", this.resourceName_1, "2019-12-01", { location: "eastus" })];
+                    case 0: return [4 /*yield*/, this.resourceClient.resources.createOrUpdate("qiaozhatest", "Microsoft.Compute", "", "availabilitySets", this.resourceName_1, "2019-12-01", { location: "eastus" })];
                     case 1:
                         create_result = _a.sent();
                         console.log(create_result);
@@ -593,7 +585,7 @@ var TestResources = /** @class */ (function () {
                     case 3:
                         if (!(_c = _d.sent(), !_c.done)) return [3 /*break*/, 5];
                         item = _c.value;
-                        // console.log(item);
+                        console.log(item);
                         resultArray.push(item);
                         _d.label = 4;
                     case 4: return [3 /*break*/, 2];
@@ -633,7 +625,7 @@ var TestResources = /** @class */ (function () {
                         _d.label = 1;
                     case 1:
                         _d.trys.push([1, 6, 7, 12]);
-                        _b = __asyncValues(this.resourceClient.resources.listByResourceGroup(this.resourceGroupName));
+                        _b = __asyncValues(this.resourceClient.resources.listByResourceGroup("qiaozhatest"));
                         _d.label = 2;
                     case 2: return [4 /*yield*/, _b.next()];
                     case 3:
@@ -2179,12 +2171,12 @@ var TestDeploymentsAtTenant = /** @class */ (function () {
     };
     return TestDeploymentsAtTenant;
 }());
-var TestProviderLocation = /** @class */ (function () {
-    function TestProviderLocation() {
+var TestProviderOperations = /** @class */ (function () {
+    function TestProviderOperations() {
         this.resourceClient = new arm_resources_1.ResourceManagementClient(credential, subscriptionId);
     }
     //providers.get
-    TestProviderLocation.prototype.test_providers_get = function () {
+    TestProviderOperations.prototype.test_providers_get = function () {
         return __awaiter(this, void 0, void 0, function () {
             var getArray, result_get, _i, _a, item;
             return __generator(this, function (_b) {
@@ -2200,7 +2192,7 @@ var TestProviderLocation = /** @class */ (function () {
                         for (_i = 0, _a = result_get.resourceTypes; _i < _a.length; _i++) {
                             item = _a[_i];
                             if (item.resourceType === "sites") {
-                                console.log(item.locations);
+                                // console.log(item.locations);
                                 if (item.locations.indexOf("West US") >= 0) {
                                     console.assert(true);
                                     break;
@@ -2216,7 +2208,168 @@ var TestProviderLocation = /** @class */ (function () {
             });
         });
     };
-    return TestProviderLocation;
+    //providers.unregister providers.get providers.register
+    TestProviderOperations.prototype.test_get_register = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.resourceClient.providers.unregister("Microsoft.Search").then(function (result) {
+                            console.log(result);
+                        })];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, this.resourceClient.providers.get("Microsoft.Search").then(function (result) {
+                                console.log(result);
+                            })];
+                    case 2:
+                        _a.sent();
+                        return [4 /*yield*/, this.resourceClient.providers.register("Microsoft.Search").then(function (result) {
+                                console.log(result);
+                            })];
+                    case 3:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    //providers.list
+    TestProviderOperations.prototype.test_providers_list = function () {
+        var e_16, _a;
+        return __awaiter(this, void 0, void 0, function () {
+            var resultArray, _b, _c, item, e_16_1;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        resultArray = new Array();
+                        _d.label = 1;
+                    case 1:
+                        _d.trys.push([1, 6, 7, 12]);
+                        _b = __asyncValues(this.resourceClient.providers.list());
+                        _d.label = 2;
+                    case 2: return [4 /*yield*/, _b.next()];
+                    case 3:
+                        if (!(_c = _d.sent(), !_c.done)) return [3 /*break*/, 5];
+                        item = _c.value;
+                        console.log(item);
+                        resultArray.push(item);
+                        _d.label = 4;
+                    case 4: return [3 /*break*/, 2];
+                    case 5: return [3 /*break*/, 12];
+                    case 6:
+                        e_16_1 = _d.sent();
+                        e_16 = { error: e_16_1 };
+                        return [3 /*break*/, 12];
+                    case 7:
+                        _d.trys.push([7, , 10, 11]);
+                        if (!(_c && !_c.done && (_a = _b["return"]))) return [3 /*break*/, 9];
+                        return [4 /*yield*/, _a.call(_b)];
+                    case 8:
+                        _d.sent();
+                        _d.label = 9;
+                    case 9: return [3 /*break*/, 11];
+                    case 10:
+                        if (e_16) throw e_16.error;
+                        return [7 /*endfinally*/];
+                    case 11: return [7 /*endfinally*/];
+                    case 12: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    //providers.getAtTenantScope providers.listAtTenantScope
+    TestProviderOperations.prototype.test_providers_getAtTenantScope = function () {
+        var e_17, _a;
+        return __awaiter(this, void 0, void 0, function () {
+            var resultArray, _b, _c, item, e_17_1;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0: return [4 /*yield*/, this.resourceClient.providers.getAtTenantScope("Microsoft.Web").then(function (result) {
+                            console.log(result);
+                        })];
+                    case 1:
+                        _d.sent();
+                        resultArray = new Array();
+                        _d.label = 2;
+                    case 2:
+                        _d.trys.push([2, 7, 8, 13]);
+                        _b = __asyncValues(this.resourceClient.providers.listAtTenantScope());
+                        _d.label = 3;
+                    case 3: return [4 /*yield*/, _b.next()];
+                    case 4:
+                        if (!(_c = _d.sent(), !_c.done)) return [3 /*break*/, 6];
+                        item = _c.value;
+                        console.log(item);
+                        resultArray.push(item);
+                        _d.label = 5;
+                    case 5: return [3 /*break*/, 3];
+                    case 6: return [3 /*break*/, 13];
+                    case 7:
+                        e_17_1 = _d.sent();
+                        e_17 = { error: e_17_1 };
+                        return [3 /*break*/, 13];
+                    case 8:
+                        _d.trys.push([8, , 11, 12]);
+                        if (!(_c && !_c.done && (_a = _b["return"]))) return [3 /*break*/, 10];
+                        return [4 /*yield*/, _a.call(_b)];
+                    case 9:
+                        _d.sent();
+                        _d.label = 10;
+                    case 10: return [3 /*break*/, 12];
+                    case 11:
+                        if (e_17) throw e_17.error;
+                        return [7 /*endfinally*/];
+                    case 12: return [7 /*endfinally*/];
+                    case 13: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    //operations.list
+    TestProviderOperations.prototype.test_operations_list = function () {
+        var e_18, _a;
+        return __awaiter(this, void 0, void 0, function () {
+            var resultArray, _b, _c, item, e_18_1;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        resultArray = new Array();
+                        _d.label = 1;
+                    case 1:
+                        _d.trys.push([1, 6, 7, 12]);
+                        _b = __asyncValues(this.resourceClient.operations.list());
+                        _d.label = 2;
+                    case 2: return [4 /*yield*/, _b.next()];
+                    case 3:
+                        if (!(_c = _d.sent(), !_c.done)) return [3 /*break*/, 5];
+                        item = _c.value;
+                        console.log(item);
+                        resultArray.push(item);
+                        _d.label = 4;
+                    case 4: return [3 /*break*/, 2];
+                    case 5: return [3 /*break*/, 12];
+                    case 6:
+                        e_18_1 = _d.sent();
+                        e_18 = { error: e_18_1 };
+                        return [3 /*break*/, 12];
+                    case 7:
+                        _d.trys.push([7, , 10, 11]);
+                        if (!(_c && !_c.done && (_a = _b["return"]))) return [3 /*break*/, 9];
+                        return [4 /*yield*/, _a.call(_b)];
+                    case 8:
+                        _d.sent();
+                        _d.label = 9;
+                    case 9: return [3 /*break*/, 11];
+                    case 10:
+                        if (e_18) throw e_18.error;
+                        return [7 /*endfinally*/];
+                    case 11: return [7 /*endfinally*/];
+                    case 12: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return TestProviderOperations;
 }());
-var tag = new TestProviderLocation();
-tag.test_providers_get();
+var tag = new TestResources();
+tag.test_resources_list();

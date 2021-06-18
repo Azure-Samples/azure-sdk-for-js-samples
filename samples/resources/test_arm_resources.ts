@@ -14,14 +14,17 @@ class TestTagsOperation {
     private tagValue = "valueyyy";
 
     //tags.createOrUpdate
-    public async tags_createOrUpdate(){
+    public  tags_createOrUpdate(){
 
-        const tag = await this.resourceClient.tags.createOrUpdate(this.tagName);
-        console.assert(tag.tagName === this.tagName);  // if not same will return  "Assertion failed"
+        this.resourceClient.tags.createOrUpdate(this.tagName).then(
+            result => {
+                console.assert(result.tagName === this.tagName);
+            }
+        )
     }
 
     //tags.createOrUpdateValue
-    public async testtags_createOrUpdateValue(){
+    public async test_tags_createOrUpdateValue(){
         const tag = await this.resourceClient.tags.createOrUpdateValue(this.tagName,this.tagValue);
         console.assert(tag.tagValue === this.tagValue);
     }
@@ -1093,5 +1096,5 @@ class TestProviderOperations {
         }
     }
 }
-// const tag = new TestProviderLocation();
-// tag.test_providers_get();
+const tag = new TestTagsOperation();
+tag.tags_createOrUpdate();

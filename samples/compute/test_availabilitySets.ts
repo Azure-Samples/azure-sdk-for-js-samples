@@ -11,7 +11,7 @@ const credential = new DefaultAzureCredential();
 class Test_AvailabilitySets{ 
     private client = new ComputeManagementClient(credential, subscriptionId);
     private resourceName = "qiaozhatest";
-    private availabilitySetName = "availabilitySets";
+    private availabilitySetName = "availabilitySetss";
     private location = "eastus";
 
     //createOrUpdate
@@ -69,31 +69,31 @@ class Test_AvailabilitySets{
     }
 
     //list
-    public async test_list(){
-        await this.client.availabilitySets.list(this.resourceName).then(
-            response => {
-                console.log(response)
-            }
-        )
-    }
+    // public async test_list(){
+    //     await this.client.availabilitySets.list(this.resourceName).then(
+    //         response => {
+    //             console.log(response)
+    //         }
+    //     )
+    // }
 
-    //listAvailableSizes
-    public async test_listAvailableSizes(){
-        await this.client.availabilitySets.listAvailableSizes(this.resourceName,this.availabilitySetName).then(
-            response => {
-                console.log(response)
-            }
-        )
-    }
+    // //listAvailableSizes
+    // public async test_listAvailableSizes(){
+    //     await this.client.availabilitySets.listAvailableSizes(this.resourceName,this.availabilitySetName).then(
+    //         response => {
+    //             console.log(response)
+    //         }
+    //     )
+    // }
 
-    //listBySubscription
-    public async test_listBySubscription(){
-        await this.client.availabilitySets.listBySubscription().then(
-            response => {
-                console.log(response)
-            }
-        )
-    }
+    // //listBySubscription
+    // public async test_listBySubscription(){
+    //     await this.client.availabilitySets.listBySubscription().then(
+    //         response => {
+    //             console.log(response)
+    //         }
+    //     )
+    // }
 }
         
 const t = new Test_AvailabilitySets();
