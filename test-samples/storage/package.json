@@ -1,0 +1,16 @@
+{
+  "name": "test-storage",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@azure/identity": "^1.3.0",
+    "azure-arm-storage": "D:\\mydev\\test-samples\\storage\\storageManagementClient-1.0.0-beta.1-2021-01.tgz",
+    "azure-arm-network": "D:\\mydev\\test-samples\\storage\\networkManagementClient-1.0.0-beta.1-2020-11.tgz"
+  }
+}

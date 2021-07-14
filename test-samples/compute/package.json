@@ -10,7 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "@azure/identity": "^1.3.0",
-    "azure-arm-compute": "D:\\mydev\\test-samples\\compute\\azure-arm-compute-1.0.0-beta.1.tgz",
-    "azure-arm-network": "D:\\mydev\\test-samples\\generated\\networkManagementClient-1.0.0-beta.1.tgz"
+    "@azure/keyvault-keys": "^4.2.1",
+    "azure-arm-compute": "D:\\mydev\\test-samples\\compute\\azure-arm-compute-30.0.0-beta.1.tgz",
+    "azure-arm-keyvault": "D:\\mydev\\test-samples\\compute\\keyVaultManagementClient-1.0.0-beta.1-2019-09.tgz",
+    "azure-arm-network": "D:\\mydev\\test-samples\\compute\\azure-arm-network-30.0.0-beta.1.tgz",
+    "azure-arm-resources": "D:\\mydev\\test-samples\\compute\\azure-arm-resources-30.0.0-beta.1.tgz"
   }
 }
