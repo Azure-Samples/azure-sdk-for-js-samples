@@ -1,5 +1,5 @@
-import * as compute from "azure-arm-compute";
-import * as network from "azure-arm-network";
+import * as compute from "@azure/arm-compute";
+import * as network from "@azure/arm-network";
 import { DefaultAzureCredential } from "@azure/identity";
 
 const subscriptionId = process.env.subscriptionId;
@@ -9,7 +9,7 @@ class Test_virtualMachines{
 
     private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
     private network_client = new network.NetworkManagementClient(credential,subscriptionId);
-    private resourceGroupName = "qiaozhatest";
+    private resourceGroupName = "myjstest";
     private virtual_machine_name = "virtualmachinex";
     private subnet_name = "subnetnamex";
     private interface_name = "interfacex";

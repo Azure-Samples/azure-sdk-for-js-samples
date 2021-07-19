@@ -1,5 +1,5 @@
-import { ManagementLockClient } from "azure-arm-locks";
-import { ResourceManagementClient,GenericResource } from "azure-arm-resources";
+import { ManagementLockClient } from "@azure/arm-locks";
+import { ResourceManagementClient,GenericResource } from "@azure/arm-resources";
 import { DefaultAzureCredential } from "@azure/identity";
 
 const subscriptionId = process.env.subscriptionId;
@@ -45,7 +45,7 @@ class TestLocksByScope {
     private lockClient = new ManagementLockClient(credential,subscriptionId);
     private resourceClient = new ResourceManagementClient(credential,subscriptionId);
     private lockName = "jslockrg";
-    private resourceGroupName = "qiaozhatest";
+    private resourceGroupName = "myjstest";
     private resourceName = "myjsresourcetest";
     private resourceId = "/subscriptions/"+subscriptionId+"/resourceGroups/"+ this.resourceGroupName +"/providers/Microsoft.Compute/availabilitySets/"+this.resourceName;
 
@@ -107,7 +107,7 @@ class TestLocksAtResourceLevel {
     private lockClient = new ManagementLockClient(credential,subscriptionId);
     private resourceClient = new ResourceManagementClient(credential,subscriptionId);
     private lockName = "jslockrg";
-    private resourceGroupName = "qiaozhatest";
+    private resourceGroupName = "myjstest";
     private resourceName = "myjsresourcetest";
 
     //resources.createOrUpdate 
@@ -165,7 +165,7 @@ class TestLocksAtResourceLevel {
 class TestLocksAtResourceGruopLevel {
 
     private lockClient = new ManagementLockClient(credential,subscriptionId);
-    private resourceGroupName = "qiaozhatest";
+    private resourceGroupName = "myjstest";
     private lockName = "jslockrg";
 
     //managementLocks.createOrUpdateAtResourceGroupLevel

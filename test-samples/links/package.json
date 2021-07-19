@@ -1,5 +1,5 @@
 {
-  "name": "test-features",
+  "name": "test-links",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,7 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@azure/identity": "^1.2.4",
-    "@azure/arm-features": "D:\\dev\\azure-samples-js-management\\samples\\features\\azure-arm-features-1.0.0.tgz"
+    "@azure/arm-links": "^30.0.0-beta.1",
+    "@azure/arm-resources": "^30.0.0-beta.1",
+    "@azure/identity": "^1.4.0"
   }
 }

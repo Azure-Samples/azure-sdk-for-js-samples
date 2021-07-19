@@ -1,4 +1,4 @@
-import * as compute from "azure-arm-compute";
+import * as compute from "@azure/arm-compute";
 import { DefaultAzureCredential } from "@azure/identity";
 
 const subscriptionId = process.env.subscriptionId;
@@ -10,7 +10,7 @@ const credential = new DefaultAzureCredential();
  class Test_AvailabilitySets{ 
      
     private client = new compute.ComputeManagementClient(credential, subscriptionId);
-    private resourceGroupName = "qiaozhatest";
+    private resourceGroupName = "myjstest";
     private availabilitySetName = "availabilitySetss";
     private location = "eastus";
 

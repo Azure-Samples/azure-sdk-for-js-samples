@@ -9,9 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@azure/identity": "^1.3.0",
-    "azure-arm-managedapplications": "D:\\mydev\\test-samples\\managedapplications\\applicationClient-1.0.0-beta.1-2018-06.tgz",
-    "azure-arm-managementgroups": "D:\\mydev\\test-samples\\managedapplications\\managementGroupsAPI-1.0.0-beta.1-2020-10.tgz",
-    "azure-arm-resources": "D:\\mydev\\test-samples\\managedapplications\\resourceManagementClient-1.0.0-beta.1-2021-01.tgz"
+    "@azure/arm-managedapplications": "^30.0.0-beta.1",
+    "@azure/arm-resources": "^30.0.0-beta.1",
+    "@azure/identity": "^1.3.0"
   }
 }

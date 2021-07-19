@@ -1,6 +1,6 @@
-import * as compute from "azure-arm-compute";
+import * as compute from "@azure/arm-compute";
 import { DefaultAzureCredential } from "@azure/identity";
-import { ResourceManagementClient } from "azure-arm-resources";
+import { ResourceManagementClient } from "@azure/arm-resources";
 
 var subscriptionId = process.env.subscriptionId;
 var credential = new DefaultAzureCredential();
@@ -9,7 +9,7 @@ var credential = new DefaultAzureCredential();
 class Test_disks{
     private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
     private resource_client = new ResourceManagementClient(credential, subscriptionId);
-    private resourceName = "qiaozhatest";
+    private resourceName = "myjstest";
     private disk_name = "disknamex"
     
 
@@ -110,7 +110,7 @@ class Test_disks{
 class Test_snapshots{
     private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
     private disk_name = "disknamex";
-    private resourceName = "qiaozhatest";
+    private resourceName = "myjstest";
     private shapshot_name = "snapshotx";
     private image_name = "imagex";
 

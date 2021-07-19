@@ -1,4 +1,4 @@
-import * as network from "azure-arm-network";
+import * as network from "@azure/arm-network";
 import { DefaultAzureCredential} from "@azure/identity";
 
 var subscriptionId = process.env.subscriptionId;
@@ -8,7 +8,7 @@ class testNetworkBase {
 
     private client = new network.NetworkManagementClient(credential,subscriptionId);
     private serviceName = "myapimrndzzz";
-    private resourceGroup = "qiaozhatest";
+    private resourceGroup = "myjstest";
     private virtualNetworkName = "virtualnetworkzzz";
     private remoteVirtualNetworkName = "rmvirtualnetworkzzz";
     private virtualNetworkTapName = "virtualnetworktapzzz";

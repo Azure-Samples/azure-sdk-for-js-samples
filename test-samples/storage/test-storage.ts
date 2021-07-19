@@ -1,6 +1,6 @@
-import * as storage from "azure-arm-storage";
+import * as storage from "@azure/arm-storage";
 import { DefaultAzureCredential } from "@azure/identity";
-import { NetworkManagementClient,PrivateEndpoint } from "azure-arm-network";
+import { NetworkManagementClient,PrivateEndpoint } from "@azure/arm-network";
 
 var subscriptionId = process.env.subscriptionId;
 var credential = new DefaultAzureCredential();
@@ -9,7 +9,7 @@ class Test_Storage {
 
     private client = new storage.StorageManagementClient(credential,subscriptionId);
     private network_client = new NetworkManagementClient(credential,subscriptionId);
-    private resourceGroup = "qiaozhatest";
+    private resourceGroup = "myjstest";
     private storageAccountName = "storageaccountzzzxxx";
     private containerName = "containerzzz";
     private encryptionScopeName = "encryptionscopezzz";

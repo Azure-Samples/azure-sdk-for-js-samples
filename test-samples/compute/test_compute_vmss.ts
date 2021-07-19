@@ -1,6 +1,6 @@
-import * as compute from "azure-arm-compute";
+import * as compute from "@azure/arm-compute";
 import { DefaultAzureCredential } from "@azure/identity";
-import { NetworkManagementClient,VirtualNetwork,PublicIPAddress,LoadBalancer } from "azure-arm-network";
+import { NetworkManagementClient,VirtualNetwork,PublicIPAddress,LoadBalancer } from "@azure/arm-network";
 
 var subscriptionId = process.env.subscriptionId;
 var credential = new DefaultAzureCredential();
@@ -8,7 +8,7 @@ var credential = new DefaultAzureCredential();
 class Test_virtualMachineScaleSetRollingUpgrades{
     private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
     private network_client = new NetworkManagementClient(credential,subscriptionId);
-    private resourceGroupName = "qiaozhatest";
+    private resourceGroupName = "myjstest";
     private virtual_machine_scale_set_name = "virtualmachinescaleset";
     private networkName = "networknamex";
     private subnetName = "subnetworknamex";
@@ -148,7 +148,7 @@ class Test_virtualMachineScaleSetRollingUpgrades{
 class Test_virtualMachineScaleSetVMs{
     private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
     private network_client = new NetworkManagementClient(credential,subscriptionId);
-    private resourceGroupName = "qiaozhatest";
+    private resourceGroupName = "myjstest";
     private virtual_machine_scale_set_name = "virtualmachinescaleset";
     private networkName = "networknamex";
     private subnetName = "subnetworknamex";
@@ -438,7 +438,7 @@ class Test_virtualMachineScaleSetVMs{
 class Test_virtualMachineScaleSets{
     private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
     private network_client = new NetworkManagementClient(credential,subscriptionId);
-    private resourceGroupName = "qiaozhatest";
+    private resourceGroupName = "myjstest";
     private virtual_machine_scale_set_name = "virtualmachinescaleset2";
     private vmss_extension_name = "vmssextensionx";
     private networkName = "networknamex";

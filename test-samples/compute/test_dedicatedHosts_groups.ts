@@ -1,6 +1,6 @@
-import * as compute from "azure-arm-compute";
+import * as compute from "@azure/arm-compute";
 import { DefaultAzureCredential } from "@azure/identity";
-import { ResourceManagementClient } from "azure-arm-resources";
+import { ResourceManagementClient } from "@azure/arm-resources";
 
 
 var subscriptionId = process.env.subscriptionId;
@@ -10,7 +10,7 @@ class Test_dedicatedHostGroups{
 
     private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
     private resource_client = new ResourceManagementClient(credential, subscriptionId);
-    private resourceGroupName = "qiaozhatest";
+    private resourceGroupName = "myjstest";
     private host_group_name = "hostgroup";
     private host_name = "hosname";
 

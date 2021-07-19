@@ -1,5 +1,5 @@
-import { PolicyClient,PolicyDefinition,PolicySetDefinition } from "azure-arm-policy";
-import { ResourceManagementClient } from "azure-arm-resources";
+import { PolicyClient,PolicyDefinition,PolicySetDefinition } from "@azure/arm-policy";
+import { ResourceManagementClient } from "@azure/arm-resources";
 import { ManagementGroupsAPI } from "azure-arm-managementgroups";
 import { DefaultAzureCredential } from "@azure/identity";
 
@@ -10,7 +10,7 @@ class TestPolicyDefinitionAtManagementGroup {
 
     private policyclient = new PolicyClient(credential,subscriptionId);
     private managementclient = new ManagementGroupsAPI(credential);
-    private resourceGroupName = "qiaozhatest";
+    private resourceGroupName = "myjstest";
     private policyName = "jspolicy";
     private policyAssignmentName = "passigment";
     private policySetName = "jspolicy";
@@ -257,7 +257,7 @@ class TestPolicyDefinition {
 
     private policyclient = new PolicyClient(credential,subscriptionId);
     private managementclient = new ManagementGroupsAPI(credential);
-    private resourceGroupName = "qiaozhatest";
+    private resourceGroupName = "myjstest";
     private policyName = "jspolicy";
     private policyAssignmentName = "passigment";
     private policySetName = "jspolicy";

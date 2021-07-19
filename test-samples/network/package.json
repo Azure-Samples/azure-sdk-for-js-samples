@@ -9,9 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@azure/identity": "^1.3.0",
-    "azure-arm-network": "D:\\mydev\\test-samples\\network\\azure-arm-network-30.0.0-beta.1.tgz",
-    "azure-arm-storage": "D:\\mydev\\test-samples\\network\\azure-arm-storage-30.0.0-beta.1.tgz",
-    "azure-arm-compute": "D:\\mydev\\test-samples\\network\\azure-arm-compute-30.0.0-beta.1.tgz"
+    "@azure/arm-compute": "^30.0.0-beta.1",
+    "@azure/arm-network": "^30.0.0-beta.1",
+    "@azure/arm-storage": "^30.0.0-beta.1",
+    "@azure/identity": "^1.3.0"
   }
 }

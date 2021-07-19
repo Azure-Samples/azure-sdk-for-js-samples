@@ -1,6 +1,6 @@
-import * as network from "azure-arm-network";
-import * as storage from "azure-arm-storage";
-import * as compute from "azure-arm-compute";
+import * as network from "@azure/arm-network";
+import * as storage from "@azure/arm-storage";
+import * as compute from "@azure/arm-compute";
 import { DefaultAzureCredential} from "@azure/identity";
 
 var subscriptionId = process.env.subscriptionId;
@@ -9,7 +9,7 @@ var client = new network.NetworkManagementClient(credential,subscriptionId);
 
 class TestNetworkWatcherTroubleshoot {
 
-    private resourceGroup = "qiaozhatest";
+    private resourceGroup = "myjstest";
     private networkWatcherName = "networkwatchernnn";
     private virtualMachineName = "virtualmachinennn";
     private virtualnetworkName = "virtualnetworknnn";

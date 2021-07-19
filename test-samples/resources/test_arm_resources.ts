@@ -1,4 +1,4 @@
-import * as resources from "azure-arm-resources";
+import * as resources from "@azure/arm-resources";
 import { ManagementGroupsAPI } from "azure-arm-managementgroups";
 import { DefaultAzureCredential } from "@azure/identity";
 
@@ -145,7 +145,7 @@ class TestResourceGroup {
         // console.assert(result_get.tags.tag1 === "value1"); 
     }
 
-    //resourceGroups.checkExistence   //compare track1
+    //resourceGroups.checkExistence   
     public async resourceGroups_checkExistence(){
         const result_check = await this.resourceClient.resourceGroups.checkExistence(this.resourceGroupName);
         console.log(result_check);  //{ body: true }
@@ -168,7 +168,7 @@ class TestResourceGroup {
         // console.assert(result_list.length > 0);
     }
 
-    //resourceGroups.list  //The api-version '2020-10-01,2,0,2,0,-,1,0,-,0,1' is invalid.
+    //resourceGroups.list  
     public async resourceGroups_listTop2(){
         const result_list_top2 = new Array();
         for await (let item of this.resourceClient.resourceGroups.list({top: 2})){ //The value for top of '2,2' is not an integer; the value must be an integer value greater than zero.
@@ -210,7 +210,7 @@ class TestResourceGroup {
         // console.assert(result_template.template === "template" );
     }
 
-    // resourceGroups.delete (The api-version '2020-10-01,2,0,2,0,-,1,0,-,0,1' is invalid.)
+    // resourceGroups.delete 
     public async resourceGroups_delete(){
         await this.resourceClient.resourceGroups.beginDeleteAndWait(this.resourceGroupName).then(
             result => {
@@ -230,14 +230,14 @@ class TestResources {
     private newResourceGroup = "jsNewGroup";
     private newResourceId = "/subscriptions/"+ subscriptionId +"/resourceGroups/"+this.newResourceGroup+"/providers/"+"Microsoft.Compute"+"/"+"availabilitySets"+"/"+this.resourceName_2;
 
-    //resources.checkExistence  return void compare track1
+    //resources.checkExistence  
     public async resources_checkExistence(){
         const resources_exist = await this.resourceClient.resources.checkExistence(this.resourceGroupName,"Microsoft.Compute","","availabilitySets",this.resourceName_1,"2019-12-01");
         console.log(resources_exist);  // { body: false }
         // console.assert(resources_exist.body === false);
     }
 
-    //resources.checkExistenceById   return void compare track1
+    //resources.checkExistenceById   
     public async test_resources_checkExistenceById(){
         const resourceId = this.resourceId;
         const resources_exist_by_id = await this.resourceClient.resources.checkExistenceById(resourceId,"2019-12-01");
@@ -296,7 +296,7 @@ class TestResources {
         console.log(resultArray);
     }
 
-    //resources.validateMoveResources  (RestError: The api-version '2020-10-01,2,0,2,0,-,1,0,-,0,1' is invalid)
+    //resources.validateMoveResources  
     public async resources_validateMoveResources(){
         const new_Group = await this.resourceClient.resourceGroups.createOrUpdate(this.newResourceGroup,{location: "eastus"});
         console.log(new_Group);
@@ -309,7 +309,7 @@ class TestResources {
         console.log(result_move);
     }
 
-    //resources.moveResources ( The api-version '2020-10-01,2,0,2,0,-,1,0,-,0,1' is invalid)
+    //resources.moveResources
     public async resources_moveResources(){
         const get_new_Group = await this.resourceClient.resourceGroups.get(this.newResourceGroup);
         console.log(get_new_Group);
@@ -392,7 +392,7 @@ class TestDeploymentsBasic {
         return template;
     }
 
-    //deployments.checkExistence (return void compare track1)
+    //deployments.checkExistence 
     public async deployments_checkExistence(){
         const deployment_check = await this.resourceClient.deployments.checkExistence(this.resourceGroupName,this.depolymentName);
         console.log(deployment_check);
@@ -409,7 +409,7 @@ class TestDeploymentsBasic {
         );
     }
 
-    //deployments.createOrUpdate  (The api-version '2020-10-01,2,0,2,0,-,1,0,-,0,1' is invalid.)
+    //deployments.createOrUpdate  
     public async deployments_createOrUpdate(){
         const parameter : resources.Deployment = {
             // location: "West US",
@@ -443,7 +443,7 @@ class TestDeploymentsBasic {
         // console.assert(getResult_deployment.name === this.depolymentName);
     }
 
-    //deployments.whatIf (The api-version '2020-10-01,2,0,2,0,-,1,0,-,0,1' is invalid.)
+    //deployments.whatIf 
     public async deployments_whatIf(){
         await this.resourceClient.deployments.beginWhatIfAndWait(this.resourceGroupName,this.depolymentName,{properties: {mode: "Incremental",template: this.createTmpleate()}}).then(
             result => {
@@ -490,7 +490,7 @@ class TestDeploymentsBasic {
         // }
     }
 
-    //deployments.delete  (The api-version '2020-10-01,2,0,2,0,-,1,0,-,0,1' is invalid.)
+    //deployments.delete  
     public async deployments_delete(){
         const result_delete = await this.resourceClient.deployments.beginDeleteAndWait(this.resourceGroupName,this.depolymentName);
         console.log(result_delete);
@@ -526,14 +526,14 @@ class TestDeploymentAtScope {
     private depolymentName = "jstestdeployment";
     private templeate = (new TestDeploymentsBasic).createTmpleate();
 
-    //deployments.checkExistenceAtScope   return void compare track1
+    //deployments.checkExistenceAtScope   
     public async deployments_checkExistenceAtScope(){
         const result_exist = await this.resourceClient.deployments.checkExistenceAtScope(this.resourceGroupName,this.depolymentName);
         console.log(result_exist);
         // console.assert(result_exist.body === false);
     }
 
-    //deployments.createOrUpdateAtScope  (RestError: The api-version '2020-10-01,2,0,2,0,-,1,0,-,0,1' is invalid.)
+    //deployments.createOrUpdateAtScope  
     public async deployments_createOrUpdateAtScope(){
         const parameter : resources.Deployment = {
             // location: "West US",
@@ -605,7 +605,7 @@ class TestDeploymentAtScope {
         // }
     }
 
-    //deployments.deleteAtScope (RestError: The api-version '2020-10-01,2,0,2,0,-,1,0,-,0,1' is invalid.)
+    //deployments.deleteAtScope 
     public async deployments_deleteAtScope(){
         const result_delete = await this.resourceClient.deployments.beginDeleteAtScopeAndWait(this.scope,this.depolymentName);
         console.log(result_delete);
@@ -645,14 +645,14 @@ class TestDeploymentsAtManagementGroup {
         console.log(result_create);
     }
 
-    //deployments.checkExistenceAtManagementGroupScope  return void compare track1
+    //deployments.checkExistenceAtManagementGroupScope  
     public async deployments_checkExistenceAtManagementGroupScope(){
         const result_exist = await this.resourceClient.deployments.checkExistenceAtManagementGroupScope(this.group_id,this.depolymentName);
         console.log(result_exist);
         // console.assert(result_exist.body === false);
     }
 
-    //deployments.createOrUpdateAtManagementGroupScope (RestError: The api-version '2020-10-01,2,0,2,0,-,1,0,-,0,1' is invalid.)
+    //deployments.createOrUpdateAtManagementGroupScope 
     public async deployments_createOrUpdateAtManagementGroupScope(){
         const parameter:resources.ScopedDeployment = {
             location: "West US",
@@ -731,7 +731,7 @@ class TestDeploymentsAtManagementGroup {
         // }
     }
 
-    //deployments.deleteAtManagementGroupScope (RestError: The api-version '2020-10-01,2,0,2,0,-,1,0,-,0,1' is invalid.)
+    //deployments.deleteAtManagementGroupScope 
     public async deployments_deleteAtManagementGroupScope(){
         const result_delete = await this.resourceClient.deployments.beginDeleteAtManagementGroupScopeAndWait(this.group_id,this.depolymentName);
         console.log(result_delete);
@@ -780,14 +780,14 @@ class TestDeploymentsAtSubscription {
         return parameter;
     }
  
-    //deployments.checkExistenceAtSubscriptionScope  return void compare track1
+    //deployments.checkExistenceAtSubscriptionScope  
     public async deployments_checkExistenceAtSubscriptionScope(){
         const result_exist = await this.resourceClient.deployments.checkExistenceAtSubscriptionScope(this.depolymentName);
         console.log(result_exist)
         // console.assert(result_exist.body === false);
     }
 
-    //deployments.createOrUpdateAtSubscriptionScope (RestError: The api-version '2020-10-01,2,0,2,0,-,1,0,-,0,1' is invalid.)
+    //deployments.createOrUpdateAtSubscriptionScope 
     public async deployments_createOrUpdateAtSubscriptionScope(){
         const parameter = this.create_deployment_parameter();
         const resultCreate_depolyments = await this.resourceClient.deployments.beginCreateOrUpdateAtSubscriptionScopeAndWait(this.depolymentName,parameter);
@@ -814,7 +814,7 @@ class TestDeploymentsAtSubscription {
         // console.assert(getResult.name === this.depolymentName);
     }
 
-    //deployments.whatIfAtSubscriptionScope (RestError: The api-version '2020-10-01,2,0,2,0,-,1,0,-,0,1' is invalid.)
+    //deployments.whatIfAtSubscriptionScope 
     public async deployments_whatIfAtSubscriptionScope(){
         const result = await this.resourceClient.deployments.beginWhatIfAtSubscriptionScopeAndWait(this.depolymentName,this.create_deployment_parameter());
         console.log(result);
@@ -850,7 +850,7 @@ class TestDeploymentsAtSubscription {
         // }
     }
 
-    //deployments.deleteAtSubscriptionScope (The api-version '2020-10-01,2,0,2,0,-,1,0,-,0,1' is invalid.)
+    //deployments.deleteAtSubscriptionScope 
     public async deployments_deleteAtSubscriptionScope(){
         const result_delete = await this.resourceClient.deployments.beginDeleteAtSubscriptionScopeAndWait(this.depolymentName);
         console.log(result_delete);
@@ -901,7 +901,7 @@ class TestDeploymentsAtTenant {
         return parameter;
     }
 
-    //deployments.checkExistenceAtTenantScope  return void compare track1
+    //deployments.checkExistenceAtTenantScope  
     public async deployments_checkExistenceAtTenantScope(){
         const result_exist = await this.resourceClient.deployments.checkExistenceAtTenantScope(this.depolymentName);
         console.log(result_exist);

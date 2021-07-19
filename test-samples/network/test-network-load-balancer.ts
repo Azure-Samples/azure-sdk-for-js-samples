@@ -1,4 +1,4 @@
-import * as network from "azure-arm-network";
+import * as network from "@azure/arm-network";
 import { DefaultAzureCredential} from "@azure/identity";
 
 var subscriptionId = process.env.subscriptionId;
@@ -7,7 +7,7 @@ var credential = new DefaultAzureCredential();
 class TestNetworkLoadBalancer {
 
     private client = new network.NetworkManagementClient(credential,subscriptionId);
-    private resourceGroup = "qiaozhatest";
+    private resourceGroup = "myjstest";
     private virtualNetwork = "virtualnetworkttt";
     private subnetName = "subnetttt";
     private publicIpAddressName = "publicipaddressttt";

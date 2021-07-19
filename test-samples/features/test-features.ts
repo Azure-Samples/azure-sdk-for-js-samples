@@ -1,4 +1,4 @@
-import { FeatureClient } from "azure-arm-features";
+import { FeatureClient } from "@azure/arm-features";
 import { DefaultAzureCredential } from "@azure/identity";
 
 const subscriptionId = process.env.subscriptionId;
