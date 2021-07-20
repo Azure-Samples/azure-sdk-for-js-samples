@@ -95,7 +95,7 @@ class Test_virtualMachines{
             osProfile: {
                 adminUsername: "testuser",
                 computerName: "myVM",
-                
+                adminPassword: "000000000000000000",
                 windowsConfiguration: {
                     enableAutomaticUpdates: true // need automatic update for reimage
                 }

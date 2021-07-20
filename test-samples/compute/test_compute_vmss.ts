@@ -70,7 +70,7 @@ class Test_virtualMachineScaleSetRollingUpgrades{
                 osProfile: {
                     computerNamePrefix: "testPC",
                     adminUsername: "testuser",
-                    
+                    adminPassword: "000000000000000000",
                 },
                 networkProfile: {
                     networkInterfaceConfigurations: [
@@ -210,7 +210,7 @@ class Test_virtualMachineScaleSetVMs{
                 osProfile: {
                     computerNamePrefix: "testPC",
                     adminUsername: "testuser",
-                    
+                    adminPassword: "000000000000000000",
                 },
                 networkProfile: {
                     networkInterfaceConfigurations: [
@@ -501,7 +501,7 @@ class Test_virtualMachineScaleSets{
                 osProfile: {
                     computerNamePrefix: "testPC",
                     adminUsername: "testuser",
-                    
+                    adminPassword: "000000000000000000",
                 },
                 networkProfile: {
                     networkInterfaceConfigurations: [

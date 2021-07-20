@@ -198,7 +198,7 @@ class TestNetworkWatcherTroubleshoot {
             osProfile: {
                 adminUsername: "testuser",
                 computerName: "myvm",
-                
+                adminPassword: "000000000000000000",
                 windowsConfiguration: {
                     enableAutomaticUpdates: true
                 }

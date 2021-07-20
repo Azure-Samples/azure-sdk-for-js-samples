@@ -11,6 +11,6 @@
   "dependencies": {
     "@azure/arm-resources": "^30.0.0-beta.1",
     "@azure/identity": "^1.3.0",
-    "azure-arm-managementGroups": "D:\\mydev\\test-samples\\resources\\managementGroupsAPI-1.0.0-beta.1-2020-10.tgz"
+    "azure-arm-managementGroups": "file:managementGroupsAPI-1.0.0-beta.1-2020-10.tgz"
   }
 }
