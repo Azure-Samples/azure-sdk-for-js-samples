@@ -1,6 +1,5 @@
 trigger:
 - main
-- pr
 
 jobs:
   - job: Windows
