@@ -26,7 +26,7 @@ class TestNetworkWatcherTroubleshoot {
     //virtualNetworks.beginCreateOrUpdateAndWait
     //subnets.beginCreateOrUpdateAndWait
     public async virtualNetworksAndSubnetCreate(){
-        await client.virtualNetworks.beginCreateOrUpdateAndWait(this.resourceGroup,this.virtualnetworkName{location: "eastus",addressSpace: {addressPrefixes: ['10.0.0.0/16']}}).then(
+        await client.virtualNetworks.beginCreateOrUpdateAndWait(this.resourceGroup,this.virtualnetworkName,{location: "eastus",addressSpace: {addressPrefixes: ['10.0.0.0/16']}}).then(
             res => {
                 console.log(res);
             }
@@ -198,7 +198,7 @@ class TestNetworkWatcherTroubleshoot {
             osProfile: {
                 adminUsername: "testuser",
                 computerName: "myvm",
-                adminPassword: "Aa1!zyx_",
+                
                 windowsConfiguration: {
                     enableAutomaticUpdates: true
                 }
