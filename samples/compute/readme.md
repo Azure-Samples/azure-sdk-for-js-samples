@@ -55,7 +55,8 @@ export SUBSCRIPTION_ID="xxx"
 
 A demo app is included to show how to use the project.
 
-To run the complete demo, you need to instantiate a class,and use it to call the methods in this class 
+To run the complete demo, you need to instantiate a class,and use it to call that you want test methods in this class 
+
     ```
     const availabiliablitySets = new Test_AvailabilitySets();
     availabiliablitySets.test_createOrUpate();
