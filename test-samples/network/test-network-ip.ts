@@ -74,5 +74,3 @@ class TestNetworkIp {
     }
 }
 
-const t = new TestNetworkIp();
-t.ipGroups_beginDeleteAndWait();

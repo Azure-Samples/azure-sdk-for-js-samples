@@ -89,5 +89,3 @@ class TestLinks {
     }
 }
 
-const t = new TestLinks();
-t.resources_beginDeleteAndWait();

@@ -72,5 +72,3 @@ const credential = new DefaultAzureCredential();
     }
  }
 
-//  const t = new Test_AvailabilitySets();
-//  t.test_listBySubscription();

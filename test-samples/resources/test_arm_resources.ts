@@ -1077,5 +1077,3 @@ class TestProviderOperations {
     }
 }
 
-const t = new TestProviderOperations();
-t.operations_list();

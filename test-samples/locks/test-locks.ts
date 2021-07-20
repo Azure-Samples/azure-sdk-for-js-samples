@@ -213,5 +213,3 @@ class TestLocksAtResourceGruopLevel {
     }
 }
 
-const t = new TestLocksAtResourceGruopLevel();
-t.authorizationOperations_list();

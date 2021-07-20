@@ -284,6 +284,4 @@ class TestNetworkLoadBalancer {
         )
     }
 }
-const t = new TestNetworkLoadBalancer();
-t.loadBalancers_beginDeleteAndWait();
 

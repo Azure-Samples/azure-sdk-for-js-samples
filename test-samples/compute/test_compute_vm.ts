@@ -436,5 +436,3 @@ class Test_virtualMachineExtensionImages{
         )
     }
 }
-// const t = new Test_virtualMachineExtensionImages();
-// t.virtualMachineExtensionImages_listVersions();

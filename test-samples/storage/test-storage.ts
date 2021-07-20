@@ -665,5 +665,3 @@ class Test_Storage {
     }
 }
 
-// const t = new Test_Storage();
-// t.storageAccounts_delete();

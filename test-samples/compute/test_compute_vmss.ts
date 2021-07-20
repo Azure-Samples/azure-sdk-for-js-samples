@@ -713,5 +713,3 @@ class Test_virtualMachineScaleSets{
 }
 
 
-const t = new Test_virtualMachineScaleSets();
-t.virtualMachineScaleSets_deallocate();

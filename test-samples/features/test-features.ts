@@ -60,5 +60,3 @@ class TestFeatures {
     }
 }
 
-const t = new TestFeatures();
-t.test_listOperations();

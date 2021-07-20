@@ -572,5 +572,3 @@ class testNetworkBase {
     }
 }
 
-// const t = new testNetworkBase()
-// t.virtualNetworks_beginDeleteAndWait();

@@ -118,5 +118,3 @@ class TestNetworkIpAddress {
         )
     }
 }
-const t= new TestNetworkIpAddress();
-t.publicIPPrefixes_beginDeleteAndWait();

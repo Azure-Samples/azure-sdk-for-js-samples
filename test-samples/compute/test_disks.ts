@@ -271,5 +271,3 @@ class Test_snapshots{
 
 }
 
-// const t = new Test_snapshots();
-// t.test_snapshots_delete();

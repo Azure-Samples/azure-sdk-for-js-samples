@@ -259,7 +259,5 @@ class TestNetworkWatcherTroubleshoot {
                 console.log(res);
             }
         )
-    }
-
-    
+    }   
 }

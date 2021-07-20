@@ -153,5 +153,3 @@ class Test_dedicatedHostGroups{
     }
 }
 
-// const t = new Test_dedicatedHostGroups();
-// t.dedicatedHostGroups_delete();
