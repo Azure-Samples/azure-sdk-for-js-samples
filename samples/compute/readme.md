@@ -51,7 +51,7 @@ To run the complete demo, you need to instantiate a class,and use it to call tha
 
     ```
     const availabiliablitySets = new AvailabilitySetsExamples();
-    availabiliablitySets.test_createOrUpate();
+    availabiliablitySets.availabilitySets_createOrUpdate();
     ```
 
 execute below command on terminal
