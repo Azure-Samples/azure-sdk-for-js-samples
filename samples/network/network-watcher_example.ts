@@ -7,7 +7,7 @@ var subscriptionId = process.env.subscriptionId;
 var credential = new DefaultAzureCredential();
 var client = new network.NetworkManagementClient(credential,subscriptionId);
 
-class TestNetworkWatcherTroubleshoot {
+class NetworkWatcherTroubleshootExamples {
 
     private resourceGroup = "myjstest";
     private networkWatcherName = "networkwatchernnn";

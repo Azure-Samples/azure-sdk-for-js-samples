@@ -6,7 +6,7 @@ var subscriptionId = process.env.subscriptionId;
 var credential = new DefaultAzureCredential();
 
 
-class Test_disks{
+class DisksExamples{
     private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
     private resource_client = new ResourceManagementClient(credential, subscriptionId);
     private resourceName = "myjstest";
@@ -107,7 +107,7 @@ class Test_disks{
     }
 }
 
-class Test_snapshots{
+class SnapshotsExamples{
     private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
     private disk_name = "disknamex";
     private resourceName = "myjstest";

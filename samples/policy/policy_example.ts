@@ -6,7 +6,7 @@ import { DefaultAzureCredential } from "@azure/identity";
 const subscriptionId = process.env.subscriptionId;
 const credential = new DefaultAzureCredential();
 
-class TestPolicyDefinitionAtManagementGroup {
+class PolicyDefinitionAtManagementGroupExamples {
 
     private policyclient = new PolicyClient(credential,subscriptionId);
     private managementclient = new ManagementGroupsAPI(credential);
@@ -253,7 +253,7 @@ class TestPolicyDefinitionAtManagementGroup {
     }
 }
 
-class TestPolicyDefinition {
+class PolicyDefinitionExamples {
 
     private policyclient = new PolicyClient(credential,subscriptionId);
     private managementclient = new ManagementGroupsAPI(credential);

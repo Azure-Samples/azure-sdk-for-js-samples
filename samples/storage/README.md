@@ -4,20 +4,20 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Compute using Azure SDK for Typescript."
-urlFragment: compute
+description: "These code samples will show you how to manage Storage using Azure SDK for Typescript."
+urlFragment: storage
 ---
 
-# Getting started - Managing Compute using Azure typescript SDK
+# Getting started - Managing Storage using Azure typescript SDK
 
-These code samples will show you how to manage Compute using Azure SDK for Typescript.
+These code samples will show you how to manage Storage using Azure SDK for Typescript.
 
 ## Features
 
 This project framework provides examples for the following services:
 
-### Compute
-* Using the Azure SDK for Typescript - Compute Management Library [@azure/arm-compute](https://www.npmjs.com/package/@azure/arm-compute) for the [Azure Compute API](https://docs.microsoft.com/en-us/rest/api/compute/)
+### Storage
+* Using the Azure SDK for Typescript - Storage Management Library [@azure/arm-storage](https://www.npmjs.com/package/@azure/arm-storage) for the [Azure Storage API](https://docs.microsoft.com/en-us/rest/api/storagerp/)
 
 
 ### Installation
@@ -38,7 +38,7 @@ This project framework provides examples for the following services:
 2.  Install the dependencies using npm.
 
     ```
-    cd azure-samples-js-management/samples/compute
+    cd azure-samples-js-management/samples/storage
     npm i typescript@4.1.3
     npm install
     ```
@@ -50,15 +50,15 @@ A demo app is included to show how to use the project.
 To run the complete demo, you need to instantiate a class,and use it to call that you want test methods in this class 
 
     ```
-    const availabiliablitySets = new AvailabilitySetsExamples();
-    availabiliablitySets.test_createOrUpate();
+    const storage = new StorageExamples()
+    storage.storageAccounts_beginCreateAndWait()
     ```
 
 execute below command on terminal
 
     ```
-    tsc availabiliablitySets_examples.ts (it will create a same name js file)
-    node availabiliablitySets_examples.js
+    tsc storage_example.ts (it will create a same name js file)
+    node storage_example.js
     ```
 
 ## Resources

@@ -4,7 +4,7 @@ import { DefaultAzureCredential } from "@azure/identity";
 const subscriptionId = process.env.subscriptionId;
 const credential = new DefaultAzureCredential();
 
-class TestFeatures { 
+class FeaturesExamples { 
     
     private featuresClient = new FeatureClient(credential,subscriptionId);
 

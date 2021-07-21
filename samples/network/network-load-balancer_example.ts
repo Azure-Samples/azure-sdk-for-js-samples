@@ -4,7 +4,7 @@ import { DefaultAzureCredential} from "@azure/identity";
 var subscriptionId = process.env.subscriptionId;
 var credential = new DefaultAzureCredential();
 
-class TestNetworkLoadBalancer {
+class NetworkLoadBalancerExamples {
 
     private client = new network.NetworkManagementClient(credential,subscriptionId);
     private resourceGroup = "myjstest";

@@ -5,7 +5,7 @@ import { NetworkManagementClient,PrivateEndpoint } from "@azure/arm-network";
 var subscriptionId = process.env.subscriptionId;
 var credential = new DefaultAzureCredential();
 
-class Test_Storage {
+class StorageExamples {
 
     private client = new storage.StorageManagementClient(credential,subscriptionId);
     private network_client = new NetworkManagementClient(credential,subscriptionId);

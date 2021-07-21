@@ -5,7 +5,7 @@ import { DefaultAzureCredential } from "@azure/identity";
 const subscriptionId = process.env.subscriptionId;
 const credential = new DefaultAzureCredential();
 
-class TestApplicationById {
+class ApplicationByIdExamples {
 
     private applicationClient = new ApplicationClient(credential,subscriptionId);
     private resourceClient = new ResourceManagementClient(credential,subscriptionId);

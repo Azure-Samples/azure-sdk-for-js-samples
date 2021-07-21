@@ -5,7 +5,7 @@ import { DefaultAzureCredential } from "@azure/identity";
 const subscriptionId = process.env.subscriptionId;
 const credential = new DefaultAzureCredential();
 
-class TestTagsOperation {
+class TagsOperationExamples {
 
     private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
     private tagName = "tagyyy";
@@ -117,7 +117,7 @@ class TestTagsOperation {
     }
 }
 
-class TestResourceGroup {
+class ResourceGroupExamples {
 
     private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
     private resourceGroupName = "myjstest";
@@ -220,7 +220,7 @@ class TestResourceGroup {
     }
 }
 
-class TestResources {
+class ResourcesExamples {
 
     private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
     private resourceGroupName = "myjstest";
@@ -347,7 +347,7 @@ class TestResources {
     }
 }
 
-class TestDeploymentsBasic {
+class DeploymentsBasicExamples {
 
     private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
     private resourceGroupName = "myjstest";
@@ -518,7 +518,7 @@ class TestDeploymentsBasic {
 
 }
 
-class TestDeploymentAtScope {
+class DeploymentAtScopeExamples {
 
     private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
     private resourceGroupName = "myjstest";
@@ -632,7 +632,7 @@ class TestDeploymentAtScope {
     }
 }
 
-class TestDeploymentsAtManagementGroup {
+class DeploymentsAtManagementGroupExamples {
 
     private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
     private managementgroupsAPI = new ManagementGroupsAPI(credential);
@@ -758,7 +758,7 @@ class TestDeploymentsAtManagementGroup {
     }  
 }
 
-class TestDeploymentsAtSubscription {
+class DeploymentsAtSubscriptionExamples {
 
     private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
     private depolymentName = "jstestlinked";
@@ -879,7 +879,7 @@ class TestDeploymentsAtSubscription {
     
 }
 
-class TestDeploymentsAtTenant {
+class DeploymentsAtTenantExamples {
 
     private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
     private depolymentName = "jstestlinked";
@@ -1000,7 +1000,7 @@ class TestDeploymentsAtTenant {
     }
 }
 
-class TestProviderOperations {
+class ProviderOperationsExamples {
 
     private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
 

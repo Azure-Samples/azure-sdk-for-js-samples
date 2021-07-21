@@ -5,7 +5,7 @@ import { NetworkManagementClient,VirtualNetwork,PublicIPAddress,LoadBalancer } f
 var subscriptionId = process.env.subscriptionId;
 var credential = new DefaultAzureCredential();
 
-class Test_virtualMachineScaleSetRollingUpgrades{
+class virtualMachineScaleSetRollingUpgradesExamples{
     private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
     private network_client = new NetworkManagementClient(credential,subscriptionId);
     private resourceGroupName = "myjstest";
@@ -145,7 +145,7 @@ class Test_virtualMachineScaleSetRollingUpgrades{
     }
 }
 
-class Test_virtualMachineScaleSetVMs{
+class virtualMachineScaleSetVMsExamples{
     private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
     private network_client = new NetworkManagementClient(credential,subscriptionId);
     private resourceGroupName = "myjstest";
@@ -435,7 +435,7 @@ class Test_virtualMachineScaleSetVMs{
 
 }
 
-class Test_virtualMachineScaleSets{
+class virtualMachineScaleSetsExamples{
     private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
     private network_client = new NetworkManagementClient(credential,subscriptionId);
     private resourceGroupName = "myjstest";

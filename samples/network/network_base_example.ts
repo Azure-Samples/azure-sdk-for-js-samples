@@ -4,7 +4,7 @@ import { DefaultAzureCredential} from "@azure/identity";
 var subscriptionId = process.env.subscriptionId;
 var credential = new DefaultAzureCredential();
 
-class testNetworkBase {
+class NetworkBaseExamples {
 
     private client = new network.NetworkManagementClient(credential,subscriptionId);
     private serviceName = "myapimrndzzz";

@@ -5,7 +5,7 @@ import { DefaultAzureCredential } from "@azure/identity";
 const subscriptionId = process.env.subscriptionId;
 const credential = new DefaultAzureCredential();
 
-class TestLocksAtSubscriptionLevel {
+class LocksAtSubscriptionLevelExamples {
 
     private lockClient = new ManagementLockClient(credential,subscriptionId);
     private lockName = "jslockrg";
@@ -40,7 +40,7 @@ class TestLocksAtSubscriptionLevel {
     }
 }
 
-class TestLocksByScope {
+class LocksByScopeExamples {
 
     private lockClient = new ManagementLockClient(credential,subscriptionId);
     private resourceClient = new ResourceManagementClient(credential,subscriptionId);
@@ -102,7 +102,7 @@ class TestLocksByScope {
     }
 }
 
-class TestLocksAtResourceLevel {
+class LocksAtResourceLevelExamples {
 
     private lockClient = new ManagementLockClient(credential,subscriptionId);
     private resourceClient = new ResourceManagementClient(credential,subscriptionId);
@@ -162,7 +162,7 @@ class TestLocksAtResourceLevel {
 
 }
 
-class TestLocksAtResourceGruopLevel {
+class LocksAtResourceGruopLevelExamples {
 
     private lockClient = new ManagementLockClient(credential,subscriptionId);
     private resourceGroupName = "myjstest";

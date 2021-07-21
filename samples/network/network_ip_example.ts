@@ -4,7 +4,7 @@ import { DefaultAzureCredential} from "@azure/identity";
 var subscriptionId = process.env.subscriptionId;
 var credential = new DefaultAzureCredential();
 
-class TestNetworkIp {
+class NetworkIpExamples {
 
     private client = new network.NetworkManagementClient(credential,subscriptionId);
     private resourceGroup = "myjstest";

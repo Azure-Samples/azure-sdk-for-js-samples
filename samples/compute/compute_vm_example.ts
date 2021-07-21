@@ -5,7 +5,7 @@ import { DefaultAzureCredential } from "@azure/identity";
 const subscriptionId = process.env.subscriptionId;
 const credential = new DefaultAzureCredential();
 
-class Test_virtualMachines{
+class virtualMachinesExamples{
 
     private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
     private network_client = new network.NetworkManagementClient(credential,subscriptionId);
@@ -348,7 +348,7 @@ class Test_virtualMachines{
     }
 }
 
-class Test_virtualMachineImages{
+class virtualMachineImagesExamples{
     private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
     private publisher_name = "MicrosoftWindowsServer";
     private offer = "WindowsServer";
@@ -402,7 +402,7 @@ class Test_virtualMachineImages{
     }
 }
 
-class Test_virtualMachineExtensionImages{
+class virtualMachineExtensionImagesExamples{
     private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
     private extension_publisher_name = "Microsoft.Compute";
     private extension_image_type = "VMAccessAgent";

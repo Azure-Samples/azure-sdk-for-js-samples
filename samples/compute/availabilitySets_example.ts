@@ -7,7 +7,7 @@ const credential = new DefaultAzureCredential();
 /**
  * Class Test_AvailabilitySets.
  */
- class Test_AvailabilitySets{ 
+ class AvailabilitySetsExamples{ 
      
     private client = new compute.ComputeManagementClient(credential, subscriptionId);
     private resourceGroupName = "myjstest";

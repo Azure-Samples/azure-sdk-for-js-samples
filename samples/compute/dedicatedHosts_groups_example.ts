@@ -6,7 +6,7 @@ import { ResourceManagementClient } from "@azure/arm-resources";
 var subscriptionId = process.env.subscriptionId;
 var credential = new DefaultAzureCredential();
 
-class Test_dedicatedHostGroups{
+class dedicatedHostGroupsExamples{
 
     private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
     private resource_client = new ResourceManagementClient(credential, subscriptionId);

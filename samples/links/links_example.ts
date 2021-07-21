@@ -5,7 +5,7 @@ import { DefaultAzureCredential } from "@azure/identity";
 var subscriptionId = process.env.subscriptionId;
 var credential = new DefaultAzureCredential();
 
-class TestLinks {
+class LinksExamples {
 
     private links_client = new links.ManagementLinkClient(credential,subscriptionId);
     private resources_client = new resources.ResourceManagementClient(credential,subscriptionId);
