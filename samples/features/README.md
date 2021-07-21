@@ -36,7 +36,7 @@ These code samples will show you how to manage Features using Azure SDK for Type
 
     ```
     cd azure-samples-js-management/samples/links
-    npm i typescript@4.1.3
+    npm i -g typescript@4.1.3
     npm install
     ```
 

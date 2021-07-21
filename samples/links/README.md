@@ -39,7 +39,7 @@ This project framework provides examples for the following services:
 
     ```
     cd azure-samples-js-management/samples/links
-    npm i typescript@4.1.3
+    npm i -g typescript@4.1.3
     npm install
     ```
 
