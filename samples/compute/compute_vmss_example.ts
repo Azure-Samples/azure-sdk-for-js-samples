@@ -252,11 +252,9 @@ class virtualMachineScaleSetVMsExamples{
         let e: boolean ;
         for(let i = 0 ; i < 4 ; i++ ){
             e = false;
-            // console.log(e);
             try{
                 await this.compute_client.virtualMachineScaleSetVMs.getInstanceView(this.resourceGroupName,this.virtual_machine_scale_set_name,i.toString())
             }catch(error){
-                // console.log(error.message)
                 e = true;
             }finally{
                 if(e){
@@ -366,16 +364,6 @@ class virtualMachineScaleSetVMsExamples{
             }
         )
     }
-
-    // //virtualMachineScaleSetVMs.redeploy //"Operation 'redeploy' is not allowed on VM 'virtualmachinescaleset_1' since the VM is either deallocated or marked to be deallocated."
-    // public async virtualMachineScaleSetVMs_redeploy(){
-    //     const instanceId = await this.virtualMachineScaleSetVMs_getInstanceView();
-    //     await this.compute_client.virtualMachineScaleSetVMs.beginRedeployAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId.toString()).then(
-    //         response => {
-    //             console.log(response);
-    //         }
-    //     )
-    // }
 
     //virtualMachineScaleSetVMs.reimage
     public async virtualMachineScaleSetVMs_reimage(){

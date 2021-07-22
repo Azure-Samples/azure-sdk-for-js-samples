@@ -1,7 +1,7 @@
 ---
 page_type: sample
 languages:
-- typescript
+- JavaScript/Typescript
 products:
 - azure
 description: "These code samples will show you how to manage Storage using Azure SDK for Typescript."
@@ -22,10 +22,13 @@ This project framework provides examples for the following services:
 
 ### Installation
 
-1.  Before using the sdk packgae,we need [install nodejs](https://nodejs.org/en/download/) and add it into environment variables.
+1.  Before using the sdk package,we need [install nodejs](https://nodejs.org/en/download/) and add it into environment variables.
 
+    reference version :
+    
     ```
     nodejs version: 14.16.0
+    typescript version: 4.1.3
     ```
 ### Quickstart
 
@@ -39,7 +42,7 @@ This project framework provides examples for the following services:
 
     ```
     cd azure-samples-js-management/samples/storage
-    npm i -g typescript@4.1.3
+    npm i -g typescript
     npm install
     ```
 

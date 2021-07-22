@@ -4,14 +4,11 @@ import { DefaultAzureCredential } from "@azure/identity";
 const subscriptionId = process.env.subscriptionId;
 const credential = new DefaultAzureCredential();
 
-/**
- * Class Test_AvailabilitySets.
- */
  class AvailabilitySetsExamples{ 
      
     private client = new compute.ComputeManagementClient(credential, subscriptionId);
     private resourceGroupName = "myjstest";
-    private availabilitySetName = "availabilitySetss";
+    private availabilitySetName = "availabilitySets123";
     private location = "eastus";
 
     //availabilitySets.createOrUpdate

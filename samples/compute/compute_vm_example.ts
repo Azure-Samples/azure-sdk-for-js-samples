@@ -33,7 +33,6 @@ class virtualMachinesExamples{
        };
        const subnet__create_info = await this.network_client.subnets.beginCreateOrUpdateAndWait(this.resourceGroupName,this.network_name,this.subnet_name,subnet_parameter);
        console.log(subnet__create_info)
-    //    return subnet__create_info;
     }
 
     //network_client.networkInterfaces.createOrUpdate
@@ -52,7 +51,6 @@ class virtualMachinesExamples{
         };
         const nic_info = await this.network_client.networkInterfaces.beginCreateOrUpdateAndWait(group_name,nic_name,parameter);
         console.log(nic_info);
-        // return nic_info;
     }
 
     //virtualMachines.createOrUpdate

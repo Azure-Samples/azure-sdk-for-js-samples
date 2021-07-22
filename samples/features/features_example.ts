@@ -40,18 +40,6 @@ class FeaturesExamples {
         return feature;
     }
 
-    //features.register
-    public async features_register(){
-        const feature = await this.features_get();
-        // console.log(feature)
-        const featureName = feature.name.split("/")[1];
-        await this.featuresClient.features.register("Microsoft.Compute",featureName).then(
-            result => {
-                console.log(result); //The feature 'CanonicalEssentialsPlan' is not owned by current client making the request.
-            }
-        )
-    }
-
     //featuresClient.listOperations
     public async listOperations(){
         for await (let item of this.featuresClient.listOperations()){

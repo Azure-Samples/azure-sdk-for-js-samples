@@ -408,25 +408,6 @@ class NetworkBaseExamples {
         }
     }
 
-    // //virtualNetworkGateways.beginSetVpnclientIpsecParametersAndWait (need vpn client)
-    // public async virtualNetworkGateways_beginSetVpnclientIpsecParametersAndWait(){
-    //     const parameter:network.VpnClientIPsecParameters = {
-    //         saLifeTimeSeconds: 86473,
-    //         saDataSizeKilobytes: 429497,
-    //         ipsecEncryption: "AES256",
-    //         ipsecIntegrity: "SHA256",
-    //         ikeEncryption: "AES256",
-    //         ikeIntegrity: "SHA384",
-    //         dhGroup: "DHGroup2",
-    //         pfsGroup: "PFS2"
-    //     };
-    //     await this.client.virtualNetworkGateways.beginSetVpnclientIpsecParametersAndWait(this.resourceGroup,this.virtualNetworkGatewayName,parameter).then(
-    //         res => {
-    //             console.log(res);
-    //         }
-    //     )
-    // }
-
     //virtualNetworkGateways.beginGetAdvertisedRoutesAndWait
     public async virtualNetworkGateways_beginGetAdvertisedRoutesAndWait(){
         await this.client.virtualNetworkGateways.beginGetAdvertisedRoutesAndWait(this.resourceGroup,this.virtualNetworkGatewayName,"10.0.0.2").then(

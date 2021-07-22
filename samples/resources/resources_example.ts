@@ -17,7 +17,6 @@ class TagsOperationExamples {
         await this.resourceClient.tagsOperations.createOrUpdate(this.tagName).then(
             result => {
                 console.log(result);
-                // console.assert(result.tagName === this.tagName);
             }
         )
     }
@@ -35,7 +34,6 @@ class TagsOperationExamples {
         await this.resourceClient.tagsOperations.createOrUpdateValue(this.tagName,this.tagValue).then(
             result => {
                 console.log(result);
-                // console.assert(result.tagValue === this.tagValue);
             }
         )
     }
@@ -141,42 +139,37 @@ class ResourceGroupExamples {
     public async resourceGroups_get(){
         const result_get = await this.resourceClient.resourceGroups.get(this.resourceGroupName);
         console.log(result_get);  
-        // console.assert(result_get.name === this.resourceGroupName);
-        // console.assert(result_get.tags.tag1 === "value1"); 
     }
 
     //resourceGroups.checkExistence   
     public async resourceGroups_checkExistence(){
         const result_check = await this.resourceClient.resourceGroups.checkExistence(this.resourceGroupName);
-        console.log(result_check);  //{ body: true }
-        // console.assert(result_check.body === true);
+        console.log(result_check);  
+     
 
         const unknowGroup = "unknowGroup";
         const result_check_unknowGroup = await this.resourceClient.resourceGroups.checkExistence(unknowGroup);
-        console.log(result_check_unknowGroup)  //{ body: false }
-        // console.assert(result_check_unknowGroup.body === true);  // Assertion failed
+        console.log(result_check_unknowGroup)  
     }
 
     //resourceGroups.list
     public async resourceGroups_list(){
         const result_list = new Array();
         for await (let item of this.resourceClient.resourceGroups.list()){
-            // console.log(item);
             result_list.push(item);
         }
         console.log(result_list);
-        // console.assert(result_list.length > 0);
+        
     }
 
     //resourceGroups.list  
     public async resourceGroups_listTop2(){
         const result_list_top2 = new Array();
-        for await (let item of this.resourceClient.resourceGroups.list({top: 2})){ //The value for top of '2,2' is not an integer; the value must be an integer value greater than zero.
-            // console.log(item);
+        for await (let item of this.resourceClient.resourceGroups.list({top: 2})){ 
             result_list_top2.push(item);
         }
         console.log(result_list_top2);
-        // console.assert(result_list_top2.length === 2);
+        
     }
 
     //resourceGroups.update
@@ -188,9 +181,8 @@ class ResourceGroupExamples {
             }
         };
         const result_patch = await this.resourceClient.resourceGroups.update(this.resourceGroupName,parameter);
-        console.log(result_patch);  //{... , tags: { tag1: 'value1', tag2: 'value2' } , ...}
-        // console.assert(result_patch.tags.tag1 === "value1");
-        // console.assert(result_patch.tags.tag2 === "value2");
+        console.log(result_patch);
+        
     }
 
     //resources.listByResourceGroup
@@ -200,14 +192,14 @@ class ResourceGroupExamples {
         }
     }
 
-    //resourceGroups.exportTemplate   (not test)
+    //resourceGroups.exportTemplate  
     public async resourceGroups_beginExportTemplateAndWait(){
         const parameter:resources.ExportTemplateRequest = {
             resources: ["*"]
         };
         const result_template = await this.resourceClient.resourceGroups.beginExportTemplateAndWait(this.resourceGroupName,parameter);
         console.log(result_template)
-        // console.assert(result_template.template === "template" );
+        
     }
 
     // resourceGroups.delete 
@@ -233,8 +225,7 @@ class ResourcesExamples {
     //resources.checkExistence  
     public async resources_checkExistence(){
         const resources_exist = await this.resourceClient.resources.checkExistence(this.resourceGroupName,"Microsoft.Compute","","availabilitySets",this.resourceName_1,"2019-12-01");
-        console.log(resources_exist);  // { body: false }
-        // console.assert(resources_exist.body === false);
+        console.log(resources_exist);  
     }
 
     //resources.checkExistenceById   
@@ -257,21 +248,18 @@ class ResourcesExamples {
     public async resources_createOrUpdate(){
         const create_result = await this.resourceClient.resources.beginCreateOrUpdateAndWait(this.resourceGroupName,"Microsoft.Compute","","availabilitySets",this.resourceName_1,"2019-12-01",{location: "eastus"});
         console.log(create_result);
-        // console.assert(create_result.name === this.resourceName_1);
     }
 
     //resources.get
     public async resources_get(){
         const get_result = await this.resourceClient.resources.get(this.resourceGroupName,"Microsoft.Compute","","availabilitySets",this.resourceName_1,"2019-12-01");
         console.log(get_result);
-        // console.assert(get_result.name === this.resourceName_1);
     }
 
     //resources.getById
     public async resources_getById(){
         const get_result = await this.resourceClient.resources.getById(this.resourceId,"2019-12-01");
         console.log(get_result);
-        // console.assert(get_result.name === this.resourceName_1);
         return get_result;
     }
 
@@ -279,18 +267,15 @@ class ResourcesExamples {
     public async resources_list(){
         const resultArray = new Array();
         for await (let item of this.resourceClient.resources.list({filter: "name eq '"+ this.resourceName_1+"'"})){
-            // console.log(item);
             resultArray.push(item);
         }
         console.log(resultArray)
-        // console.assert(resultArray.length == 1);
     }
 
     //resources.listByResourceGroup
     public async resources_listByResourceGroup(){
         const resultArray = new Array();
         for await (let item of this.resourceClient.resources.listByResourceGroup(this.resourceGroupName)){
-            // console.log(item);
             resultArray.push(item);
         }
         console.log(resultArray);
@@ -322,13 +307,13 @@ class ResourcesExamples {
         console.log(result_move);
     }
 
-    //resources.update (LRO)
+    //resources.update 
     public async resources_update(){
         const result_update = await this.resourceClient.resources.beginUpdateAndWait(this.resourceGroupName,"Microsoft.Compute","","availabilitySets",this.resourceName_1,"2019-12-01",{tags: {tag1: 'value1'}});
         console.log(result_update);
     }
 
-    //resources.updateById (LRO)
+    //resources.updateById 
     public async resources_updateById(){
         const result_update_by_id = await this.resourceClient.resources.beginUpdateByIdAndWait(this.newResourceId,"2019-12-01",{tags: { tag1: "value1"}});
         console.log(result_update_by_id);
@@ -396,7 +381,6 @@ class DeploymentsBasicExamples {
     public async deployments_checkExistence(){
         const deployment_check = await this.resourceClient.deployments.checkExistence(this.resourceGroupName,this.depolymentName);
         console.log(deployment_check);
-        // console.assert(deployment_check.body === false);
     }
 
     //deployments.calculateTemplateHash
@@ -412,7 +396,6 @@ class DeploymentsBasicExamples {
     //deployments.createOrUpdate  
     public async deployments_createOrUpdate(){
         const parameter : resources.Deployment = {
-            // location: "West US",
             properties: {
                 mode: "Incremental",
                 template: this.createTmpleate(),
@@ -421,7 +404,6 @@ class DeploymentsBasicExamples {
         };
         const createResult_deployment = await this.resourceClient.deployments.beginCreateOrUpdateAndWait(this.resourceGroupName,this.depolymentName,parameter);
         console.log(createResult_deployment);
-        // console.assert(createResult_deployment.name === this.depolymentName);
     }
 
     //deployments.listByResourceGroup
@@ -429,18 +411,14 @@ class DeploymentsBasicExamples {
         const listArray_deployment = new Array();
         for await (let item of this.resourceClient.deployments.listByResourceGroup(this.resourceGroupName)){
             listArray_deployment.push(item);
-            // console.log(item);
         }
         console.log(listArray_deployment);
-        // console.assert(listArray_deployment.length == 1);
-        // console.assert(listArray_deployment[0].name === this.depolymentName);
     }
 
     //deployments.get
     public async deployments_get(){
         const getResult_deployment = await this.resourceClient.deployments.get(this.resourceGroupName,this.depolymentName);
         console.log(getResult_deployment);
-        // console.assert(getResult_deployment.name === this.depolymentName);
     }
 
     //deployments.whatIf 
@@ -457,7 +435,6 @@ class DeploymentsBasicExamples {
         await this.resourceClient.deployments.cancel(this.resourceGroupName,this.depolymentName).catch(
             result => {
                 console.log(result.code);
-                // console.assert(result.code === "DeploymentCannotBeCancelled");
             }
         );  
     }
@@ -465,7 +442,6 @@ class DeploymentsBasicExamples {
     //deployments.validate 
     public async deployments_validate(){
         const parameter : resources.Deployment = {
-            // location: "West US",
             properties: {
                 mode: "Incremental",
                 template: this.createTmpleate(),
@@ -474,20 +450,12 @@ class DeploymentsBasicExamples {
         };
         const validation = await this.resourceClient.deployments.beginValidateAndWait(this.resourceGroupName,this.depolymentName,parameter);
         console.log(validation);
-        // if(validation.properties{
-        //     continue
-        // }else{
-        //     console.assert(false)
-        // }
     }
 
     //deployments.exportTemplate
     public async deployments_exportTemplate(){
         const result_export = await this.resourceClient.deployments.exportTemplate(this.resourceGroupName,this.depolymentName);
         console.log(result_export);
-        // if(!result_export.template){
-        //     console.assert(false);
-        // }
     }
 
     //deployments.delete  
@@ -501,10 +469,8 @@ class DeploymentsBasicExamples {
         const listArray_deploymentOperations = new Array();
         for await (let item of this.resourceClient.deploymentOperations.list(this.resourceGroupName,this.depolymentName)){
             listArray_deploymentOperations.push(item);
-            // console.log(item);
         }
         console.log(listArray_deploymentOperations);
-        // console.assert(listArray_deploymentOperations.length > 1);
         return listArray_deploymentOperations;
     }
 
@@ -513,7 +479,6 @@ class DeploymentsBasicExamples {
         const operationId = await this.deploymentOperations_list();
         const getResult_deployment = await this.resourceClient.deploymentOperations.get(this.resourceGroupName,this.depolymentName,operationId[0].operationId);
         console.log(getResult_deployment);
-        // console.assert(getResult_deployment.operationId === operationId[0].operationId);
     }
 
 }
@@ -530,13 +495,11 @@ class DeploymentAtScopeExamples {
     public async deployments_checkExistenceAtScope(){
         const result_exist = await this.resourceClient.deployments.checkExistenceAtScope(this.resourceGroupName,this.depolymentName);
         console.log(result_exist);
-        // console.assert(result_exist.body === false);
     }
 
     //deployments.createOrUpdateAtScope  
     public async deployments_createOrUpdateAtScope(){
         const parameter : resources.Deployment = {
-            // location: "West US",
             properties: {
                 mode: "Incremental",
                 template: this.templeate,
@@ -545,7 +508,6 @@ class DeploymentAtScopeExamples {
         };
         const createResult_deployment = await this.resourceClient.deployments.beginCreateOrUpdateAtScopeAndWait(this.scope,this.depolymentName,parameter);
         console.log(createResult_deployment);
-        // console.assert(createResult_deployment.name === this.depolymentName);
     }
 
     //deployments.listAtScope
@@ -553,18 +515,14 @@ class DeploymentAtScopeExamples {
         const listArray = new Array();
         for await (let item of this.resourceClient.deployments.listAtScope(this.scope)){
             listArray.push(item);
-            // console.log(item);
         }
         console.log(listArray);
-        // console.assert(listArray.length == 1);
-        // console.assert(listArray[0].name === this.depolymentName);
     }
 
     //deployments.getAtScope
     public async deployments_getAtScope(){
         const getResult = await this.resourceClient.deployments.getAtScope(this.scope,this.depolymentName);
         console.log(getResult);
-        // console.assert(getResult.name === this.depolymentName);
     }
 
     //deployments.cancelAtScope
@@ -572,7 +530,6 @@ class DeploymentAtScopeExamples {
         await this.resourceClient.deployments.cancelAtScope(this.scope,this.depolymentName).catch(
             result => {
                 console.log(result.code);
-                // console.assert(result.code === "DeploymentCannotBeCancelled");
             }
         );  
     }
@@ -580,7 +537,6 @@ class DeploymentAtScopeExamples {
     //deployments.validateAtScope 
     public async deployments_validateAtScope(){
         const parameter : resources.Deployment = {
-            // location: "West US",
             properties: {
                 mode: "Incremental",
                 template: this.templeate,
@@ -589,20 +545,12 @@ class DeploymentAtScopeExamples {
         };
         const validation = await this.resourceClient.deployments.beginValidateAtScopeAndWait(this.scope,this.depolymentName,parameter);
         console.log(validation);
-        // if(validation.properties{
-        //     continue
-        // }else{
-        //     console.assert(false)
-        // }
     }
 
     //deployments.exportTemplateAtScope
     public async deployments_exportTemplateAtScope(){
         const result_export = await this.resourceClient.deployments.exportTemplateAtScope(this.scope,this.depolymentName);
         console.log(result_export);
-        // if(!result_export.template){
-        //     console.assert(false);
-        // }
     }
 
     //deployments.deleteAtScope 
@@ -616,10 +564,8 @@ class DeploymentAtScopeExamples {
         const listArray = new Array();
         for await (let item of this.resourceClient.deploymentOperations.listAtScope(this.scope,this.depolymentName)){
             listArray.push(item);
-            // console.log(item);
         }
         console.log(listArray);
-        // console.assert(listArray.length > 1);
         return listArray;
     }
 
@@ -627,7 +573,6 @@ class DeploymentAtScopeExamples {
     public async deploymentOperations_getAtScope(){
         const operationId = await this.deploymentOperations_listAtScope();
         const getResult = await this.resourceClient.deploymentOperations.getAtScope(this.scope,this.depolymentName,operationId[0].operationId);
-        // console.log(getResult);
         console.assert(getResult.operationId === operationId[0].operationId);
     }
 }
@@ -649,7 +594,6 @@ class DeploymentsAtManagementGroupExamples {
     public async deployments_checkExistenceAtManagementGroupScope(){
         const result_exist = await this.resourceClient.deployments.checkExistenceAtManagementGroupScope(this.group_id,this.depolymentName);
         console.log(result_exist);
-        // console.assert(result_exist.body === false);
     }
 
     //deployments.createOrUpdateAtManagementGroupScope 
@@ -668,7 +612,6 @@ class DeploymentsAtManagementGroupExamples {
         };
         const resultCreate_depolyments = await this.resourceClient.deployments.beginCreateOrUpdateAtManagementGroupScopeAndWait(this.group_id,this.depolymentName,parameter);
         console.log(resultCreate_depolyments);
-        // console.assert(resultCreate_depolyments.name === this.depolymentName);
     }
 
     //deployments.listAtManagementGroupScope
@@ -678,15 +621,12 @@ class DeploymentsAtManagementGroupExamples {
             listArray.push(item);
             console.log(item);
         }
-        // console.assert(listArray.length == 1);
-        // console.assert(listArray[0].name === this.depolymentName);
     }
 
      //deployments.getAtManagementGroupScope
      public async deployments_getAtManagementGroupScope(){
         const getResult = await this.resourceClient.deployments.getAtManagementGroupScope(this.group_id,this.depolymentName);
         console.log(getResult);
-        // console.assert(getResult.name === this.depolymentName);
     }
 
     //deployments.cancelAtManagementGroupScope
@@ -694,7 +634,6 @@ class DeploymentsAtManagementGroupExamples {
         await this.resourceClient.deployments.cancelAtManagementGroupScope(this.group_id,this.depolymentName).catch(
             result => {
                 console.log(result.code);
-                // console.assert(result.code === "DeploymentCannotBeCancelled");
             }
         );  
     }
@@ -715,20 +654,12 @@ class DeploymentsAtManagementGroupExamples {
         };
         const validation = await this.resourceClient.deployments.beginValidateAtManagementGroupScopeAndWait(this.group_id,this.depolymentName,parameter);
         console.log(validation);
-        // if(validation.properties{
-        //     continue
-        // }else{
-        //     console.assert(false)
-        // }
     }
 
     //deployments.exportTemplateAtManagementGroupScope
     public async deployments_exportTemplateAtManagementGroupScope(){
         const result_export = await this.resourceClient.deployments.exportTemplateAtManagementGroupScope(this.group_id,this.depolymentName);
         console.log(result_export);
-        // if(!result_export.template){
-        //     console.assert(false);
-        // }
     }
 
     //deployments.deleteAtManagementGroupScope 
@@ -742,9 +673,7 @@ class DeploymentsAtManagementGroupExamples {
         const listArray = new Array();
         for await (let item of this.resourceClient.deploymentOperations.listAtManagementGroupScope(this.group_id,this.depolymentName)){
             listArray.push(item);
-            // console.log(item);
         }
-        // console.assert(listArray.length > 0);
         console.log(listArray);
         return listArray;
     }
@@ -754,7 +683,6 @@ class DeploymentsAtManagementGroupExamples {
         const operationId = await this.deploymentOperations_listAtManagementGroupScope();
         const getResult = await this.resourceClient.deploymentOperations.getAtManagementGroupScope(this.group_id,this.depolymentName,operationId[0].operationId);
         console.log(getResult);
-        // console.assert(getResult.operationId === operationId[0].operationId);
     }  
 }
 
@@ -784,7 +712,6 @@ class DeploymentsAtSubscriptionExamples {
     public async deployments_checkExistenceAtSubscriptionScope(){
         const result_exist = await this.resourceClient.deployments.checkExistenceAtSubscriptionScope(this.depolymentName);
         console.log(result_exist)
-        // console.assert(result_exist.body === false);
     }
 
     //deployments.createOrUpdateAtSubscriptionScope 
@@ -792,7 +719,6 @@ class DeploymentsAtSubscriptionExamples {
         const parameter = this.create_deployment_parameter();
         const resultCreate_depolyments = await this.resourceClient.deployments.beginCreateOrUpdateAtSubscriptionScopeAndWait(this.depolymentName,parameter);
         console.log(resultCreate_depolyments);
-        // console.assert(resultCreate_depolyments.name === this.depolymentName);
     }
 
     //deployments.listAtSubscriptionScope
@@ -800,18 +726,14 @@ class DeploymentsAtSubscriptionExamples {
         const listArray = new Array();
         for await (let item of this.resourceClient.deployments.listAtSubscriptionScope()){
             listArray.push(item);
-            // console.log(item);
         }
         console.log(listArray);
-        // console.assert(listArray.length >= 1);
-        // console.assert(listArray[2].name === this.depolymentName);
     }
 
     //deployments.getAtSubscriptionScope
     public async deployments_getAtSubscriptionScope(){
         const getResult = await this.resourceClient.deployments.getAtSubscriptionScope(this.depolymentName);
         console.log(getResult);
-        // console.assert(getResult.name === this.depolymentName);
     }
 
     //deployments.whatIfAtSubscriptionScope 
@@ -825,7 +747,6 @@ class DeploymentsAtSubscriptionExamples {
         await this.resourceClient.deployments.cancelAtSubscriptionScope(this.depolymentName).catch(
             result => {
                 console.log(result.code);
-                // console.assert(result.code === "DeploymentCannotBeCancelled");
             }
         );  
     }
@@ -834,20 +755,12 @@ class DeploymentsAtSubscriptionExamples {
     public async deployments_validateAtSubscriptionScope(){
         const validation = await this.resourceClient.deployments.beginValidateAtSubscriptionScopeAndWait(this.depolymentName,this.create_deployment_parameter());
         console.log(validation);
-        // if(validation.properties{
-        //     continue
-        // }else{
-        //     console.assert(false)
-        // }
     }
 
     //deployments.exportTemplateAtSubscriptionScope
     public async deployments_exportTemplateAtSubscriptionScope(){
         const result_export = await this.resourceClient.deployments.exportTemplateAtSubscriptionScope(this.depolymentName);
         console.log(result_export);
-        // if(!result_export.template){
-        //     console.assert(false);
-        // }
     }
 
     //deployments.deleteAtSubscriptionScope 
@@ -861,10 +774,8 @@ class DeploymentsAtSubscriptionExamples {
         const listArray = new Array();
         for await (let item of this.resourceClient.deploymentOperations.listAtSubscriptionScope(this.depolymentName)){
             listArray.push(item);
-            // console.log(item);
         }
         console.log(listArray);
-        // console.assert(listArray.length > 0);
         return listArray;
     }
 
@@ -873,7 +784,6 @@ class DeploymentsAtSubscriptionExamples {
         const operationId = await this.deploymentOperations_listAtSubscriptionScope();
         const getResult = await this.resourceClient.deploymentOperations.getAtSubscriptionScope(this.depolymentName,operationId[0].operationId);
         console.log(getResult);
-        // console.assert(getResult.operationId === operationId[0].operationId);
     }
 
     
@@ -905,18 +815,13 @@ class DeploymentsAtTenantExamples {
     public async deployments_checkExistenceAtTenantScope(){
         const result_exist = await this.resourceClient.deployments.checkExistenceAtTenantScope(this.depolymentName);
         console.log(result_exist);
-        // console.assert(result_exist.body === false);
     }
 
     //deployments.createOrUpdateAtTenantScope 
-    // The client 'f76f8265-6a7e-4a2f-91d8-502be6f04df4' with object id 'f76f8265-6a7e-4a2f-91d8-502be6f04df4' does not have authorization 
-    // to perform action 'Microsoft.Resources/deployments/write' over scope '/providers/Microsoft.Resources/deployments/jstestlinked' 
-    // or the scope is invalid. If access was recently granted, please refresh your credentials.
     public async deployments_createOrUpdateAtTenantScope(){
         const parameter = this.create_deployment_parameter();
         const resultCreate_depolyments = await this.resourceClient.deployments.beginCreateOrUpdateAtTenantScopeAndWait(this.depolymentName,parameter);
         console.log(resultCreate_depolyments);
-        // console.assert(resultCreate_depolyments.name === this.depolymentName);
     }
 
     //deployments.listAtTenantScope
@@ -924,18 +829,14 @@ class DeploymentsAtTenantExamples {
         const listArray = new Array();
         for await (let item of this.resourceClient.deployments.listAtTenantScope()){
             listArray.push(item);
-            // console.log(item);
         }
         console.log(listArray);
-        // console.assert(listArray.length >= 1);
-        // console.assert(listArray[2].name === this.depolymentName);
     }
 
     //deployments.getAtTenantScope
     public async deployments_getAtTenantScope(){
         const getResult = await this.resourceClient.deployments.getAtTenantScope(this.depolymentName);
         console.log(getResult);
-        // console.assert(getResult.name === this.depolymentName);
     }
 
     //deployments.whatIfAtTenantScope 
@@ -949,7 +850,6 @@ class DeploymentsAtTenantExamples {
         const listArray = new Array();
         for await (let item of this.resourceClient.deploymentOperations.listAtTenantScope(this.depolymentName)){
             listArray.push(item);
-            // console.log(item);
         }
         console.assert(listArray.length > 0);
         return listArray;
@@ -960,14 +860,12 @@ class DeploymentsAtTenantExamples {
         const operationId = await this.deploymentOperations_listAtTenantScope();
         const getResult = await this.resourceClient.deploymentOperations.getAtTenantScope(this.depolymentName,operationId[0].operationId);
         console.log(getResult);
-        // console.assert(getResult.operationId === operationId[0].operationId);
     }
 
     //deployments.cancelAtTenantScope
     public async deployments_cancelAtTenantScope(){
         await this.resourceClient.deployments.cancelAtTenantScope(this.depolymentName).catch(
             result => {
-                // console.log(result.code);
                 console.assert(result.code === "DeploymentCannotBeCancelled");
             }
         );  
@@ -977,17 +875,11 @@ class DeploymentsAtTenantExamples {
     public async deployments_validateAtTenantScope(){
         const validation = await this.resourceClient.deployments.beginValidateAtTenantScopeAndWait(this.depolymentName,this.create_deployment_parameter());
         console.log(validation);
-        // if(validation.properties{
-        //     continue
-        // }else{
-        //     console.assert(false)
-        // }
     }
 
     //deployments.exportTemplateAtTenantScope
     public async deployments_exportTemplateAtTenantScope(){
         const result_export = await this.resourceClient.deployments.exportTemplateAtTenantScope(this.depolymentName);
-        // console.log(result_export);
         if(!result_export.template){
             console.assert(false);
         }
@@ -1011,7 +903,6 @@ class ProviderOperationsExamples {
         // console.log(result_get)
         for(let item of result_get.resourceTypes){
             if(item.resourceType === "sites"){
-                // console.log(item.locations);
                 if(item.locations.indexOf("West US") >= 0){
                     console.assert(true);
                     break;
