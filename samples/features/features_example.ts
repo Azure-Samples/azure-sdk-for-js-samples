@@ -53,7 +53,7 @@ class FeaturesExamples {
     }
 
     //featuresClient.listOperations
-    public async test_listOperations(){
+    public async listOperations(){
         for await (let item of this.featuresClient.listOperations()){
             console.log(item);
         }
