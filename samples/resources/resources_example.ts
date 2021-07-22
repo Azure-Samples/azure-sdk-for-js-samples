@@ -238,7 +238,7 @@ class ResourcesExamples {
     }
 
     //resources.checkExistenceById   
-    public async test_resources_checkExistenceById(){
+    public async resources_checkExistenceById(){
         const resourceId = this.resourceId;
         const resources_exist_by_id = await this.resourceClient.resources.checkExistenceById(resourceId,"2019-12-01");
         console.log(resources_exist_by_id);
@@ -524,7 +524,7 @@ class DeploymentAtScopeExamples {
     private resourceGroupName = "myjstest";
     private scope = "subscriptions/"+subscriptionId+"/resourcegroups/"+this.resourceGroupName;
     private depolymentName = "jstestdeployment";
-    private templeate = (new TestDeploymentsBasic).createTmpleate();
+    private templeate = (new DeploymentsBasicExamples).createTmpleate();
 
     //deployments.checkExistenceAtScope   
     public async deployments_checkExistenceAtScope(){
@@ -974,7 +974,7 @@ class DeploymentsAtTenantExamples {
     }
 
     //deployments.validateAtTenantScope 
-    public async test_deployments_validateAtTenantScope(){
+    public async deployments_validateAtTenantScope(){
         const validation = await this.resourceClient.deployments.beginValidateAtTenantScopeAndWait(this.depolymentName,this.create_deployment_parameter());
         console.log(validation);
         // if(validation.properties{
@@ -985,7 +985,7 @@ class DeploymentsAtTenantExamples {
     }
 
     //deployments.exportTemplateAtTenantScope
-    public async test_deployments_exportTemplateAtTenantScope(){
+    public async deployments_exportTemplateAtTenantScope(){
         const result_export = await this.resourceClient.deployments.exportTemplateAtTenantScope(this.depolymentName);
         // console.log(result_export);
         if(!result_export.template){
@@ -994,7 +994,7 @@ class DeploymentsAtTenantExamples {
     }
 
     //deployments.deleteAtTenantScope 
-    public async test_deployments_deleteAtTenantScope(){
+    public async deployments_deleteAtTenantScope(){
         const result_delete = await this.resourceClient.deployments.beginDeleteAtTenantScopeAndWait(this.depolymentName);
         console.log(result_delete);
     }

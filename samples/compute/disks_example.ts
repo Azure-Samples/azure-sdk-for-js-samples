@@ -20,7 +20,7 @@ class DisksExamples{
 
 
     //disks.createOrUpdate
-    public async test_disks_createOrUpdate(){
+    public async disks_createOrUpdate(){
         const parameter:compute.Disk ={
             location: "eastus",
             creationData: {
@@ -36,7 +36,7 @@ class DisksExamples{
     }
 
     //disks.get
-    public async test_disks_get(){
+    public async disks_get(){
         await this.compute_client.disks.get(this.resourceName,this.disk_name).then(
             response => {
                 console.log(response)
@@ -45,21 +45,21 @@ class DisksExamples{
     }
 
     //disks.listByResourceGroup
-    public async test_disks_listByResourceGroup(){
+    public async disks_listByResourceGroup(){
         for await (let item of this.compute_client.disks.listByResourceGroup(this.resourceName)){
             console.log(item)
         }
     }
 
     //disks.list
-    public async test_disks_list(){
+    public async disks_list(){
         for await (let item of this.compute_client.disks.list()){
             console.log(item)
         }
     }
 
     //disks.update
-    public async test_disks_update(){
+    public async disks_update(){
         const parameter:compute.DiskUpdate= {
             diskSizeGB: 200
         };
@@ -71,7 +71,7 @@ class DisksExamples{
     }
 
     //disks.grantAccess
-    public async test_disks_grantAccess(){
+    public async disks_grantAccess(){
         const parameter:compute.GrantAccessData ={
             access: "Read",
             durationInSeconds: 1800
@@ -84,7 +84,7 @@ class DisksExamples{
     }
 
     //disks.revokeAccess
-    public async test_disks_revokeAccess(){
+    public async disks_revokeAccess(){
         await this.compute_client.disks.beginRevokeAccessAndWait(this.resourceName,this.disk_name).then(
             response => {
                 console.log(response)
@@ -93,7 +93,7 @@ class DisksExamples{
     }
 
     //disks.delete
-    public async test_disks_delete(){
+    public async disks_delete(){
         await this.compute_client.disks.beginDeleteAndWait(this.resourceName,this.disk_name).then(
             response => {
                 console.log(response)
@@ -131,7 +131,7 @@ class SnapshotsExamples{
     }
 
     //snapshots.createOrUpdate
-    public async test_snapshots_createOrUpdate(){
+    public async snapshots_createOrUpdate(){
         const parameter:compute.Snapshot = {
             location: "eastus",
             creationData: {
@@ -147,7 +147,7 @@ class SnapshotsExamples{
     }
 
     //snapshots.get
-    public async test_snapshots_get(){
+    public async snapshots_get(){
         await this.compute_client.snapshots.get(this.resourceName,this.shapshot_name).then(
             response => {
                 console.log(response)
@@ -156,21 +156,21 @@ class SnapshotsExamples{
     }
 
     //snapshots.listByResourceGroup
-    public async test_snapshots_listByResourceGroup(){
+    public async snapshots_listByResourceGroup(){
         for await (let item of this.compute_client.snapshots.listByResourceGroup(this.resourceName)){
             console.log(item)
         } 
     }
 
     //snapshots.list
-    public async test_snapshots_list(){
+    public async snapshots_list(){
         for await (let item of this.compute_client.snapshots.list()){
             console.log(item)
         } 
     }
 
     //snapshots.grantAccess
-    public async test_snapshots_grantAccess(){
+    public async snapshots_grantAccess(){
         const parameter:compute.GrantAccessData = {
             access: "Read",
             durationInSeconds: 1800
@@ -183,7 +183,7 @@ class SnapshotsExamples{
     }
 
     //snapshots.revokeAccess
-    public async test_snapshots_revokeAccess(){
+    public async snapshots_revokeAccess(){
         await this.compute_client.snapshots.beginRevokeAccessAndWait(this.resourceName,this.shapshot_name).then(
             response => {
                 console.log(response)
@@ -192,7 +192,7 @@ class SnapshotsExamples{
     }
 
     //snapshots.delete
-    public async test_snapshots_delete(){
+    public async snapshots_delete(){
         await this.compute_client.snapshots.beginDeleteAndWait(this.resourceName,this.shapshot_name).then(
             response => {
                 console.log(response)
@@ -201,7 +201,7 @@ class SnapshotsExamples{
     }
 
     //images.createOrUpdate
-    public async test_images_createOrUpdate(){
+    public async images_createOrUpdate(){
         const parameter:compute.Image = {
             location: "eastus",
             storageProfile: {
@@ -224,7 +224,7 @@ class SnapshotsExamples{
     }
 
     //images.get
-    public async test_images_get(){
+    public async images_get(){
         await this.compute_client.images.get(this.resourceName,this.image_name).then(
             response => {
                 console.log(response)
@@ -233,21 +233,21 @@ class SnapshotsExamples{
     }
 
     //images.listByResourceGroup
-    public async test_images_listByResourceGroup(){
+    public async images_listByResourceGroup(){
         for await (let item of this.compute_client.images.listByResourceGroup(this.resourceName)){
             console.log(item)
         } 
     }
 
     //images.list
-    public async test_images_list(){
+    public async images_list(){
         for await (let item of this.compute_client.images.list()){
             console.log(item)
         } 
     }
 
     //images.update
-    public async test_images_update(){
+    public async images_update(){
         const parameter:compute.ImageUpdate = {
             tags: {
                 ["department"]: "HR"
@@ -261,7 +261,7 @@ class SnapshotsExamples{
     }
 
     //images.delete
-    public async test_images_delete(){
+    public async images_delete(){
         await this.compute_client.images.beginDeleteAndWait(this.resourceName,this.image_name).then(
             response => {
                 console.log(response)
