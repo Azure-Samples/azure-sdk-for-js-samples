@@ -1,7 +1,8 @@
 ---
 page_type: sample
 languages:
-- JavaScript/Typescript
+- javascript
+- typescript
 products:
 - azure
 description: "These code samples will show you how to manage Compute using Azure SDK for Typescript."
