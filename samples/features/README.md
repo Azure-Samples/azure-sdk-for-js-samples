@@ -5,13 +5,13 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Features using Azure SDK for Typescript."
+description: "These code samples will show you how to manage Features using Azure SDK for Javascript/Typescript."
 urlFragment: features
 ---
 
-# Getting started - Managing Features using Azure Typescript SDK
+# Getting started - Managing Features using Azure Javascript/Typescript SDK
 
-These code samples will show you how to manage Features using Azure SDK for Typescript.
+These code samples will show you how to manage Features using Azure SDK for Javascript/Typescript.
 
 
 ### Features

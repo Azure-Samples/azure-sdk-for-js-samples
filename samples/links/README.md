@@ -5,13 +5,13 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Links using Azure SDK for Typescript."
+description: "These code samples will show you how to manage Links using Azure SDK for Javascript/Typescript."
 urlFragment: links
 ---
 
-# Getting started - Managing Links using Azure Typescript SDK
+# Getting started - Managing Links using Azure Javascript/Typescript SDK
 
-These code samples will show you how to manage Links using Azure SDK for Typescript.
+These code samples will show you how to manage Links using Azure SDK for Javascript/Typescript.
 
 ## Features
 

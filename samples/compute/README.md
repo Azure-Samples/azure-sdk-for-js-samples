@@ -5,13 +5,13 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Compute using Azure SDK for Typescript."
+description: "These code samples will show you how to manage Compute using Azure SDK for Javascript/Typescript."
 urlFragment: compute
 ---
 
-# Getting started - Managing Compute using Azure Typescript SDK
+# Getting started - Managing Compute using Azure Javascript/Typescript SDK
 
-These code samples will show you how to manage Compute using Azure SDK for Typescript.
+These code samples will show you how to manage Compute using Azure SDK for Javascript/Typescript.
 
 ## Features
 

@@ -5,13 +5,13 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Policy using Azure SDK for Typescript."
+description: "These code samples will show you how to manage Policy using Azure SDK for Javascript/Typescript."
 urlFragment: policy
 ---
 
-# Getting started - Managing Policy using Azure Typescript SDK
+# Getting started - Managing Policy using Azure Javascript/Typescript SDK
 
-These code samples will show you how to manage Policy using Azure SDK for Typescript.
+These code samples will show you how to manage Policy using Azure SDK for Javascript/Typescript.
 
 ## Features
 

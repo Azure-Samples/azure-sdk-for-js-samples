@@ -5,13 +5,13 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Network using Azure SDK for Typescript."
+description: "These code samples will show you how to manage Network using Azure SDK for Javascript/Typescript."
 urlFragment: network
 ---
 
-# Getting started - Managing Network using Azure Typescript SDK
+# Getting started - Managing Network using Azure Javascript/Typescript SDK
 
-These code samples will show you how to manage Network using Azure SDK for Typescript.
+These code samples will show you how to manage Network using Azure SDK for Javascript/Typescript.
 
 ## Features
 

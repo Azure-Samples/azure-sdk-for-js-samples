@@ -5,13 +5,13 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Resources using Azure SDK for Typescript."
+description: "These code samples will show you how to manage Resources using Azure SDK for Javascript/Typescript."
 urlFragment: resources
 ---
 
-# Getting started - Managing Resources using Azure Typescript SDK
+# Getting started - Managing Resources using Azure Javascript/Typescript SDK
 
-These code samples will show you how to manage Resources using Azure SDK for Typescript.
+These code samples will show you how to manage Resources using Azure SDK for Javascript/Typescript.
 
 ## Features
 
