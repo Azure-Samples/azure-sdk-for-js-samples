@@ -1,7 +1,7 @@
 ---
 page_type: sample
 languages:
-- javaScript
+- javascript
 - typescript
 products:
 - azure
@@ -18,7 +18,7 @@ These code samples will show you how to manage Compute using Azure SDK for Types
 This project framework provides examples for the following services:
 
 ### Compute
-* Using the Azure SDK for JavaScript/Typescript - Compute Management Library [@azure/arm-compute](https://www.npmjs.com/package/@azure/arm-compute) for the [Azure Compute API](https://docs.microsoft.com/en-us/rest/api/compute/)
+* Using the Azure SDK for Javascript/Typescript - Compute Management Library [@azure/arm-compute](https://www.npmjs.com/package/@azure/arm-compute) for the [Azure Compute API](https://docs.microsoft.com/en-us/rest/api/compute/)
 
 
 ### Installation

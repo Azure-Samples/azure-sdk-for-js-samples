@@ -1,7 +1,7 @@
 ---
 page_type: sample
 languages:
-- javaScript
+- javascript
 - typescript
 products:
 - azure
@@ -18,7 +18,7 @@ These code samples will show you how to manage Policy using Azure SDK for Typesc
 This project framework provides examples for the following services:
 
 ### Policy
-* Using the Azure SDK for JavaScript/Typescript - Policy Management Library [@azure/arm-policy](https://www.npmjs.com/package/@azure/arm-policy) for the [Azure Resources API](https://docs.microsoft.com/en-us/rest/api/resources/)
+* Using the Azure SDK for Javascript/Typescript - Policy Management Library [@azure/arm-policy](https://www.npmjs.com/package/@azure/arm-policy) for the [Azure Resources API](https://docs.microsoft.com/en-us/rest/api/resources/)
 
 
 ### Installation

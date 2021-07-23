@@ -1,7 +1,7 @@
 ---
 page_type: sample
 languages:
-- javaScript
+- javascript
 - typescript
 products:
 - azure
@@ -18,7 +18,7 @@ These code samples will show you how to manage Resources using Azure SDK for Typ
 This project framework provides examples for the following services:
 
 ### Resources
-* Using the Azure SDK for JavaScript/Typescript - Resources Management Library [@azure/arm-resources](https://www.npmjs.com/package/@azure/arm-resources) for the [Azure Resources API](https://docs.microsoft.com/en-us/rest/api/resources/)
+* Using the Azure SDK for Javascript/Typescript - Resources Management Library [@azure/arm-resources](https://www.npmjs.com/package/@azure/arm-resources) for the [Azure Resources API](https://docs.microsoft.com/en-us/rest/api/resources/)
 
 
 ### Installation

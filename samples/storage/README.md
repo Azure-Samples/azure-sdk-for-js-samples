@@ -1,7 +1,7 @@
 ---
 page_type: sample
 languages:
-- javaScript
+- javascript
 - typescript
 products:
 - azure
@@ -18,7 +18,7 @@ These code samples will show you how to manage Storage using Azure SDK for Types
 This project framework provides examples for the following services:
 
 ### Storage
-* Using the Azure SDK for JavaScript/Typescript - Storage Management Library [@azure/arm-storage](https://www.npmjs.com/package/@azure/arm-storage) for the [Azure Storage API](https://docs.microsoft.com/en-us/rest/api/storagerp/)
+* Using the Azure SDK for Javascript/Typescript - Storage Management Library [@azure/arm-storage](https://www.npmjs.com/package/@azure/arm-storage) for the [Azure Storage API](https://docs.microsoft.com/en-us/rest/api/storagerp/)
 
 
 ### Installation
