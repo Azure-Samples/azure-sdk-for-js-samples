@@ -1,14 +1,15 @@
 ---
 page_type: sample
 languages:
-- JavaScript/Typescript
+- javaScript
+- typescript
 products:
 - azure
 description: "These code samples will show you how to manage Resources using Azure SDK for Typescript."
 urlFragment: resources
 ---
 
-# Getting started - Managing Resources using Azure typescript SDK
+# Getting started - Managing Resources using Azure Typescript SDK
 
 These code samples will show you how to manage Resources using Azure SDK for Typescript.
 
@@ -17,14 +18,14 @@ These code samples will show you how to manage Resources using Azure SDK for Typ
 This project framework provides examples for the following services:
 
 ### Resources
-* Using the Azure SDK for Typescript - Resources Management Library [@azure/arm-resources](https://www.npmjs.com/package/@azure/arm-resources) for the [Azure Resources API](https://docs.microsoft.com/en-us/rest/api/resources/)
+* Using the Azure SDK for JavaScript/Typescript - Resources Management Library [@azure/arm-resources](https://www.npmjs.com/package/@azure/arm-resources) for the [Azure Resources API](https://docs.microsoft.com/en-us/rest/api/resources/)
 
 
 ### Installation
 
 1.  Before using the sdk package,we need [install nodejs](https://nodejs.org/en/download/) and add it into environment variables.
 
-    reference version :
+    reference :
     
     ```
     nodejs version: 14.16.0
@@ -51,7 +52,7 @@ This project framework provides examples for the following services:
 
 A demo app is included to show how to use the project.
 
-To run the complete demo, you need to instantiate a class,and use it to call that you want test methods in this class 
+To run the complete demo, you need to instantiate a class,and use it to call the methods you want to test in this class 
 
     ```
     const resources = new TagsOperationExamples()

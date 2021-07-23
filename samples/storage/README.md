@@ -1,14 +1,15 @@
 ---
 page_type: sample
 languages:
-- JavaScript/Typescript
+- javaScript
+- typescript
 products:
 - azure
 description: "These code samples will show you how to manage Storage using Azure SDK for Typescript."
 urlFragment: storage
 ---
 
-# Getting started - Managing Storage using Azure typescript SDK
+# Getting started - Managing Storage using Azure Typescript SDK
 
 These code samples will show you how to manage Storage using Azure SDK for Typescript.
 
@@ -17,14 +18,14 @@ These code samples will show you how to manage Storage using Azure SDK for Types
 This project framework provides examples for the following services:
 
 ### Storage
-* Using the Azure SDK for Typescript - Storage Management Library [@azure/arm-storage](https://www.npmjs.com/package/@azure/arm-storage) for the [Azure Storage API](https://docs.microsoft.com/en-us/rest/api/storagerp/)
+* Using the Azure SDK for JavaScript/Typescript - Storage Management Library [@azure/arm-storage](https://www.npmjs.com/package/@azure/arm-storage) for the [Azure Storage API](https://docs.microsoft.com/en-us/rest/api/storagerp/)
 
 
 ### Installation
 
 1.  Before using the sdk package,we need [install nodejs](https://nodejs.org/en/download/) and add it into environment variables.
 
-    reference version :
+    reference :
     
     ```
     nodejs version: 14.16.0
@@ -50,7 +51,7 @@ This project framework provides examples for the following services:
 
 A demo app is included to show how to use the project.
 
-To run the complete demo, you need to instantiate a class,and use it to call that you want test methods in this class 
+To run the complete demo, you need to instantiate a class,and use it to call the methods you want to test in this class 
 
     ```
     const storage = new StorageExamples()

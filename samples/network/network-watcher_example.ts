@@ -198,7 +198,7 @@ class NetworkWatcherTroubleshootExamples {
             osProfile: {
                 adminUsername: "testuser",
                 computerName: "myvm",
-                adminPassword: "000000000000000000",
+                adminPassword: "Aa!1()-xyz",
                 windowsConfiguration: {
                     enableAutomaticUpdates: true
                 }

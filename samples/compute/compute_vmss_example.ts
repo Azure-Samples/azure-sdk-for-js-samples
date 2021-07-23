@@ -70,7 +70,7 @@ class virtualMachineScaleSetRollingUpgradesExamples{
                 osProfile: {
                     computerNamePrefix: "testPC",
                     adminUsername: "testuser",
-                    adminPassword: "000000000000000000",
+                    adminPassword: "Aa!1()-xyz",
                 },
                 networkProfile: {
                     networkInterfaceConfigurations: [
@@ -210,7 +210,7 @@ class virtualMachineScaleSetVMsExamples{
                 osProfile: {
                     computerNamePrefix: "testPC",
                     adminUsername: "testuser",
-                    adminPassword: "000000000000000000",
+                    adminPassword: "Aa!1()-xyz",
                 },
                 networkProfile: {
                     networkInterfaceConfigurations: [
@@ -244,38 +244,34 @@ class virtualMachineScaleSetVMsExamples{
                 console.log(response)
             }
         );
-    } 
+    }
+    
+    //get instanceId
+    public async getInstanceId(){
+        for await (let item of this.compute_client.virtualMachineScaleSetVMs.list(this.resourceGroupName,this.virtual_machine_scale_set_name)){
+            if(item.instanceId){
+                console.log(item.instanceId);               
+                return item.instanceId
+            }
+        }
+    }
 
     //virtualMachineScaleSetVMs.getInstanceView
     public async virtualMachineScaleSetVMs_getInstanceView(){
-        let instanceId: number;
-        let e: boolean ;
-        for(let i = 0 ; i < 4 ; i++ ){
-            e = false;
-            try{
-                await this.compute_client.virtualMachineScaleSetVMs.getInstanceView(this.resourceGroupName,this.virtual_machine_scale_set_name,i.toString())
-            }catch(error){
-                e = true;
-            }finally{
-                if(e){
-                    continue;
-                }else{
-                    instanceId = i;
-                    break
+        const instanceId = await this.getInstanceId();
+        try{
+            await this.compute_client.virtualMachineScaleSetVMs.getInstanceView(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
+                res => {
+                    console.log(res);
                 }
-            }
-        };
-        console.log(instanceId);
-        return instanceId;
+            )
+        }catch(error){
+            console.log(error)
+        }
     }
 
     //virtualMachineScaleSetVMs.list
     public async virtualMachineScaleSetVMs_list(){
-        // try{
-        //     await this.createVirtualMachineScaleSet();  // create for one time
-        // }catch(error){
-        //     console.log(error)
-        // }
         for await (let item of this.compute_client.virtualMachineScaleSetVMs.list(this.resourceGroupName,this.virtual_machine_scale_set_name)){
             console.log(item);
         }
@@ -283,8 +279,8 @@ class virtualMachineScaleSetVMsExamples{
 
     //virtualMachineScaleSetVMs.get
     public async virtualMachineScaleSetVMs_get(){
-        const instanceId = await this.virtualMachineScaleSetVMs_getInstanceView();
-        await this.compute_client.virtualMachineScaleSetVMs.get(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId.toString()).then(
+        const instanceId = await this.getInstanceId();
+        await this.compute_client.virtualMachineScaleSetVMs.get(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
             response => {
                 console.log(response);
             }
@@ -293,25 +289,24 @@ class virtualMachineScaleSetVMsExamples{
 
     //virtualMachineScaleSetVMs.update
     public async virtualMachineScaleSetVMs_update(){
-        const instanceId = await this.virtualMachineScaleSetVMs_getInstanceView();
+        const instanceId = await this.getInstanceId();
         const parameter: compute.VirtualMachineScaleSetVM = {
             location: this.location,
             tags: {
                 "department": "HR"
             }
         };
-        await this.compute_client.virtualMachineScaleSetVMs.beginUpdateAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId.toString(),parameter).then(
+        await this.compute_client.virtualMachineScaleSetVMs.beginUpdateAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId,parameter).then(
             response => {
                 console.log(response);
-                //success
             }
         );
     }
 
     //virtualMachineScaleSetVMs.restart
     public async virtualMachineScaleSetVMs_restart(){
-        const instanceId = await this.virtualMachineScaleSetVMs_getInstanceView();
-        await this.compute_client.virtualMachineScaleSetVMs.beginRestartAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId.toString()).then(
+        const instanceId = await this.getInstanceId();
+        await this.compute_client.virtualMachineScaleSetVMs.beginRestartAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
             response => {
                 console.log(response);
             }
@@ -320,8 +315,8 @@ class virtualMachineScaleSetVMsExamples{
 
     //virtualMachineScaleSetVMs.powerOff
     public async virtualMachineScaleSetVMs_powerOff(){
-        const instanceId = await this.virtualMachineScaleSetVMs_getInstanceView();
-        await this.compute_client.virtualMachineScaleSetVMs.beginPowerOffAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId.toString()).then(
+        const instanceId = await this.getInstanceId();
+        await this.compute_client.virtualMachineScaleSetVMs.beginPowerOffAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
             response => {
                 console.log(response);
                 //success
@@ -331,8 +326,8 @@ class virtualMachineScaleSetVMsExamples{
 
     // virtualMachineScaleSetVMs.start
     public async virtualMachineScaleSetVMs_start(){
-        const instanceId = await this.virtualMachineScaleSetVMs_getInstanceView();
-        await this.compute_client.virtualMachineScaleSetVMs.beginStartAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId.toString()).then(
+        const instanceId = await this.getInstanceId();
+        await this.compute_client.virtualMachineScaleSetVMs.beginStartAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
             response => {
                 console.log(response);
                 //success
@@ -342,11 +337,11 @@ class virtualMachineScaleSetVMsExamples{
 
     //virtualMachineScaleSetVMs.runCommand
     public async virtualMachineScaleSetVMs_runCommand(){
-        const instanceId = await this.virtualMachineScaleSetVMs_getInstanceView();
+        const instanceId = await this.getInstanceId();
         const parameter: compute.RunCommandInput = {
             commandId: "RunPowerShellScript"
         };
-        await this.compute_client.virtualMachineScaleSetVMs.beginRunCommandAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId.toString(),parameter).then(
+        await this.compute_client.virtualMachineScaleSetVMs.beginRunCommandAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId,parameter).then(
             response => {
                 console.log(response);
                 //success
@@ -356,8 +351,8 @@ class virtualMachineScaleSetVMsExamples{
 
     //virtualMachineScaleSetVMs.deallocate
     public async virtualMachineScaleSetVMs_deallocate(){
-        const instanceId = await this.virtualMachineScaleSetVMs_getInstanceView()
-        await this.compute_client.virtualMachineScaleSetVMs.beginDeallocateAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId.toString()).then(
+        const instanceId = await this.getInstanceId();
+        await this.compute_client.virtualMachineScaleSetVMs.beginDeallocateAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
             response => {
                 console.log(response);
                 //success
@@ -367,8 +362,8 @@ class virtualMachineScaleSetVMsExamples{
 
     //virtualMachineScaleSetVMs.reimage
     public async virtualMachineScaleSetVMs_reimage(){
-        const instanceId = await this.virtualMachineScaleSetVMs_getInstanceView();
-        await this.compute_client.virtualMachineScaleSetVMs.beginReimageAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId.toString()).then(
+        const instanceId = await this.getInstanceId();
+        await this.compute_client.virtualMachineScaleSetVMs.beginReimageAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
             response => {
                 console.log(response)
             }
@@ -377,8 +372,8 @@ class virtualMachineScaleSetVMsExamples{
 
     //virtualMachineScaleSetVMs.reimageAll
     public async virtualMachineScaleSetVMs_reimageAll(){
-        const instanceId = await this.virtualMachineScaleSetVMs_getInstanceView();
-        await this.compute_client.virtualMachineScaleSetVMs.beginReimageAllAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId.toString()).then(
+        const instanceId = await this.getInstanceId();
+        await this.compute_client.virtualMachineScaleSetVMs.beginReimageAllAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
             response => {
                 console.log(response)
             }
@@ -387,8 +382,8 @@ class virtualMachineScaleSetVMsExamples{
 
     //virtualMachineScaleSetVMs.delete
     public async virtualMachineScaleSetVMs_delete(){
-        const instanceId = await this.virtualMachineScaleSetVMs_getInstanceView();
-        await this.compute_client.virtualMachineScaleSetVMs.beginDeleteAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId.toString()).then(
+        const instanceId = await this.getInstanceId();
+        await this.compute_client.virtualMachineScaleSetVMs.beginDeleteAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
             response => {
                 console.log(response);
             }
@@ -397,10 +392,10 @@ class virtualMachineScaleSetVMsExamples{
 
     //virtualMachineScaleSets.deleteInstances
     public async virtualMachineScaleSets_deleteInstances(){
-        const instanceId = await this.virtualMachineScaleSetVMs_getInstanceView();
+        const instanceId = await this.getInstanceId();
         const parameter: compute.VirtualMachineScaleSetVMInstanceRequiredIDs = {
             instanceIds: [
-                instanceId.toString(),
+                instanceId,
             ]
         };
         await this.compute_client.virtualMachineScaleSets.beginDeleteInstancesAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,parameter).then(
@@ -489,7 +484,7 @@ class virtualMachineScaleSetsExamples{
                 osProfile: {
                     computerNamePrefix: "testPC",
                     adminUsername: "testuser",
-                    adminPassword: "000000000000000000",
+                    adminPassword: "Aa!1()-xyz",
                 },
                 networkProfile: {
                     networkInterfaceConfigurations: [

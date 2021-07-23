@@ -93,7 +93,7 @@ class virtualMachinesExamples{
             osProfile: {
                 adminUsername: "testuser",
                 computerName: "myVM",
-                adminPassword: "000000000000000000",
+                adminPassword: "Aa!1()-xyz",
                 windowsConfiguration: {
                     enableAutomaticUpdates: true // need automatic update for reimage
                 }
