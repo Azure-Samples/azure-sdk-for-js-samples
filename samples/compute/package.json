@@ -1,0 +1,18 @@
+{
+  "name": "compute-examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@azure/arm-compute": "^30.0.0-beta.1",
+    "@azure/arm-network": "^30.0.0-beta.1",
+    "@azure/arm-resources": "^30.0.0-beta.1",
+    "@azure/identity": "^1.3.0",
+    "@azure/keyvault-keys": "^4.2.1"
+  }
+}
