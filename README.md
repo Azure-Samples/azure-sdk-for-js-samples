@@ -2,7 +2,7 @@
 
 This repo contains code samples that demonstrate the usage of next-generation management client libraries of Azure Python SDK.
 
->NOTE: The packages used in this repo are based on the next-generation code generator and are still in Public Preview.
+>NOTE: The packages used in this repo are still in Public Preview.
 
 If you want to learn about the general usage pattern of Python management libraries, please check [the GitHub repo](https://github.com/Azure/azure-sdk-for-js)
 
