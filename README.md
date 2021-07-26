@@ -1,10 +1,10 @@
 ## Code Samples of Azure JavaScript SDK Management Libraries 
 
-This repo contains code samples that demonstrate the usage of next-generation management client libraries of Azure Python SDK.
+This repo contains code samples that demonstrate the usage of next-generation management client libraries of Azure SDK for Javascript/Typescript.
 
 >NOTE: The packages used in this repo are still in Public Preview.
 
-If you want to learn about the general usage pattern of Python management libraries, please check [the GitHub repo](https://github.com/Azure/azure-sdk-for-js)
+If you want to learn about the general usage pattern of Javascript/Typescript management libraries, please check [the GitHub repo](https://github.com/Azure/azure-sdk-for-js)
 
 To find the code samples for a particular service you are using, please click on the folder that you're interested in. Each folder name is based on the Azure service, eg. Compute / Network / Storage
 
