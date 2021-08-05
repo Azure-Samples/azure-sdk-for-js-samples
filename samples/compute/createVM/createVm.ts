@@ -3,24 +3,27 @@ import * as network from "@azure/arm-network";
 import * as resources from "@azure/arm-resources";
 import {DefaultAzureCredential} from "@azure/identity";
 
-const subscriptionId = process.env.subscriptionId;
-const credential = new DefaultAzureCredential();
-
 class TestCreateVirtualMachines {
 
-    // @ts-ignore
-    private computeClient = new compute.ComputeManagementClient(credential, subscriptionId);
-    // @ts-ignore
-    private networkClient = new network.NetworkManagementClient(credential, subscriptionId);
-    // @ts-ignore
-    private resourcesClient = new resources.ResourceManagementClient(credential, subscriptionId);
-    private resourceGroupName = "testRG";
+    private computeClient;
+    private networkClient;
+    private resourcesClient;
+    private credential;
+
+    private subscriptionId = "92f95d8f-3c67-4124-91c7-8cf07cdbf241";
+    private resourceGroupName = "qiaozhatest1";
     private virtualMachineName = "virtualmachinex";
     private subnetName = "subnetnamex";
     private interfaceName = "interfacex";
     private networkName = "networknamex";
     private location = "eastus";
 
+    constructor() {
+        this.credential = new DefaultAzureCredential();
+        this.computeClient = new compute.ComputeManagementClient(this.credential, this.subscriptionId);
+        this.networkClient = new network.NetworkManagementClient(this.credential, this.subscriptionId);
+        this.resourcesClient = new resources.ResourceManagementClient(this.credential, this.subscriptionId);
+    }
     //virtualMachines.createOrUpdate
     public async createVirtualMachines() {
         await this.createResourceGroup();
@@ -70,7 +73,7 @@ class TestCreateVirtualMachines {
             networkProfile: {
                 networkInterfaces: [
                     {
-                        id: "/subscriptions/" + subscriptionId + "/resourceGroups/" + this.resourceGroupName + "/providers/Microsoft.Network/networkInterfaces/" + this.interfaceName + "",
+                        id: "/subscriptions/" + this.subscriptionId + "/resourceGroups/" + this.resourceGroupName + "/providers/Microsoft.Network/networkInterfaces/" + this.interfaceName + "",
                         primary: true
                     }
                 ]
@@ -94,7 +97,7 @@ class TestCreateVirtualMachines {
         )
     }
 
-    //networkClient.virtualNetworks.createOrUpdate
+    // networkClient.virtualNetworks.createOrUpdate
     private async createVirtualNetwork() {
         const parameter: network.VirtualNetwork = {
             location: this.location,
@@ -112,7 +115,7 @@ class TestCreateVirtualMachines {
         console.log(subnet_create_info)
     }
 
-    //networkClient.networkInterfaces.createOrUpdate
+    // networkClient.networkInterfaces.createOrUpdate
     private async createNetworkInterface(group_name: any, location: any, nic_name: any) {
         const parameter: network.NetworkInterface = {
             location: location,
@@ -120,7 +123,7 @@ class TestCreateVirtualMachines {
                 {
                     name: "MyIpConfig",
                     subnet: {
-                        id: "/subscriptions/" + subscriptionId + "/resourceGroups/" + this.resourceGroupName + "/providers/Microsoft.Network/virtualNetworks/" + this.networkName + "/subnets/" + this.subnetName
+                        id: "/subscriptions/" + this.subscriptionId + "/resourceGroups/" + this.resourceGroupName + "/providers/Microsoft.Network/virtualNetworks/" + this.networkName + "/subnets/" + this.subnetName
 
                     }
                 }

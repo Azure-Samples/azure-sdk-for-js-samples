@@ -9,9 +9,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@azure/arm-compute": "file:azure-arm-compute-30.0.0-beta.1.tgz",
-    "@azure/arm-network": "file:azure-arm-network-30.0.0-beta.1.tgz",
-    "@azure/arm-resources": "file:azure-arm-resources-30.0.0-beta.1.tgz",
+    "@azure/arm-compute": "30.0.0-beta.1",
+    "@azure/arm-network": "30.0.0-beta.1",
+    "@azure/arm-resources": "30.0.0-beta.1",
     "@azure/identity": "^1.4.0"
   }
 }
