@@ -351,3 +351,4 @@ MigrationBackup/
 
 node_modules
 dist
+**.js
