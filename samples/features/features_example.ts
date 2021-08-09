@@ -3,48 +3,52 @@ import { DefaultAzureCredential } from "@azure/identity";
 
 const subscriptionId = process.env.subscriptionId;
 const credential = new DefaultAzureCredential();
+let client: FeatureClient;
 
-class FeaturesExamples { 
-    
-    private featuresClient = new FeatureClient(credential,subscriptionId);
+//--FeaturesExamples--
 
-    //features.listAll
-    public async features_listAll(){
-        const arrayList = new Array();
-        for await (let item of this.featuresClient.features.listAll()){
-            arrayList.push(item);
-            console.log(item);
-        }
-        console.log(arrayList);
-        // console.assert(arrayList.length > 0);
+//features.listAll
+async function features_listAll(){
+    const arrayList = new Array();
+    for await (let item of client.features.listAll()){
+        arrayList.push(item);
+        console.log(item);
     }
+    console.log(arrayList);
+    // console.assert(arrayList.length > 0);
+}
 
-    //features.list
-    public async features_list(){
-        const arrayList = new Array();
-        for await (let item of this.featuresClient.features.list("Microsoft.Compute")){
-            arrayList.push(item);
-            // console.log(item);
-        }
-        console.log(arrayList);
-        // console.assert(arrayList.length > 0);
-        return arrayList;
+//features.list
+async function features_list(){
+    const arrayList = new Array();
+    for await (let item of client.features.list("Microsoft.Compute")){
+        arrayList.push(item);
+        // console.log(item);
     }
+    console.log(arrayList);
+    // console.assert(arrayList.length > 0);
+    return arrayList;
+}
 
-    //features.get
-    public async features_get(){
-        const featureList = await this.features_list();
-        const featureName = featureList[0].name.split("/")[1];
-        const feature = await this.featuresClient.features.get("Microsoft.Compute",featureName);
-        console.log(feature);
-        return feature;
-    }
+//features.get
+async function features_get(){
+    const featureList = await features_list();
+    const featureName = featureList[0].name.split("/")[1];
+    const feature = await client.features.get("Microsoft.Compute",featureName);
+    console.log(feature);
+    return feature;
+}
 
-    //featuresClient.listOperations
-    public async listOperations(){
-        for await (let item of this.featuresClient.listOperations()){
-            console.log(item);
-        }
+//client.listOperations
+async function listOperations(){
+    for await (let item of client.listOperations()){
+        console.log(item);
     }
 }
 
+async function main() {
+    client = new FeatureClient(credential, subscriptionId);
+    await features_listAll();
+}
+
+main();

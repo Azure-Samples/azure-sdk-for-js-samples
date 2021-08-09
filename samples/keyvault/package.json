@@ -1,0 +1,15 @@
+{
+  "name": "keyvault-examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@azure/identity": "^1.5.0",
+    "azure-arm-keyvault": "D:\\dev\\azure-samples-js-management\\samples\\keyvault\\azure-arm-keyvault-30.0.0-beta.1.tgz"
+  }
+}

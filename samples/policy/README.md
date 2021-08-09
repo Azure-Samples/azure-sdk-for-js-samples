@@ -52,11 +52,14 @@ This project framework provides examples for the following services:
 
 A demo app is included to show how to use the project.
 
-To run the complete demo, you need to instantiate a class,and use it to call the methods you want to test in this class 
+To run the complete demo, you need to call the methods you want to test in main method. 
 
     ```
-    const policy = new PolicyDefinitionAtManagementGroupExamples()
-    policy.test_policyDefinitions_createOrUpdateAtManagementGroup()
+    async function main() {
+        policyclient = new PolicyClient(credential, subscriptionId);
+        managementclient = new ManagementGroupsAPI(credential);
+        await policyDefinitions_createOrUpdateAtManagementGroup();
+    }
     ```
 
 execute below command on terminal

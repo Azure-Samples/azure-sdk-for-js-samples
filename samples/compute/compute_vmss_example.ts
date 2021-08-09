@@ -1,696 +1,488 @@
-import * as compute from "@azure/arm-compute";
+import { ComputeManagementClient,VirtualMachineScaleSet,VirtualMachineScaleSetVM,RunCommandInput,VirtualMachineScaleSetVMInstanceRequiredIDs
+,VirtualMachineScaleSetUpdate,VirtualMachineScaleSetExtension,VirtualMachineScaleSetExtensionUpdate } from "@azure/arm-compute";
+import { NetworkManagementClient,VirtualNetwork } from "@azure/arm-network";
 import { DefaultAzureCredential } from "@azure/identity";
-import { NetworkManagementClient,VirtualNetwork,PublicIPAddress,LoadBalancer } from "@azure/arm-network";
 
-var subscriptionId = process.env.subscriptionId;
-var credential = new DefaultAzureCredential();
+const subscriptionId = process.env.subscriptionId;
+const credential = new DefaultAzureCredential();
+const resourceGroupName = "myjstest";
+const location = "eastus";
+const virtual_machine_scale_set_name = "virtualmachinescaleset";
+const networkName = "networknamex";
+const subnetName = "subnetworknamex";
+const vmss_extension_name = "vmssextensionx";
+let client: ComputeManagementClient;
+let network_client: NetworkManagementClient;
 
-class virtualMachineScaleSetRollingUpgradesExamples{
-    private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
-    private network_client = new NetworkManagementClient(credential,subscriptionId);
-    private resourceGroupName = "myjstest";
-    private virtual_machine_scale_set_name = "virtualmachinescaleset";
-    private networkName = "networknamex";
-    private subnetName = "subnetworknamex";
-    private location = "eastus";
 
-    // virtualNetworks.beginCreateOrUpdateAndWait
-    // subnets.beginCreateOrUpdateAndWait
-    public async createVirtualNetwork(groupName: any,location: any,networkName: any,subnetName: any){
-        const parameter: VirtualNetwork = {
-            location: location,
-            addressSpace: {
-                addressPrefixes: ["10.0.0.0/16"]
-            }
+//--VirtualMachineScaleSetRollingUpgradesExamples--
+
+// virtualNetworks.beginCreateOrUpdateAndWait
+// subnets.beginCreateOrUpdateAndWait
+async function createVirtualNetwork(groupName: any,location: any,networkName: any,subnetName: any){
+    const parameter: VirtualNetwork = {
+        location: location,
+        addressSpace: {
+            addressPrefixes: ["10.0.0.0/16"]
         }
-        await this.network_client.virtualNetworks.beginCreateOrUpdateAndWait(groupName,networkName,parameter).then(
-            result => {
-                console.log(result);
-            }
-        );
-        const subnet_info = await this.network_client.subnets.beginCreateOrUpdateAndWait(groupName,networkName,subnetName,{"addressPrefix":"10.0.0.0/24"}); 
-        console.log(subnet_info);
-        return subnet_info
     }
-
-    // virtualMachineScaleSets.createOrUpdate
-    public async virtualMachineScaleSets_createOrUpdate(){
-        var subnet: any;
-        if(await this.createVirtualNetwork(this.resourceGroupName,this.location,this.networkName,this.subnetName)){
-            subnet = await this.createVirtualNetwork(this.resourceGroupName,this.location,this.networkName,this.subnetName);
-        }else{
-            subnet = "subneturi";
+    await network_client.virtualNetworks.beginCreateOrUpdateAndWait(groupName,networkName,parameter).then(
+        result => {
+            console.log(result);
         }
-
-        const parameter : compute.VirtualMachineScaleSet = {
-            sku: {
-                tier: "Standard",
-                capacity: 1,
-                name: "Standard_D1_V2"
-            },
-            location: "eastus",
-            overprovision: true,
-            virtualMachineProfile: {
-                storageProfile: {
-                    imageReference: {
-                        sku: "2016-Datacenter",
-                        publisher: "MicrosoftwindowsServer",
-                        version: "latest",
-                        offer: "windowsServer"
-                    },
-                    osDisk: {
-                        caching: "ReadWrite",
-                        managedDisk: {
-                            storageAccountType: "Standard_LRS"
-                        },
-                        createOption: "FromImage",
-                        diskSizeGB: 512
-                    }
-                },
-                osProfile: {
-                    computerNamePrefix: "testPC",
-                    adminUsername: "testuser",
-                    adminPassword: "Aa!1()-xyz",
-                },
-                networkProfile: {
-                    networkInterfaceConfigurations: [
-                        {
-                         name: "testPC",
-                         primary: true,
-                         enableIPForwarding: true,
-                         ipConfigurations: [
-                             {
-                                 name: "testPC",
-                                 subnet: {
-                                     id: "/subscriptions/" + subscriptionId + "/resourceGroups/" + this.resourceGroupName + "/providers/Microsoft.Network/virtualNetworks/" + this.networkName + "/subnets/" + this.subnetName + ""
-                                 } 
-                             }
-                         ]  
-                        }
-                    ]
-                }
-            },
-            upgradePolicy: {
-                mode: "Manual",
-                rollingUpgradePolicy: {
-                    maxUnhealthyUpgradedInstancePercent: 100,
-                    maxBatchInstancePercent: 20   // python is 100
-                }
-            }
-        }
-        // start an extension rolling upgrade.post
-        await this.compute_client.virtualMachineScaleSets.beginCreateOrUpdateAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,parameter).then(
-            response => {
-                console.log(response)
-            }
-        );
-    }  
-
-    //virtualMachineScaleSetRollingUpgrades.startExtensionUpgrade
-    public async virtualMachineScaleSetRollingUpgrades_startExtensionUpgrade(){
-        await this.compute_client.virtualMachineScaleSetRollingUpgrades.beginStartExtensionUpgradeAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name).then(
-            response => {
-                console.log(response)
-            }
-        );
-    }
-
-    // virtualMachineScaleSetRollingUpgrades.cancel
-    public async virtualMachineScaleSetRollingUpgrades_cancel(){
-        await this.compute_client.virtualMachineScaleSetRollingUpgrades.beginCancelAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name).then(
-            response => {
-                console.log(response)
-            }
-        );
-        // success (cancel ExtensionUpgrade)
-    }
-
-    //getLatest
-    public async virtualMachineScaleSetRollingUpgrades_getLatest(){
-        this.compute_client.virtualMachineScaleSetRollingUpgrades.getLatest(this.resourceGroupName,this.virtual_machine_scale_set_name).then(
-            response => {
-                console.log(response)
-            }
-        );
-        //success
-    }
-
-    //virtualMachineScaleSets.beginDeleteAndWait
-    public async virtualMachineScaleSet_delete(){
-        await this.compute_client.virtualMachineScaleSets.beginDeleteAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name).then(
-            response => {
-                console.log(response)
-            }
-        );
-    }
+    );
+    const subnet_info = await network_client.subnets.beginCreateOrUpdateAndWait(groupName,networkName,subnetName,{"addressPrefix":"10.0.0.0/24"}); 
+    console.log(subnet_info);
+    return subnet_info
 }
 
-class virtualMachineScaleSetVMsExamples{
-    private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
-    private network_client = new NetworkManagementClient(credential,subscriptionId);
-    private resourceGroupName = "myjstest";
-    private virtual_machine_scale_set_name = "virtualmachinescaleset";
-    private networkName = "networknamex";
-    private subnetName = "subnetworknamex";
-    private location = "eastus";
-
-    // virtualNetworks.beginCreateOrUpdateAndWait
-    // subnets.beginCreateOrUpdateAndWait
-    public async createVirtualNetwork(groupName: any,location: any,networkName: any,subnetName: any){
-        const parameter: VirtualNetwork = {
-            location: location,
-            addressSpace: {
-                addressPrefixes: ["10.0.0.0/16"]
-            }
-        }
-        await this.network_client.virtualNetworks.beginCreateOrUpdateAndWait(groupName,networkName,parameter).then(
-            result => {
-                console.log(result);
-            }
-        );
-        const subnet_info = await this.network_client.subnets.beginCreateOrUpdateAndWait(groupName,networkName,subnetName,{"addressPrefix":"10.0.0.0/24"}); 
-        console.log(subnet_info);
-        return subnet_info
-    }
-
-    // virtualMachineScaleSets.createOrUpdate
-    public async virtualMachineScaleSets_createOrUpdate(){
-        var subnet: any;
-        if(await this.createVirtualNetwork(this.resourceGroupName,this.location,this.networkName,this.subnetName)){
-            subnet = await this.createVirtualNetwork(this.resourceGroupName,this.location,this.networkName,this.subnetName);
-        }else{
-            subnet = "subneturi";
-        }
-
-        const parameter : compute.VirtualMachineScaleSet = {
-            sku: {
-                tier: "Standard",
-                capacity: 1,
-                name: "Standard_D1_V2"
-            },
-            location: "eastus",
-            overprovision: true,
-            virtualMachineProfile: {
-                storageProfile: {
-                    imageReference: {
-                        sku: "2016-Datacenter",
-                        publisher: "MicrosoftwindowsServer",
-                        version: "latest",
-                        offer: "windowsServer"
+// virtualMachineScaleSets.createOrUpdate
+async function virtualMachineScaleSets_createOrUpdate(){
+    var subnet = await createVirtualNetwork(resourceGroupName,location,networkName,subnetName);
+    const parameter : VirtualMachineScaleSet = {
+        sku: {
+            tier: "Standard",
+            capacity: 1,
+            name: "Standard_D1_V2"
+        },
+        location: "eastus",
+        overprovision: true,
+        virtualMachineProfile: {
+            storageProfile: {
+                imageReference: {
+                    sku: "2016-Datacenter",
+                    publisher: "MicrosoftwindowsServer",
+                    version: "latest",
+                    offer: "windowsServer"
+                },
+                osDisk: {
+                    caching: "ReadWrite",
+                    managedDisk: {
+                        storageAccountType: "Standard_LRS"
                     },
-                    osDisk: {
-                        caching: "ReadWrite",
-                        managedDisk: {
-                            storageAccountType: "Standard_LRS"
-                        },
-                        createOption: "FromImage",
-                        diskSizeGB: 512
-                    }
-                },
-                osProfile: {
-                    computerNamePrefix: "testPC",
-                    adminUsername: "testuser",
-                    adminPassword: "Aa!1()-xyz",
-                },
-                networkProfile: {
-                    networkInterfaceConfigurations: [
-                        {
-                         name: "testPC",
-                         primary: true,
-                         enableIPForwarding: true,
-                         ipConfigurations: [
-                             {
-                                 name: "testPC",
-                                 subnet: {
-                                     id: "/subscriptions/" + subscriptionId + "/resourceGroups/" + this.resourceGroupName + "/providers/Microsoft.Network/virtualNetworks/" + this.networkName + "/subnets/" + this.subnetName + ""
-                                 } 
-                             }
-                         ]  
-                        }
-                    ]
+                    createOption: "FromImage",
+                    diskSizeGB: 512
                 }
             },
-            upgradePolicy: {
-                mode: "Manual",
-                rollingUpgradePolicy: {
-                    maxUnhealthyUpgradedInstancePercent: 100,
-                    maxBatchInstancePercent: 20   // python is 100
-                }
+            osProfile: {
+                computerNamePrefix: "testPC",
+                adminUsername: "testuser",
+                adminPassword: "Aa!1()-xyz",
+            },
+            networkProfile: {
+                networkInterfaceConfigurations: [
+                    {
+                        name: "testPC",
+                        primary: true,
+                        enableIPForwarding: true,
+                        ipConfigurations: [
+                            {
+                                name: "testPC",
+                                subnet: {
+                                    id: "/subscriptions/" + subscriptionId + "/resourceGroups/" + resourceGroupName + "/providers/Microsoft.Network/virtualNetworks/" + networkName + "/subnets/" + subnetName + ""
+                                } 
+                            }
+                        ]  
+                    }
+                ]
+            }
+        },
+        upgradePolicy: {
+            mode: "Manual",
+            rollingUpgradePolicy: {
+                maxUnhealthyUpgradedInstancePercent: 100,
+                maxBatchInstancePercent: 20   // python is 100
             }
         }
-        // start an extension rolling upgrade.post
-        await this.compute_client.virtualMachineScaleSets.beginCreateOrUpdateAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,parameter).then(
-            response => {
-                console.log(response)
-            }
-        );
     }
+    // start an extension rolling upgrade.post
+    await client.virtualMachineScaleSets.beginCreateOrUpdateAndWait(resourceGroupName,virtual_machine_scale_set_name,parameter).then(
+        response => {
+            console.log(response)
+        }
+    );
+}  
+
+//virtualMachineScaleSetRollingUpgrades.startExtensionUpgrade
+async function virtualMachineScaleSetRollingUpgrades_startExtensionUpgrade(){
+    await client.virtualMachineScaleSetRollingUpgrades.beginStartExtensionUpgradeAndWait(resourceGroupName,virtual_machine_scale_set_name).then(
+        response => {
+            console.log(response)
+        }
+    );
+}
+
+// virtualMachineScaleSetRollingUpgrades.cancel
+async function virtualMachineScaleSetRollingUpgrades_cancel(){
+    await client.virtualMachineScaleSetRollingUpgrades.beginCancelAndWait(resourceGroupName,virtual_machine_scale_set_name).then(
+        response => {
+            console.log(response)
+        }
+    );
+    // success (cancel ExtensionUpgrade)
+}
+
+//getLatest
+async function virtualMachineScaleSetRollingUpgrades_getLatest(){
+    client.virtualMachineScaleSetRollingUpgrades.getLatest(resourceGroupName,virtual_machine_scale_set_name).then(
+        response => {
+            console.log(response)
+        }
+    );
+    //success
+}
+
+//virtualMachineScaleSets.beginDeleteAndWait
+async function virtualMachineScaleSet_delete(){
+    await client.virtualMachineScaleSets.beginDeleteAndWait(resourceGroupName,virtual_machine_scale_set_name).then(
+        response => {
+            console.log(response)
+        }
+    );
+}
+
+//--virtualMachineScaleSetVMsExamples--
     
-    //get instanceId
-    public async getInstanceId(){
-        for await (let item of this.compute_client.virtualMachineScaleSetVMs.list(this.resourceGroupName,this.virtual_machine_scale_set_name)){
-            if(item.instanceId){
-                console.log(item.instanceId);               
-                return item.instanceId
-            }
+//get instanceId
+async function getInstanceId(){
+    for await (let item of client.virtualMachineScaleSetVMs.list(resourceGroupName,virtual_machine_scale_set_name)){
+        if(item.instanceId){
+            console.log(item.instanceId);               
+            return item.instanceId
         }
     }
-
-    //virtualMachineScaleSetVMs.getInstanceView
-    public async virtualMachineScaleSetVMs_getInstanceView(){
-        const instanceId = await this.getInstanceId();
-        try{
-            await this.compute_client.virtualMachineScaleSetVMs.getInstanceView(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
-                res => {
-                    console.log(res);
-                }
-            )
-        }catch(error){
-            console.log(error)
-        }
-    }
-
-    //virtualMachineScaleSetVMs.list
-    public async virtualMachineScaleSetVMs_list(){
-        for await (let item of this.compute_client.virtualMachineScaleSetVMs.list(this.resourceGroupName,this.virtual_machine_scale_set_name)){
-            console.log(item);
-        }
-    }
-
-    //virtualMachineScaleSetVMs.get
-    public async virtualMachineScaleSetVMs_get(){
-        const instanceId = await this.getInstanceId();
-        await this.compute_client.virtualMachineScaleSetVMs.get(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
-            response => {
-                console.log(response);
-            }
-        );
-    }
-
-    //virtualMachineScaleSetVMs.update
-    public async virtualMachineScaleSetVMs_update(){
-        const instanceId = await this.getInstanceId();
-        const parameter: compute.VirtualMachineScaleSetVM = {
-            location: this.location,
-            tags: {
-                "department": "HR"
-            }
-        };
-        await this.compute_client.virtualMachineScaleSetVMs.beginUpdateAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId,parameter).then(
-            response => {
-                console.log(response);
-            }
-        );
-    }
-
-    //virtualMachineScaleSetVMs.restart
-    public async virtualMachineScaleSetVMs_restart(){
-        const instanceId = await this.getInstanceId();
-        await this.compute_client.virtualMachineScaleSetVMs.beginRestartAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
-            response => {
-                console.log(response);
-            }
-        )
-    }
-
-    //virtualMachineScaleSetVMs.powerOff
-    public async virtualMachineScaleSetVMs_powerOff(){
-        const instanceId = await this.getInstanceId();
-        await this.compute_client.virtualMachineScaleSetVMs.beginPowerOffAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
-            response => {
-                console.log(response);
-                //success
-            }
-        )
-    }
-
-    // virtualMachineScaleSetVMs.start
-    public async virtualMachineScaleSetVMs_start(){
-        const instanceId = await this.getInstanceId();
-        await this.compute_client.virtualMachineScaleSetVMs.beginStartAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
-            response => {
-                console.log(response);
-                //success
-            }
-        )
-    }
-
-    //virtualMachineScaleSetVMs.runCommand
-    public async virtualMachineScaleSetVMs_runCommand(){
-        const instanceId = await this.getInstanceId();
-        const parameter: compute.RunCommandInput = {
-            commandId: "RunPowerShellScript"
-        };
-        await this.compute_client.virtualMachineScaleSetVMs.beginRunCommandAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId,parameter).then(
-            response => {
-                console.log(response);
-                //success
-            }
-        );
-    }
-
-    //virtualMachineScaleSetVMs.deallocate
-    public async virtualMachineScaleSetVMs_deallocate(){
-        const instanceId = await this.getInstanceId();
-        await this.compute_client.virtualMachineScaleSetVMs.beginDeallocateAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
-            response => {
-                console.log(response);
-                //success
-            }
-        )
-    }
-
-    //virtualMachineScaleSetVMs.reimage
-    public async virtualMachineScaleSetVMs_reimage(){
-        const instanceId = await this.getInstanceId();
-        await this.compute_client.virtualMachineScaleSetVMs.beginReimageAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
-            response => {
-                console.log(response)
-            }
-        )
-    }
-
-    //virtualMachineScaleSetVMs.reimageAll
-    public async virtualMachineScaleSetVMs_reimageAll(){
-        const instanceId = await this.getInstanceId();
-        await this.compute_client.virtualMachineScaleSetVMs.beginReimageAllAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
-            response => {
-                console.log(response)
-            }
-        )
-    }
-
-    //virtualMachineScaleSetVMs.delete
-    public async virtualMachineScaleSetVMs_delete(){
-        const instanceId = await this.getInstanceId();
-        await this.compute_client.virtualMachineScaleSetVMs.beginDeleteAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,instanceId).then(
-            response => {
-                console.log(response);
-            }
-        )
-    }
-
-    //virtualMachineScaleSets.deleteInstances
-    public async virtualMachineScaleSets_deleteInstances(){
-        const instanceId = await this.getInstanceId();
-        const parameter: compute.VirtualMachineScaleSetVMInstanceRequiredIDs = {
-            instanceIds: [
-                instanceId,
-            ]
-        };
-        await this.compute_client.virtualMachineScaleSets.beginDeleteInstancesAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,parameter).then(
-            response => {
-                console.log(response);
-                //success
-            }
-        )
-    }
-
-    //virtualMachineScaleSets.delete
-    public async virtualMachineScaleSets_delete(){
-        await this.compute_client.virtualMachineScaleSets.beginDeleteAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name).then(
-            response => {
-                console.log(response);
-                //success
-            }
-        )
-    }
-
 }
 
-class virtualMachineScaleSetsExamples{
-    private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
-    private network_client = new NetworkManagementClient(credential,subscriptionId);
-    private resourceGroupName = "myjstest";
-    private virtual_machine_scale_set_name = "virtualmachinescaleset2";
-    private vmss_extension_name = "vmssextensionx";
-    private networkName = "networknamex";
-    private subnetName = "subnetworknamex";
-    private location = "eastus";
-
-    // virtualNetworks.beginCreateOrUpdateAndWait
-    // subnets.beginCreateOrUpdateAndWait
-    public async createVirtualNetwork(groupName: any,location: any,networkName: any,subnetName: any){
-        const parameter: VirtualNetwork = {
-            location: location,
-            addressSpace: {
-                addressPrefixes: ["10.0.0.0/16"]
-            }
-        }
-        await this.network_client.virtualNetworks.beginCreateOrUpdateAndWait(groupName,networkName,parameter).then(
-            result => {
-                console.log(result);
-            }
-        );
-        const subnet_info = await this.network_client.subnets.beginCreateOrUpdateAndWait(groupName,networkName,subnetName,{"addressPrefix":"10.0.0.0/24"}); 
-        console.log(subnet_info);
-        return subnet_info
-    }
-
-    // virtualMachineScaleSets.createOrUpdate
-    public async virtualMachineScaleSets_createOrUpdate(){
-        var subnet: any;
-        if(await this.createVirtualNetwork(this.resourceGroupName,this.location,this.networkName,this.subnetName)){
-            subnet = await this.createVirtualNetwork(this.resourceGroupName,this.location,this.networkName,this.subnetName);
-        }else{
-            subnet = "subneturi";
-        }
-
-        const parameter : compute.VirtualMachineScaleSet = {
-            sku: {
-                tier: "Standard",
-                capacity: 1,
-                name: "Standard_D1_V2"
-            },
-            location: "eastus",
-            overprovision: true,
-            virtualMachineProfile: {
-                storageProfile: {
-                    imageReference: {
-                        sku: "2016-Datacenter",
-                        publisher: "MicrosoftwindowsServer",
-                        version: "latest",
-                        offer: "windowsServer"
-                    },
-                    osDisk: {
-                        caching: "ReadWrite",
-                        managedDisk: {
-                            storageAccountType: "Standard_LRS"
-                        },
-                        createOption: "FromImage",
-                        diskSizeGB: 512
-                    }
-                },
-                osProfile: {
-                    computerNamePrefix: "testPC",
-                    adminUsername: "testuser",
-                    adminPassword: "Aa!1()-xyz",
-                },
-                networkProfile: {
-                    networkInterfaceConfigurations: [
-                        {
-                         name: "testPC",
-                         primary: true,
-                         enableIPForwarding: true,
-                         ipConfigurations: [
-                             {
-                                 name: "testPC",
-                                 subnet: {
-                                     id: "/subscriptions/" + subscriptionId + "/resourceGroups/" + this.resourceGroupName + "/providers/Microsoft.Network/virtualNetworks/" + this.networkName + "/subnets/" + this.subnetName + ""
-                                 } 
-                             }
-                         ]  
-                        }
-                    ]
-                }
-            },
-            upgradePolicy: {
-                mode: "Manual",
-                rollingUpgradePolicy: {
-                    maxUnhealthyUpgradedInstancePercent: 100,
-                    maxBatchInstancePercent: 20   // python is 100
-                }
-            }
-        }
-        // start an extension rolling upgrade.post
-        await this.compute_client.virtualMachineScaleSets.beginCreateOrUpdateAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,parameter).then(
-            response => {
-                console.log(response)
-            }
-        );
-    } 
-
-    //virtualMachineScaleSets.get
-    public async virtualMachineScaleSets_get(){
-        await this.compute_client.virtualMachineScaleSets.get(this.resourceGroupName,this.virtual_machine_scale_set_name).then(
-            response => {
-                console.log(response)
+//virtualMachineScaleSetVMs.getInstanceView
+async function virtualMachineScaleSetVMs_getInstanceView(){
+    const instanceId = await getInstanceId();
+    try{
+        await client.virtualMachineScaleSetVMs.getInstanceView(resourceGroupName,virtual_machine_scale_set_name,instanceId).then(
+            res => {
+                console.log(res);
             }
         )
-    }
-
-    //virtualMachineScaleSets.getInstanceView
-    public async virtualMachineScaleSets_getInstanceView(){
-        await this.compute_client.virtualMachineScaleSets.getInstanceView(this.resourceGroupName,this.virtual_machine_scale_set_name).then(
-            response => {
-                console.log(response);
-            }
-        )
-    }
-
-    //virtualMachineScaleSets.list
-    public async virtualMachineScaleSets_list(){
-        for await (let item of this.compute_client.virtualMachineScaleSets.list(this.resourceGroupName)){
-            console.log(item)
-        }
-    }
-
-    //virtualMachineScaleSets.listAll
-    public async virtualMachineScaleSets_listAll(){
-        for await (let item of this.compute_client.virtualMachineScaleSets.listAll()){
-            console.log(item);
-        }
-    }
-
-    //virtualMachineScaleSets.listSkus
-    public async virtualMachineScaleSets_listSkus(){
-        for await (let item of this.compute_client.virtualMachineScaleSets.listSkus(this.resourceGroupName,this.virtual_machine_scale_set_name)){
-            console.log
-        }
-    }
-
-    //virtualMachineScaleSets.update
-    public async virtualMachineScaleSets_update(){
-        const parameter: compute.VirtualMachineScaleSetUpdate= {
-            sku: {
-                tier: "Standard",
-                capacity: 2,
-                name: "Standard_D1_v2"
-            },
-            upgradePolicy: {
-                mode: "Manual"
-            }
-        };
-        await this.compute_client.virtualMachineScaleSets.beginUpdateAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,parameter).then(
-            response => {
-                console.log(response);
-            }
-        )
-    }
-
-    //virtualMachineScaleSets.restart
-    public async virtualMachineScaleSets_restart(){
-        await this.compute_client.virtualMachineScaleSets.beginRestartAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name).then(
-            response => {
-                console.log(response);
-            }
-        )
-    }
-
-    //virtualMachineScaleSets.powerOff
-    public async virtualMachineScaleSets_powerOff(){
-        await this.compute_client.virtualMachineScaleSets.beginPowerOffAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name).then(
-            response => {
-                console.log(response);
-            }
-        )
-    }
-
-    //virtualMachineScaleSets.start
-    public async virtualMachineScaleSets_start(){
-        // before start should poweroff scale set
-        await this.compute_client.virtualMachineScaleSets.beginStartAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name).then(
-            response => {
-                console.log(response);
-            }
-        )
-    }
-
-    //virtualMachineScaleSets.redeploy
-    public async virtualMachineScaleSets_redeploy(){
-        try{
-            await this.compute_client.virtualMachineScaleSets.beginRedeployAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name).then(
-                response => {
-                    console.log(response);
-                }
-            )
-        }catch(error){
-            console.log(error);
-            if(error.message.startswith("(VMRedeploymentTimedOut)")){
-                throw new Error(error);
-            }
-        }  
-    }
-
-    //virtualMachineScaleSets.start
-    public async virtualMachineScaleSets_deallocate(){
-        await this.compute_client.virtualMachineScaleSets.beginDeallocateAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name).then(
-            response => {
-                console.log(response);
-            }
-        )
-    }
-
-    //virtualMachineScaleSets.delete
-    public async virtualMachineScaleSets_delete(){
-        await this.compute_client.virtualMachineScaleSets.beginDeleteAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name).then(
-            response => {
-                console.log(response);
-            }
-        )
-    }
-
-    //virtualMachineScaleSetExtensions.createOrUpdate
-    public async virtualMachineScaleSetExtensions_createOrUpdate(){
-        await this.virtualMachineScaleSets_createOrUpdate();
-        const parameter:compute.VirtualMachineScaleSetExtension = {
-            autoUpgradeMinorVersion: true,
-            publisher: "Microsoft.Azure.NetworkWatcher",
-            typePropertiesType:  "NetworkWatcherAgentWindows",
-            typeHandlerVersion: "1.4"
-        };
-        await this.compute_client.virtualMachineScaleSetExtensions.beginCreateOrUpdateAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,this.vmss_extension_name,parameter).then(
-            response => {
-                console.log(response)
-            }
-        )
-    }
-
-    //virtualMachineScaleSetExtensions.get
-    public async virtualMachineScaleSetExtensions_get(){
-        await this.compute_client.virtualMachineScaleSetExtensions.get(this.resourceGroupName,this.virtual_machine_scale_set_name,this.vmss_extension_name).then(
-            response => {
-                console.log(response)
-            }
-        )
-    }
-
-    //virtualMachineScaleSetExtensions.list
-    public async virtualMachineScaleSetExtensions_list(){
-        for await (let item of this.compute_client.virtualMachineScaleSetExtensions.list(this.resourceGroupName,this.virtual_machine_scale_set_name)){
-            console.log(item);
-        }
-    }
-
-    //virtualMachineScaleSetExtensions.update
-    public async virtualMachineScaleSetExtensions_update(){
-        // before update should poweroff scale set
-        const parameter:compute.VirtualMachineScaleSetExtensionUpdate = {
-            autoUpgradeMinorVersion: true,
-        };
-        await this.compute_client.virtualMachineScaleSetExtensions.beginUpdateAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,this.vmss_extension_name,parameter).then(
-            response => {
-                console.log(response);
-            }
-        )
-    }
-
-    //virtualMachineScaleSetExtensions.delete
-    public async virtualMachineScaleSetExtensions_delete(){
-        await this.compute_client.virtualMachineScaleSetExtensions.beginDeleteAndWait(this.resourceGroupName,this.virtual_machine_scale_set_name,this.vmss_extension_name).then(
-            response => {
-                console.log(response);
-            }
-        )
+    }catch(error){
+        console.log(error)
     }
 }
+
+//virtualMachineScaleSetVMs.list
+async function virtualMachineScaleSetVMs_list(){
+    for await (let item of client.virtualMachineScaleSetVMs.list(resourceGroupName,virtual_machine_scale_set_name)){
+        console.log(item);
+    }
+}
+
+//virtualMachineScaleSetVMs.get
+async function virtualMachineScaleSetVMs_get(){
+    const instanceId = await getInstanceId();
+    await client.virtualMachineScaleSetVMs.get(resourceGroupName,virtual_machine_scale_set_name,instanceId).then(
+        response => {
+            console.log(response);
+        }
+    );
+}
+
+//virtualMachineScaleSetVMs.update
+async function virtualMachineScaleSetVMs_update(){
+    const instanceId = await getInstanceId();
+    const parameter: VirtualMachineScaleSetVM = {
+        location: location,
+        tags: {
+            "department": "HR"
+        }
+    };
+    await client.virtualMachineScaleSetVMs.beginUpdateAndWait(resourceGroupName,virtual_machine_scale_set_name,instanceId,parameter).then(
+        response => {
+            console.log(response);
+        }
+    );
+}
+
+//virtualMachineScaleSetVMs.restart
+async function virtualMachineScaleSetVMs_restart(){
+    const instanceId = await getInstanceId();
+    await client.virtualMachineScaleSetVMs.beginRestartAndWait(resourceGroupName,virtual_machine_scale_set_name,instanceId).then(
+        response => {
+            console.log(response);
+        }
+    )
+}
+
+//virtualMachineScaleSetVMs.powerOff
+async function virtualMachineScaleSetVMs_powerOff(){
+    const instanceId = await getInstanceId();
+    await client.virtualMachineScaleSetVMs.beginPowerOffAndWait(resourceGroupName,virtual_machine_scale_set_name,instanceId).then(
+        response => {
+            console.log(response);
+            //success
+        }
+    )
+}
+
+// virtualMachineScaleSetVMs.start
+async function virtualMachineScaleSetVMs_start(){
+    const instanceId = await getInstanceId();
+    await client.virtualMachineScaleSetVMs.beginStartAndWait(resourceGroupName,virtual_machine_scale_set_name,instanceId).then(
+        response => {
+            console.log(response);
+            //success
+        }
+    )
+}
+
+//virtualMachineScaleSetVMs.runCommand
+async function virtualMachineScaleSetVMs_runCommand(){
+    const instanceId = await getInstanceId();
+    const parameter: RunCommandInput = {
+        commandId: "RunPowerShellScript"
+    };
+    await client.virtualMachineScaleSetVMs.beginRunCommandAndWait(resourceGroupName,virtual_machine_scale_set_name,instanceId,parameter).then(
+        response => {
+            console.log(response);
+            //success
+        }
+    );
+}
+
+//virtualMachineScaleSetVMs.deallocate
+async function virtualMachineScaleSetVMs_deallocate(){
+    const instanceId = await getInstanceId();
+    await client.virtualMachineScaleSetVMs.beginDeallocateAndWait(resourceGroupName,virtual_machine_scale_set_name,instanceId).then(
+        response => {
+            console.log(response);
+            //success
+        }
+    )
+}
+
+//virtualMachineScaleSetVMs.reimage
+async function virtualMachineScaleSetVMs_reimage(){
+    const instanceId = await getInstanceId();
+    await client.virtualMachineScaleSetVMs.beginReimageAndWait(resourceGroupName,virtual_machine_scale_set_name,instanceId).then(
+        response => {
+            console.log(response)
+        }
+    )
+}
+
+//virtualMachineScaleSetVMs.reimageAll
+async function virtualMachineScaleSetVMs_reimageAll(){
+    const instanceId = await getInstanceId();
+    await client.virtualMachineScaleSetVMs.beginReimageAllAndWait(resourceGroupName,virtual_machine_scale_set_name,instanceId).then(
+        response => {
+            console.log(response)
+        }
+    )
+}
+
+//virtualMachineScaleSetVMs.delete
+async function virtualMachineScaleSetVMs_delete(){
+    const instanceId = await getInstanceId();
+    await client.virtualMachineScaleSetVMs.beginDeleteAndWait(resourceGroupName,virtual_machine_scale_set_name,instanceId).then(
+        response => {
+            console.log(response);
+        }
+    )
+}
+
+//virtualMachineScaleSets.deleteInstances
+async function virtualMachineScaleSets_deleteInstances(){
+    const instanceId = await getInstanceId();
+    const parameter: VirtualMachineScaleSetVMInstanceRequiredIDs = {
+        instanceIds: [
+            instanceId,
+        ]
+    };
+    await client.virtualMachineScaleSets.beginDeleteInstancesAndWait(resourceGroupName,virtual_machine_scale_set_name,parameter).then(
+        response => {
+            console.log(response);
+            //success
+        }
+    )
+}
+
+//--virtualMachineScaleSetsExamples--
+
+//virtualMachineScaleSets.get
+async function virtualMachineScaleSets_get(){
+    await client.virtualMachineScaleSets.get(resourceGroupName,virtual_machine_scale_set_name).then(
+        response => {
+            console.log(response)
+        }
+    )
+}
+
+//virtualMachineScaleSets.getInstanceView
+async function virtualMachineScaleSets_getInstanceView(){
+    await client.virtualMachineScaleSets.getInstanceView(resourceGroupName,virtual_machine_scale_set_name).then(
+        response => {
+            console.log(response);
+        }
+    )
+}
+
+//virtualMachineScaleSets.list
+async function virtualMachineScaleSets_list(){
+    for await (let item of client.virtualMachineScaleSets.list(resourceGroupName)){
+        console.log(item)
+    }
+}
+
+//virtualMachineScaleSets.listAll
+async function virtualMachineScaleSets_listAll(){
+    for await (let item of client.virtualMachineScaleSets.listAll()){
+        console.log(item);
+    }
+}
+
+//virtualMachineScaleSets.listSkus
+async function virtualMachineScaleSets_listSkus(){
+    for await (let item of client.virtualMachineScaleSets.listSkus(resourceGroupName,virtual_machine_scale_set_name)){
+        console.log
+    }
+}
+
+//virtualMachineScaleSets.update
+async function virtualMachineScaleSets_update(){
+    const parameter: VirtualMachineScaleSetUpdate= {
+        sku: {
+            tier: "Standard",
+            capacity: 2,
+            name: "Standard_D1_v2"
+        },
+        upgradePolicy: {
+            mode: "Manual"
+        }
+    };
+    await client.virtualMachineScaleSets.beginUpdateAndWait(resourceGroupName,virtual_machine_scale_set_name,parameter).then(
+        response => {
+            console.log(response);
+        }
+    )
+}
+
+//virtualMachineScaleSets.restart
+async function virtualMachineScaleSets_restart(){
+    await client.virtualMachineScaleSets.beginRestartAndWait(resourceGroupName,virtual_machine_scale_set_name).then(
+        response => {
+            console.log(response);
+        }
+    )
+}
+
+//virtualMachineScaleSets.powerOff
+async function virtualMachineScaleSets_powerOff(){
+    await client.virtualMachineScaleSets.beginPowerOffAndWait(resourceGroupName,virtual_machine_scale_set_name).then(
+        response => {
+            console.log(response);
+        }
+    )
+}
+
+//virtualMachineScaleSets.start
+async function virtualMachineScaleSets_start(){
+    // before start should poweroff scale set
+    await client.virtualMachineScaleSets.beginStartAndWait(resourceGroupName,virtual_machine_scale_set_name).then(
+        response => {
+            console.log(response);
+        }
+    )
+}
+
+//virtualMachineScaleSets.redeploy
+async function virtualMachineScaleSets_redeploy(){
+    try{
+        await client.virtualMachineScaleSets.beginRedeployAndWait(resourceGroupName,virtual_machine_scale_set_name).then(
+            response => {
+                console.log(response);
+            }
+        )
+    }catch(error){
+        console.log(error);
+        if(error.message.startswith("(VMRedeploymentTimedOut)")){
+            throw new Error(error);
+        }
+    }  
+}
+
+//virtualMachineScaleSets.start
+async function virtualMachineScaleSets_deallocate(){
+    await client.virtualMachineScaleSets.beginDeallocateAndWait(resourceGroupName,virtual_machine_scale_set_name).then(
+        response => {
+            console.log(response);
+        }
+    )
+}
+
+//virtualMachineScaleSetExtensions.createOrUpdate
+async function virtualMachineScaleSetExtensions_createOrUpdate(){
+    await virtualMachineScaleSets_createOrUpdate();
+    const parameter:VirtualMachineScaleSetExtension = {
+        autoUpgradeMinorVersion: true,
+        publisher: "Microsoft.Azure.NetworkWatcher",
+        typePropertiesType:  "NetworkWatcherAgentWindows",
+        typeHandlerVersion: "1.4"
+    };
+    await client.virtualMachineScaleSetExtensions.beginCreateOrUpdateAndWait(resourceGroupName,virtual_machine_scale_set_name,vmss_extension_name,parameter).then(
+        response => {
+            console.log(response)
+        }
+    )
+}
+
+//virtualMachineScaleSetExtensions.get
+async function virtualMachineScaleSetExtensions_get(){
+    await client.virtualMachineScaleSetExtensions.get(resourceGroupName,virtual_machine_scale_set_name,vmss_extension_name).then(
+        response => {
+            console.log(response)
+        }
+    )
+}
+
+//virtualMachineScaleSetExtensions.list
+async function virtualMachineScaleSetExtensions_list(){
+    for await (let item of client.virtualMachineScaleSetExtensions.list(resourceGroupName,virtual_machine_scale_set_name)){
+        console.log(item);
+    }
+}
+
+//virtualMachineScaleSetExtensions.update
+async function virtualMachineScaleSetExtensions_update(){
+    // before update should poweroff scale set
+    const parameter:VirtualMachineScaleSetExtensionUpdate = {
+        autoUpgradeMinorVersion: true,
+    };
+    await client.virtualMachineScaleSetExtensions.beginUpdateAndWait(resourceGroupName,virtual_machine_scale_set_name,vmss_extension_name,parameter).then(
+        response => {
+            console.log(response);
+        }
+    )
+}
+
+//virtualMachineScaleSetExtensions.delete
+async function virtualMachineScaleSetExtensions_delete(){
+    await client.virtualMachineScaleSetExtensions.beginDeleteAndWait(resourceGroupName,virtual_machine_scale_set_name,vmss_extension_name).then(
+        response => {
+            console.log(response);
+        }
+    )
+}
+
+//virtualMachineScaleSets.delete
+async function virtualMachineScaleSets_delete(){
+    await client.virtualMachineScaleSets.beginDeleteAndWait(resourceGroupName,virtual_machine_scale_set_name).then(
+        response => {
+            console.log(response);
+        }
+    )
+}
+
+async function main() {
+    client = new ComputeManagementClient(credential, subscriptionId);
+    network_client = new NetworkManagementClient(credential,subscriptionId);
+    await virtualMachineScaleSets_createOrUpdate();
+}
+
+main();

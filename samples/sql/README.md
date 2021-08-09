@@ -5,17 +5,17 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Features using Azure SDK for Javascript/Typescript."
-urlFragment: features
+description: "These code samples will show you how to manage SQL using Azure SDK for Javascript/Typescript."
+urlFragment: SQL
 ---
 
-# Getting started - Managing Features using Azure Javascript/Typescript SDK
+# Getting started - Managing SQL using Azure Javascript/Typescript SDK
 
-These code samples will show you how to manage Features using Azure SDK for Javascript/Typescript.
+These code samples will show you how to manage SQL using Azure SDK for Javascript/Typescript.
 
 
 ### Features
-* Using the Azure SDK for Javascript/Typescript - Features Management Library [@azure/arm-features](https://www.npmjs.com/package/@azure/arm-features) for the [Azure Resources API](https://docs.microsoft.com/en-us/rest/api/resources/)
+* Using the Azure SDK for Javascript/Typescript - SQL Management Library [@azure/arm-sql](https://www.npmjs.com/package/@azure/arm-sql) for the [Azure SQL API](https://docs.microsoft.com/en-us/rest/api/sql/)
 
 
 ### Installation
@@ -53,16 +53,17 @@ To run the complete demo, you need to call the methods you want to test in this 
 
     ```
     async function main() {
-        client = new FeatureClient(credential, subscriptionId);
-        await features_listAll();
+        client = new SqlManagementClient(credential, subscriptionId);
+        storage_client = new StorageManagementClient(credential,subscriptionId);
+        await servers_beginCreateOrUpdateAndWait();
     }
     ```
 
 execute below command on terminal
 
     ```
-    tsc features_example.ts (it will create a same name js file)
-    node features_example.js
+    tsc sql_database_examples.ts (it will create a same name js file)
+    node sql_database_examples.js
     ```
 
 ## Resources

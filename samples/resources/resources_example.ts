@@ -1,970 +1,945 @@
-import * as resources from "@azure/arm-resources";
+import { ResourceManagementClient,TagsResource,TagsPatchResource,ResourceGroup,ResourceGroupPatchable,ExportTemplateRequest,GenericResource,
+    ResourcesMoveInfo,Deployment,ScopedDeployment } from "@azure/arm-resources";
 import { ManagementGroupsAPI } from "azure-arm-managementgroups";
 import { DefaultAzureCredential } from "@azure/identity";
 
 const subscriptionId = process.env.subscriptionId;
 const credential = new DefaultAzureCredential();
+const tagName = "tagyyy";
+const tagValue = "valueyyy";
+const resourceGroupName = "myjstest";
+const resourceName_1 = "myresource_1";
+const resourceName_2 = "myresource_2";
+const resourceId = "/subscriptions/"+ subscriptionId +"/resourceGroups/"+resourceGroupName+"/providers/"+"Microsoft.Compute"+"/"+"availabilitySets"+"/"+resourceName_2;
+const newResourceGroup = "jsNewGroup";
+const newResourceId = "/subscriptions/"+ subscriptionId +"/resourceGroups/"+newResourceGroup+"/providers/"+"Microsoft.Compute"+"/"+"availabilitySets"+"/"+resourceName_2;
+const depolymentName = "jstestdeployment";
+const scope = "subscriptions/"+subscriptionId+"/resourcegroups/"+resourceGroupName;
+const template = await createTmpleate();
+const group_id = "20000000-0001-0000-0000-000000000123456";
+let resourceClient: ResourceManagementClient;
+let managementGroupsApi: ManagementGroupsAPI;
 
-class TagsOperationExamples {
+//--TagsOperationExamples--
 
-    private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
-    private tagName = "tagyyy";
-    private tagValue = "valueyyy";
+//tags.createOrUpdate
+async function tags_createOrUpdate(){
 
-    //tags.createOrUpdate
-    public async tags_createOrUpdate(){
-
-        await this.resourceClient.tagsOperations.createOrUpdate(this.tagName).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //tags.list
-    public async tags_list(){
-
-        for await (let item of this.resourceClient.tagsOperations.list()){
-            console.log(item)
+    await resourceClient.tagsOperations.createOrUpdate(tagName).then(
+        result => {
+            console.log(result);
         }
-    }
+    )
+}
 
-    //tags.createOrUpdateValue
-    public async tags_createOrUpdateValue(){
-        await this.resourceClient.tagsOperations.createOrUpdateValue(this.tagName,this.tagValue).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
+//tags.list
+async function tags_list(){
 
-    //tags.deleteValue
-    public async tags_deleteValue(){
-        await this.resourceClient.tagsOperations.deleteValue(this.tagName,this.tagValue).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //tags.delete
-    public async tags_delete(){
-        await this.resourceClient.tagsOperations.delete(this.tagName).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //tags.createOrUpdateAtScope
-    public async tags_createOrUpdateAtScope(){
-        const scope = "subscriptions/" + subscriptionId;
-        const parameter:resources.TagsResource = {
-            properties: {
-                tags: {
-                    tagkey1: "tagValue1",
-                    tagkey2: "tagValue2"
-                }
-            }
-        };
-        await this.resourceClient.tagsOperations.createOrUpdateAtScope(scope,parameter).then(
-            result => {
-                console.log(result)
-            }
-        )
-    }
-
-    //tags.getAtScope
-    public async tags_getAtScope(){
-        const scope = "subscriptions/" + subscriptionId;
-        await this.resourceClient.tagsOperations.getAtScope(scope).then(
-            result => {
-                console.log(result)
-            }
-        )
-    }
-
-    //tags.updateAtScope
-    public async tags_updateAtScope(){
-        const scope = "subscriptions/" + subscriptionId;
-        const parameter:resources.TagsPatchResource = {
-            operation: "Delete",
-            properties: {
-                tags: {
-                    tagkey1: "tagValue1"
-                }
-            }
-        };
-        await this.resourceClient.tagsOperations.updateAtScope(scope,parameter).then(
-            result => {
-                console.log(result)
-            }
-        )
-        
-    }
-
-    //tags.deleteAtScope
-    public async tags_deleteAtScope(){
-        const scope = "subscriptions/" + subscriptionId;
-        await this.resourceClient.tagsOperations.deleteAtScope(scope).then(
-            result => {
-                console.log(result)
-            }
-        )
-        
+    for await (let item of resourceClient.tagsOperations.list()){
+        console.log(item)
     }
 }
 
-class ResourceGroupExamples {
+//tags.createOrUpdateValue
+async function tags_createOrUpdateValue(){
+    await resourceClient.tagsOperations.createOrUpdateValue(tagName,tagValue).then(
+        result => {
+            console.log(result);
+        }
+    )
+}
 
-    private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
-    private resourceGroupName = "myjstest";
+//tags.deleteValue
+async function tags_deleteValue(){
+    await resourceClient.tagsOperations.deleteValue(tagName,tagValue).then(
+        result => {
+            console.log(result);
+        }
+    )
+}
 
-    //resourceGroups.createOrUpdate
-    public async resourceGroups_createOrUpdate(){
-        const parameter:resources.ResourceGroup = {
-            location: "eastus",
+//tags.delete
+async function tags_delete(){
+    await resourceClient.tagsOperations.delete(tagName).then(
+        result => {
+            console.log(result);
+        }
+    )
+}
+
+//tags.createOrUpdateAtScope
+async function tags_createOrUpdateAtScope(){
+    const scope = "subscriptions/" + subscriptionId;
+    const parameter:TagsResource = {
+        properties: {
             tags: {
-                tag1: "value1"
+                tagkey1: "tagValue1",
+                tagkey2: "tagValue2"
             }
-        };
-        await this.resourceClient.resourceGroups.createOrUpdate(this.resourceGroupName,parameter).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //resourceGroups.get
-    public async resourceGroups_get(){
-        const result_get = await this.resourceClient.resourceGroups.get(this.resourceGroupName);
-        console.log(result_get);  
-    }
-
-    //resourceGroups.checkExistence   
-    public async resourceGroups_checkExistence(){
-        const result_check = await this.resourceClient.resourceGroups.checkExistence(this.resourceGroupName);
-        console.log(result_check);  
-     
-
-        const unknowGroup = "unknowGroup";
-        const result_check_unknowGroup = await this.resourceClient.resourceGroups.checkExistence(unknowGroup);
-        console.log(result_check_unknowGroup)  
-    }
-
-    //resourceGroups.list
-    public async resourceGroups_list(){
-        const result_list = new Array();
-        for await (let item of this.resourceClient.resourceGroups.list()){
-            result_list.push(item);
         }
-        console.log(result_list);
-        
-    }
-
-    //resourceGroups.list  
-    public async resourceGroups_listTop2(){
-        const result_list_top2 = new Array();
-        for await (let item of this.resourceClient.resourceGroups.list({top: 2})){ 
-            result_list_top2.push(item);
+    };
+    await resourceClient.tagsOperations.createOrUpdateAtScope(scope,parameter).then(
+        result => {
+            console.log(result)
         }
-        console.log(result_list_top2);
-        
-    }
+    )
+}
 
-    //resourceGroups.update
-    public async resourceGroups_update(){
-        const parameter:resources.ResourceGroupPatchable = {
+//tags.getAtScope
+async function tags_getAtScope(){
+    const scope = "subscriptions/" + subscriptionId;
+    await resourceClient.tagsOperations.getAtScope(scope).then(
+        result => {
+            console.log(result)
+        }
+    )
+}
+
+//tags.updateAtScope
+async function tags_updateAtScope(){
+    const scope = "subscriptions/" + subscriptionId;
+    const parameter:TagsPatchResource = {
+        operation: "Delete",
+        properties: {
             tags: {
-                tag1: "value1",
-                tag2: "value2"
-            }
-        };
-        const result_patch = await this.resourceClient.resourceGroups.update(this.resourceGroupName,parameter);
-        console.log(result_patch);
-        
-    }
-
-    //resources.listByResourceGroup
-    public async resources_listByResourceGroup(){
-        for await (let item of this.resourceClient.resources.listByResourceGroup(this.resourceGroupName)){
-            console.log(item);
-        }
-    }
-
-    //resourceGroups.exportTemplate  
-    public async resourceGroups_beginExportTemplateAndWait(){
-        const parameter:resources.ExportTemplateRequest = {
-            resources: ["*"]
-        };
-        const result_template = await this.resourceClient.resourceGroups.beginExportTemplateAndWait(this.resourceGroupName,parameter);
-        console.log(result_template)
-        
-    }
-
-    // resourceGroups.delete 
-    public async resourceGroups_delete(){
-        await this.resourceClient.resourceGroups.beginDeleteAndWait(this.resourceGroupName).then(
-            result => {
-                console.log(result)
-            }
-        )
-    }
-}
-
-class ResourcesExamples {
-
-    private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
-    private resourceGroupName = "myjstest";
-    private resourceName_1 = "myresource_1";
-    private resourceName_2 = "myresource_2";
-    private resourceId = "/subscriptions/"+ subscriptionId +"/resourceGroups/"+this.resourceGroupName+"/providers/"+"Microsoft.Compute"+"/"+"availabilitySets"+"/"+this.resourceName_2;
-    private newResourceGroup = "jsNewGroup";
-    private newResourceId = "/subscriptions/"+ subscriptionId +"/resourceGroups/"+this.newResourceGroup+"/providers/"+"Microsoft.Compute"+"/"+"availabilitySets"+"/"+this.resourceName_2;
-
-    //resources.checkExistence  
-    public async resources_checkExistence(){
-        const resources_exist = await this.resourceClient.resources.checkExistence(this.resourceGroupName,"Microsoft.Compute","","availabilitySets",this.resourceName_1,"2019-12-01");
-        console.log(resources_exist);  
-    }
-
-    //resources.checkExistenceById   
-    public async resources_checkExistenceById(){
-        const resourceId = this.resourceId;
-        const resources_exist_by_id = await this.resourceClient.resources.checkExistenceById(resourceId,"2019-12-01");
-        console.log(resources_exist_by_id);
-    }
-
-    //resources.createOrUpdateById 
-    public async resources_createOrUpdateById(){
-        const parameter:resources.GenericResource = {
-            location: "eastus"
-        };
-        const craete_result_by_id = await this.resourceClient.resources.beginCreateOrUpdateByIdAndWait(this.resourceId,"2019-12-01",parameter)
-        console.log(craete_result_by_id)
-    }
-
-    //resources.createOrUpdate 
-    public async resources_createOrUpdate(){
-        const create_result = await this.resourceClient.resources.beginCreateOrUpdateAndWait(this.resourceGroupName,"Microsoft.Compute","","availabilitySets",this.resourceName_1,"2019-12-01",{location: "eastus"});
-        console.log(create_result);
-    }
-
-    //resources.get
-    public async resources_get(){
-        const get_result = await this.resourceClient.resources.get(this.resourceGroupName,"Microsoft.Compute","","availabilitySets",this.resourceName_1,"2019-12-01");
-        console.log(get_result);
-    }
-
-    //resources.getById
-    public async resources_getById(){
-        const get_result = await this.resourceClient.resources.getById(this.resourceId,"2019-12-01");
-        console.log(get_result);
-        return get_result;
-    }
-
-    //resources.list
-    public async resources_list(){
-        const resultArray = new Array();
-        for await (let item of this.resourceClient.resources.list({filter: "name eq '"+ this.resourceName_1+"'"})){
-            resultArray.push(item);
-        }
-        console.log(resultArray)
-    }
-
-    //resources.listByResourceGroup
-    public async resources_listByResourceGroup(){
-        const resultArray = new Array();
-        for await (let item of this.resourceClient.resources.listByResourceGroup(this.resourceGroupName)){
-            resultArray.push(item);
-        }
-        console.log(resultArray);
-    }
-
-    //resources.validateMoveResources  
-    public async resources_validateMoveResources(){
-        const new_Group = await this.resourceClient.resourceGroups.createOrUpdate(this.newResourceGroup,{location: "eastus"});
-        console.log(new_Group);
-        const result_getById = await this.resources_getById();
-        const parameter:resources.ResourcesMoveInfo = {
-            resources: new Array(result_getById.id),
-            targetResourceGroup: new_Group.id
-        };
-        const result_move = await this.resourceClient.resources.beginValidateMoveResourcesAndWait(this.resourceGroupName,parameter);
-        console.log(result_move);
-    }
-
-    //resources.moveResources
-    public async resources_moveResources(){
-        const get_new_Group = await this.resourceClient.resourceGroups.get(this.newResourceGroup);
-        console.log(get_new_Group);
-        const result_getById = await this.resources_getById();
-        const parameter:resources.ResourcesMoveInfo = {
-            resources: new Array(result_getById.id),
-            targetResourceGroup: get_new_Group.id
-        };
-        const result_move = await this.resourceClient.resources.beginMoveResourcesAndWait(this.resourceGroupName,parameter);
-        console.log(result_move);
-    }
-
-    //resources.update 
-    public async resources_update(){
-        const result_update = await this.resourceClient.resources.beginUpdateAndWait(this.resourceGroupName,"Microsoft.Compute","","availabilitySets",this.resourceName_1,"2019-12-01",{tags: {tag1: 'value1'}});
-        console.log(result_update);
-    }
-
-    //resources.updateById 
-    public async resources_updateById(){
-        const result_update_by_id = await this.resourceClient.resources.beginUpdateByIdAndWait(this.newResourceId,"2019-12-01",{tags: { tag1: "value1"}});
-        console.log(result_update_by_id);
-    }
-
-    //resources.delete 
-    public async resources_delete(){
-        const result_delete = await this.resourceClient.resources.beginDeleteAndWait(this.newResourceGroup,"Microsoft.Compute","","availabilitySets",this.resourceName_1,"2019-12-01");
-        console.log(result_delete);
-    }
-
-    //resources.deleteById 
-    public async resources_deleteById(){
-        const result_delete_by_id = await this.resourceClient.resources.beginDeleteByIdAndWait(this.newResourceId,"2019-12-01");
-        console.log(result_delete_by_id);
-    }
-}
-
-class DeploymentsBasicExamples {
-
-    private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
-    private resourceGroupName = "myjstest";
-    private depolymentName = "jstestdeployment";
-
-    // return templeate
-    public createTmpleate(){
-        const template: any = {
-            $schema: "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-            contentVersion: "1.0.0.0",
-            parameters: {
-                location: {
-                    type: "String",
-                    allowedValues: [
-                        "East US",
-                        "West US",
-                        "West Europe",
-                        "East Asia",
-                        "South East Asia"
-                    ],
-                    metaData: {
-                        description: "Location to deploy to"
-                    }
-                }
-            },
-            resources: [
-                {
-                    type: "Microsoft.Compute/availabilitySets",
-                    name: "availabilitySet1",
-                    apiVersion: "2019-12-01",
-                    location: "[parameters('location')]",
-                    properties: {}
-                }
-            ],
-            outPuts: {
-                myParamete: {
-                    type: "object",
-                    value: "[reference('Microsoft.Compute/availabilitySets/availabilitySet1')]"
-                }
+                tagkey1: "tagValue1"
             }
         }
-        return template;
-    }
-
-    //deployments.checkExistence 
-    public async deployments_checkExistence(){
-        const deployment_check = await this.resourceClient.deployments.checkExistence(this.resourceGroupName,this.depolymentName);
-        console.log(deployment_check);
-    }
-
-    //deployments.calculateTemplateHash
-    public async deployments_calculateTemplateHash(){
-        const template = this.createTmpleate();
-        await this.resourceClient.deployments.calculateTemplateHash(template).then(
-            result => {
-                console.log(result);
-            }
-        );
-    }
-
-    //deployments.createOrUpdate  
-    public async deployments_createOrUpdate(){
-        const parameter : resources.Deployment = {
-            properties: {
-                mode: "Incremental",
-                template: this.createTmpleate(),
-                parameters: {location: {value: "East US"}}
-            }
-        };
-        const createResult_deployment = await this.resourceClient.deployments.beginCreateOrUpdateAndWait(this.resourceGroupName,this.depolymentName,parameter);
-        console.log(createResult_deployment);
-    }
-
-    //deployments.listByResourceGroup
-    public async deployments_listByResourceGroup(){
-        const listArray_deployment = new Array();
-        for await (let item of this.resourceClient.deployments.listByResourceGroup(this.resourceGroupName)){
-            listArray_deployment.push(item);
+    };
+    await resourceClient.tagsOperations.updateAtScope(scope,parameter).then(
+        result => {
+            console.log(result)
         }
-        console.log(listArray_deployment);
-    }
-
-    //deployments.get
-    public async deployments_get(){
-        const getResult_deployment = await this.resourceClient.deployments.get(this.resourceGroupName,this.depolymentName);
-        console.log(getResult_deployment);
-    }
-
-    //deployments.whatIf 
-    public async deployments_whatIf(){
-        await this.resourceClient.deployments.beginWhatIfAndWait(this.resourceGroupName,this.depolymentName,{properties: {mode: "Incremental",template: this.createTmpleate()}}).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //deployments.cancel
-    public async deployments_cancel(){
-        await this.resourceClient.deployments.cancel(this.resourceGroupName,this.depolymentName).catch(
-            result => {
-                console.log(result.code);
-            }
-        );  
-    }
-
-    //deployments.validate 
-    public async deployments_validate(){
-        const parameter : resources.Deployment = {
-            properties: {
-                mode: "Incremental",
-                template: this.createTmpleate(),
-                parameters: {location: {value: "East US"}}
-            }
-        };
-        const validation = await this.resourceClient.deployments.beginValidateAndWait(this.resourceGroupName,this.depolymentName,parameter);
-        console.log(validation);
-    }
-
-    //deployments.exportTemplate
-    public async deployments_exportTemplate(){
-        const result_export = await this.resourceClient.deployments.exportTemplate(this.resourceGroupName,this.depolymentName);
-        console.log(result_export);
-    }
-
-    //deployments.delete  
-    public async deployments_delete(){
-        const result_delete = await this.resourceClient.deployments.beginDeleteAndWait(this.resourceGroupName,this.depolymentName);
-        console.log(result_delete);
-    }
-
-    //deploymentOperations.list
-    public async deploymentOperations_list(){
-        const listArray_deploymentOperations = new Array();
-        for await (let item of this.resourceClient.deploymentOperations.list(this.resourceGroupName,this.depolymentName)){
-            listArray_deploymentOperations.push(item);
-        }
-        console.log(listArray_deploymentOperations);
-        return listArray_deploymentOperations;
-    }
-
-    //deploymentOperations.get
-    public async deploymentOperations_get(){
-        const operationId = await this.deploymentOperations_list();
-        const getResult_deployment = await this.resourceClient.deploymentOperations.get(this.resourceGroupName,this.depolymentName,operationId[0].operationId);
-        console.log(getResult_deployment);
-    }
-
-}
-
-class DeploymentAtScopeExamples {
-
-    private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
-    private resourceGroupName = "myjstest";
-    private scope = "subscriptions/"+subscriptionId+"/resourcegroups/"+this.resourceGroupName;
-    private depolymentName = "jstestdeployment";
-    private templeate = (new DeploymentsBasicExamples).createTmpleate();
-
-    //deployments.checkExistenceAtScope   
-    public async deployments_checkExistenceAtScope(){
-        const result_exist = await this.resourceClient.deployments.checkExistenceAtScope(this.resourceGroupName,this.depolymentName);
-        console.log(result_exist);
-    }
-
-    //deployments.createOrUpdateAtScope  
-    public async deployments_createOrUpdateAtScope(){
-        const parameter : resources.Deployment = {
-            properties: {
-                mode: "Incremental",
-                template: this.templeate,
-                parameters: {location: {value: "East US"}}
-            }
-        };
-        const createResult_deployment = await this.resourceClient.deployments.beginCreateOrUpdateAtScopeAndWait(this.scope,this.depolymentName,parameter);
-        console.log(createResult_deployment);
-    }
-
-    //deployments.listAtScope
-    public async deployments_listAtScope(){
-        const listArray = new Array();
-        for await (let item of this.resourceClient.deployments.listAtScope(this.scope)){
-            listArray.push(item);
-        }
-        console.log(listArray);
-    }
-
-    //deployments.getAtScope
-    public async deployments_getAtScope(){
-        const getResult = await this.resourceClient.deployments.getAtScope(this.scope,this.depolymentName);
-        console.log(getResult);
-    }
-
-    //deployments.cancelAtScope
-    public async deployments_cancelAtScope(){
-        await this.resourceClient.deployments.cancelAtScope(this.scope,this.depolymentName).catch(
-            result => {
-                console.log(result.code);
-            }
-        );  
-    }
-
-    //deployments.validateAtScope 
-    public async deployments_validateAtScope(){
-        const parameter : resources.Deployment = {
-            properties: {
-                mode: "Incremental",
-                template: this.templeate,
-                parameters: {location: {value: "East US"}}
-            }
-        };
-        const validation = await this.resourceClient.deployments.beginValidateAtScopeAndWait(this.scope,this.depolymentName,parameter);
-        console.log(validation);
-    }
-
-    //deployments.exportTemplateAtScope
-    public async deployments_exportTemplateAtScope(){
-        const result_export = await this.resourceClient.deployments.exportTemplateAtScope(this.scope,this.depolymentName);
-        console.log(result_export);
-    }
-
-    //deployments.deleteAtScope 
-    public async deployments_deleteAtScope(){
-        const result_delete = await this.resourceClient.deployments.beginDeleteAtScopeAndWait(this.scope,this.depolymentName);
-        console.log(result_delete);
-    }
-
-    //deploymentOperations.listAtScope
-    public async deploymentOperations_listAtScope(){
-        const listArray = new Array();
-        for await (let item of this.resourceClient.deploymentOperations.listAtScope(this.scope,this.depolymentName)){
-            listArray.push(item);
-        }
-        console.log(listArray);
-        return listArray;
-    }
-
-    //deploymentOperations.getAtScope
-    public async deploymentOperations_getAtScope(){
-        const operationId = await this.deploymentOperations_listAtScope();
-        const getResult = await this.resourceClient.deploymentOperations.getAtScope(this.scope,this.depolymentName,operationId[0].operationId);
-        console.assert(getResult.operationId === operationId[0].operationId);
-    }
-}
-
-class DeploymentsAtManagementGroupExamples {
-
-    private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
-    private managementgroupsAPI = new ManagementGroupsAPI(credential);
-    private depolymentName = "jstestlinked";
-    private group_id = "20000000-0001-0000-0000-000000000123456";
-
-    //managementGroups.createOrUpdate 
-    public async managementGroups_createOrUpdate(){
-        const result_create = await this.managementgroupsAPI.managementGroups.beginCreateOrUpdateAndWait(this.group_id,{name: this.group_id})
-        console.log(result_create);
-    }
-
-    //deployments.checkExistenceAtManagementGroupScope  
-    public async deployments_checkExistenceAtManagementGroupScope(){
-        const result_exist = await this.resourceClient.deployments.checkExistenceAtManagementGroupScope(this.group_id,this.depolymentName);
-        console.log(result_exist);
-    }
-
-    //deployments.createOrUpdateAtManagementGroupScope 
-    public async deployments_createOrUpdateAtManagementGroupScope(){
-        const parameter:resources.ScopedDeployment = {
-            location: "West US",
-            properties: {
-                mode:"Incremental",
-                templateLink: {
-                    uri: "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
-                },
-                parametersLink: {
-                    uri: "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
-                }
-            }
-        };
-        const resultCreate_depolyments = await this.resourceClient.deployments.beginCreateOrUpdateAtManagementGroupScopeAndWait(this.group_id,this.depolymentName,parameter);
-        console.log(resultCreate_depolyments);
-    }
-
-    //deployments.listAtManagementGroupScope
-    public async deployments_listAtManagementGroupScope(){
-        const listArray = new Array();
-        for await (let item of this.resourceClient.deployments.listAtManagementGroupScope(this.group_id)){
-            listArray.push(item);
-            console.log(item);
-        }
-    }
-
-     //deployments.getAtManagementGroupScope
-     public async deployments_getAtManagementGroupScope(){
-        const getResult = await this.resourceClient.deployments.getAtManagementGroupScope(this.group_id,this.depolymentName);
-        console.log(getResult);
-    }
-
-    //deployments.cancelAtManagementGroupScope
-    public async deployments_cancelAtManagementGroupScope(){
-        await this.resourceClient.deployments.cancelAtManagementGroupScope(this.group_id,this.depolymentName).catch(
-            result => {
-                console.log(result.code);
-            }
-        );  
-    }
-
-    //deployments.validateAtManagementGroupScope 
-    public async deployments_validateAtManagementGroupScope(){
-        const parameter:resources.ScopedDeployment = {
-            location: "West US",
-            properties: {
-                mode:"Incremental",
-                templateLink: {
-                    uri: "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
-                },
-                parametersLink: {
-                    uri: "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
-                }
-            }
-        };
-        const validation = await this.resourceClient.deployments.beginValidateAtManagementGroupScopeAndWait(this.group_id,this.depolymentName,parameter);
-        console.log(validation);
-    }
-
-    //deployments.exportTemplateAtManagementGroupScope
-    public async deployments_exportTemplateAtManagementGroupScope(){
-        const result_export = await this.resourceClient.deployments.exportTemplateAtManagementGroupScope(this.group_id,this.depolymentName);
-        console.log(result_export);
-    }
-
-    //deployments.deleteAtManagementGroupScope 
-    public async deployments_deleteAtManagementGroupScope(){
-        const result_delete = await this.resourceClient.deployments.beginDeleteAtManagementGroupScopeAndWait(this.group_id,this.depolymentName);
-        console.log(result_delete);
-    }
-
-    //deploymentOperations.listAtManagementGroupScope
-    public async deploymentOperations_listAtManagementGroupScope(){
-        const listArray = new Array();
-        for await (let item of this.resourceClient.deploymentOperations.listAtManagementGroupScope(this.group_id,this.depolymentName)){
-            listArray.push(item);
-        }
-        console.log(listArray);
-        return listArray;
-    }
-
-    //deploymentOperations.getAtManagementGroupScope
-    public async deploymentOperations_getAtManagementGroupScope(){
-        const operationId = await this.deploymentOperations_listAtManagementGroupScope();
-        const getResult = await this.resourceClient.deploymentOperations.getAtManagementGroupScope(this.group_id,this.depolymentName,operationId[0].operationId);
-        console.log(getResult);
-    }  
-}
-
-class DeploymentsAtSubscriptionExamples {
-
-    private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
-    private depolymentName = "jstestlinked";
-
-    //return deployment_parameter
-    private create_deployment_parameter(){
-        const parameter:resources.Deployment = {
-            location: "West US",
-            properties: {
-                mode: "Incremental",
-                templateLink: {
-                    uri: "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
-                },
-                parametersLink: {
-                    uri: "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
-                }
-            }
-        };
-        return parameter;
-    }
- 
-    //deployments.checkExistenceAtSubscriptionScope  
-    public async deployments_checkExistenceAtSubscriptionScope(){
-        const result_exist = await this.resourceClient.deployments.checkExistenceAtSubscriptionScope(this.depolymentName);
-        console.log(result_exist)
-    }
-
-    //deployments.createOrUpdateAtSubscriptionScope 
-    public async deployments_createOrUpdateAtSubscriptionScope(){
-        const parameter = this.create_deployment_parameter();
-        const resultCreate_depolyments = await this.resourceClient.deployments.beginCreateOrUpdateAtSubscriptionScopeAndWait(this.depolymentName,parameter);
-        console.log(resultCreate_depolyments);
-    }
-
-    //deployments.listAtSubscriptionScope
-    public async deployments_listAtSubscriptionScope(){
-        const listArray = new Array();
-        for await (let item of this.resourceClient.deployments.listAtSubscriptionScope()){
-            listArray.push(item);
-        }
-        console.log(listArray);
-    }
-
-    //deployments.getAtSubscriptionScope
-    public async deployments_getAtSubscriptionScope(){
-        const getResult = await this.resourceClient.deployments.getAtSubscriptionScope(this.depolymentName);
-        console.log(getResult);
-    }
-
-    //deployments.whatIfAtSubscriptionScope 
-    public async deployments_whatIfAtSubscriptionScope(){
-        const result = await this.resourceClient.deployments.beginWhatIfAtSubscriptionScopeAndWait(this.depolymentName,this.create_deployment_parameter());
-        console.log(result);
-    }
-
-    //deployments.cancelAtSubscriptionScope
-    public async deployments_cancelAtSubscriptionScope(){
-        await this.resourceClient.deployments.cancelAtSubscriptionScope(this.depolymentName).catch(
-            result => {
-                console.log(result.code);
-            }
-        );  
-    }
-
-    //deployments.validateAtSubscriptionScope 
-    public async deployments_validateAtSubscriptionScope(){
-        const validation = await this.resourceClient.deployments.beginValidateAtSubscriptionScopeAndWait(this.depolymentName,this.create_deployment_parameter());
-        console.log(validation);
-    }
-
-    //deployments.exportTemplateAtSubscriptionScope
-    public async deployments_exportTemplateAtSubscriptionScope(){
-        const result_export = await this.resourceClient.deployments.exportTemplateAtSubscriptionScope(this.depolymentName);
-        console.log(result_export);
-    }
-
-    //deployments.deleteAtSubscriptionScope 
-    public async deployments_deleteAtSubscriptionScope(){
-        const result_delete = await this.resourceClient.deployments.beginDeleteAtSubscriptionScopeAndWait(this.depolymentName);
-        console.log(result_delete);
-    }
-
-    //deploymentOperations.listAtSubscriptionScope
-    public async deploymentOperations_listAtSubscriptionScope(){
-        const listArray = new Array();
-        for await (let item of this.resourceClient.deploymentOperations.listAtSubscriptionScope(this.depolymentName)){
-            listArray.push(item);
-        }
-        console.log(listArray);
-        return listArray;
-    }
-
-    //deploymentOperations.getAtSubscriptionScope
-    public async deploymentOperations_getAtSubscriptionScope(){
-        const operationId = await this.deploymentOperations_listAtSubscriptionScope();
-        const getResult = await this.resourceClient.deploymentOperations.getAtSubscriptionScope(this.depolymentName,operationId[0].operationId);
-        console.log(getResult);
-    }
-
+    )
     
 }
 
-class DeploymentsAtTenantExamples {
+//tags.deleteAtScope
+async function tags_deleteAtScope(){
+    const scope = "subscriptions/" + subscriptionId;
+    await resourceClient.tagsOperations.deleteAtScope(scope).then(
+        result => {
+            console.log(result)
+        }
+    )
+    
+}
 
-    private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
-    private depolymentName = "jstestlinked";
 
-    //return deployment_parameter
-    private create_deployment_parameter(){
-        const parameter:resources.ScopedDeployment = {
-            location: "West US",
-            properties: {
-                mode: "Incremental",
-                templateLink: {
-                    uri: "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
-                },
-                parametersLink: {
-                    uri: "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
+//--ResourceGroupExamples--
+
+//resourceGroups.createOrUpdate
+async function resourceGroups_createOrUpdate(){
+    const parameter:ResourceGroup = {
+        location: "eastus",
+        tags: {
+            tag1: "value1"
+        }
+    };
+    await resourceClient.resourceGroups.createOrUpdate(resourceGroupName,parameter).then(
+        result => {
+            console.log(result);
+        }
+    )
+}
+
+//resourceGroups.get
+async function resourceGroups_get(){
+    const result_get = await resourceClient.resourceGroups.get(resourceGroupName);
+    console.log(result_get);  
+}
+
+//resourceGroups.checkExistence   
+async function resourceGroups_checkExistence(){
+    const result_check = await resourceClient.resourceGroups.checkExistence(resourceGroupName);
+    console.log(result_check);  
+    
+
+    const unknowGroup = "unknowGroup";
+    const result_check_unknowGroup = await resourceClient.resourceGroups.checkExistence(unknowGroup);
+    console.log(result_check_unknowGroup)  
+}
+
+//resourceGroups.list
+async function resourceGroups_list(){
+    const result_list = new Array();
+    for await (let item of resourceClient.resourceGroups.list()){
+        result_list.push(item);
+    }
+    console.log(result_list);
+    
+}
+
+//resourceGroups.list  
+async function resourceGroups_listTop2(){
+    const result_list_top2 = new Array();
+    for await (let item of resourceClient.resourceGroups.list({top: 2})){ 
+        result_list_top2.push(item);
+    }
+    console.log(result_list_top2);
+    
+}
+
+//resourceGroups.update
+async function resourceGroups_update(){
+    const parameter:ResourceGroupPatchable = {
+        tags: {
+            tag1: "value1",
+            tag2: "value2"
+        }
+    };
+    const result_patch = await resourceClient.resourceGroups.update(resourceGroupName,parameter);
+    console.log(result_patch);
+    
+}
+
+
+//resourceGroups.exportTemplate  
+async function resourceGroups_beginExportTemplateAndWait(){
+    const parameter:ExportTemplateRequest = {
+        resources: ["*"]
+    };
+    const result_template = await resourceClient.resourceGroups.beginExportTemplateAndWait(resourceGroupName,parameter);
+    console.log(result_template)
+    
+}
+
+// resourceGroups.delete 
+async function resourceGroups_delete(){
+    await resourceClient.resourceGroups.beginDeleteAndWait(resourceGroupName).then(
+        result => {
+            console.log(result)
+        }
+    )
+}
+
+
+//--ResourcesExamples--
+
+//resources.checkExistence  
+async function resources_checkExistence(){
+    const resources_exist = await resourceClient.resources.checkExistence(resourceGroupName,"Microsoft.Compute","","availabilitySets",resourceName_1,"2019-12-01");
+    console.log(resources_exist);  
+}
+
+//resources.checkExistenceById   
+async function resources_checkExistenceById(){
+    const resources_exist_by_id = await resourceClient.resources.checkExistenceById(resourceId,"2019-12-01");
+    console.log(resources_exist_by_id);
+}
+
+//resources.createOrUpdateById 
+async function resources_createOrUpdateById(){
+    const parameter:GenericResource = {
+        location: "eastus"
+    };
+    const craete_result_by_id = await resourceClient.resources.beginCreateOrUpdateByIdAndWait(resourceId,"2019-12-01",parameter)
+    console.log(craete_result_by_id)
+}
+
+//resources.createOrUpdate 
+async function resources_createOrUpdate(){
+    const create_result = await resourceClient.resources.beginCreateOrUpdateAndWait(resourceGroupName,"Microsoft.Compute","","availabilitySets",resourceName_1,"2019-12-01",{location: "eastus"});
+    console.log(create_result);
+}
+
+//resources.get
+async function resources_get(){
+    const get_result = await resourceClient.resources.get(resourceGroupName,"Microsoft.Compute","","availabilitySets",resourceName_1,"2019-12-01");
+    console.log(get_result);
+}
+
+//resources.getById
+async function resources_getById(){
+    const get_result = await resourceClient.resources.getById(resourceId,"2019-12-01");
+    console.log(get_result);
+    return get_result;
+}
+
+//resources.list
+async function resources_list(){
+    const resultArray = new Array();
+    for await (let item of resourceClient.resources.list({filter: "name eq '"+ resourceName_1+"'"})){
+        resultArray.push(item);
+    }
+    console.log(resultArray)
+}
+
+//resources.listByResourceGroup
+async function resources_listByResourceGroup(){
+    const resultArray = new Array();
+    for await (let item of resourceClient.resources.listByResourceGroup(resourceGroupName)){
+        resultArray.push(item);
+    }
+    console.log(resultArray);
+}
+
+//resources.validateMoveResources  
+async function resources_validateMoveResources(){
+    const new_Group = await resourceClient.resourceGroups.createOrUpdate(newResourceGroup,{location: "eastus"});
+    console.log(new_Group);
+    const result_getById = await resources_getById();
+    const parameter:ResourcesMoveInfo = {
+        resources: new Array(result_getById.id),
+        targetResourceGroup: new_Group.id
+    };
+    const result_move = await resourceClient.resources.beginValidateMoveResourcesAndWait(resourceGroupName,parameter);
+    console.log(result_move);
+}
+
+//resources.moveResources
+async function resources_moveResources(){
+    const get_new_Group = await resourceClient.resourceGroups.get(newResourceGroup);
+    console.log(get_new_Group);
+    const result_getById = await resources_getById();
+    const parameter:ResourcesMoveInfo = {
+        resources: new Array(result_getById.id),
+        targetResourceGroup: get_new_Group.id
+    };
+    const result_move = await resourceClient.resources.beginMoveResourcesAndWait(resourceGroupName,parameter);
+    console.log(result_move);
+}
+
+//resources.update 
+async function resources_update(){
+    const result_update = await resourceClient.resources.beginUpdateAndWait(resourceGroupName,"Microsoft.Compute","","availabilitySets",resourceName_1,"2019-12-01",{tags: {tag1: 'value1'}});
+    console.log(result_update);
+}
+
+//resources.updateById 
+async function resources_updateById(){
+    const result_update_by_id = await resourceClient.resources.beginUpdateByIdAndWait(newResourceId,"2019-12-01",{tags: { tag1: "value1"}});
+    console.log(result_update_by_id);
+}
+
+//resources.delete 
+async function resources_delete(){
+    const result_delete = await resourceClient.resources.beginDeleteAndWait(newResourceGroup,"Microsoft.Compute","","availabilitySets",resourceName_1,"2019-12-01");
+    console.log(result_delete);
+}
+
+//resources.deleteById 
+async function resources_deleteById(){
+    const result_delete_by_id = await resourceClient.resources.beginDeleteByIdAndWait(newResourceId,"2019-12-01");
+    console.log(result_delete_by_id);
+}
+
+
+//--DeploymentsBasicExamples--
+
+// return templeate
+async function createTmpleate(){
+    const template: any = {
+        $schema: "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+        contentVersion: "1.0.0.0",
+        parameters: {
+            location: {
+                type: "String",
+                allowedValues: [
+                    "East US",
+                    "West US",
+                    "West Europe",
+                    "East Asia",
+                    "South East Asia"
+                ],
+                metaData: {
+                    description: "Location to deploy to"
                 }
             }
-        };
-        return parameter;
-    }
-
-    //deployments.checkExistenceAtTenantScope  
-    public async deployments_checkExistenceAtTenantScope(){
-        const result_exist = await this.resourceClient.deployments.checkExistenceAtTenantScope(this.depolymentName);
-        console.log(result_exist);
-    }
-
-    //deployments.createOrUpdateAtTenantScope 
-    public async deployments_createOrUpdateAtTenantScope(){
-        const parameter = this.create_deployment_parameter();
-        const resultCreate_depolyments = await this.resourceClient.deployments.beginCreateOrUpdateAtTenantScopeAndWait(this.depolymentName,parameter);
-        console.log(resultCreate_depolyments);
-    }
-
-    //deployments.listAtTenantScope
-    public async deployments_listAtTenantScope(){
-        const listArray = new Array();
-        for await (let item of this.resourceClient.deployments.listAtTenantScope()){
-            listArray.push(item);
-        }
-        console.log(listArray);
-    }
-
-    //deployments.getAtTenantScope
-    public async deployments_getAtTenantScope(){
-        const getResult = await this.resourceClient.deployments.getAtTenantScope(this.depolymentName);
-        console.log(getResult);
-    }
-
-    //deployments.whatIfAtTenantScope 
-    public async deployments_whatIfAtTenantScope(){
-        const result = await this.resourceClient.deployments.beginWhatIfAtTenantScopeAndWait(this.depolymentName,this.create_deployment_parameter());
-        console.log(result);
-    }
-
-    //deploymentOperations.listAtTenantScope
-    public async deploymentOperations_listAtTenantScope(){
-        const listArray = new Array();
-        for await (let item of this.resourceClient.deploymentOperations.listAtTenantScope(this.depolymentName)){
-            listArray.push(item);
-        }
-        console.assert(listArray.length > 0);
-        return listArray;
-    }
-
-    //deploymentOperations.getAtTenantScope
-    public async deploymentOperations_getAtTenantScope(){
-        const operationId = await this.deploymentOperations_listAtTenantScope();
-        const getResult = await this.resourceClient.deploymentOperations.getAtTenantScope(this.depolymentName,operationId[0].operationId);
-        console.log(getResult);
-    }
-
-    //deployments.cancelAtTenantScope
-    public async deployments_cancelAtTenantScope(){
-        await this.resourceClient.deployments.cancelAtTenantScope(this.depolymentName).catch(
-            result => {
-                console.assert(result.code === "DeploymentCannotBeCancelled");
+        },
+        resources: [
+            {
+                type: "Microsoft.Compute/availabilitySets",
+                name: "availabilitySet1",
+                apiVersion: "2019-12-01",
+                location: "[parameters('location')]",
+                properties: {}
             }
-        );  
-    }
-
-    //deployments.validateAtTenantScope 
-    public async deployments_validateAtTenantScope(){
-        const validation = await this.resourceClient.deployments.beginValidateAtTenantScopeAndWait(this.depolymentName,this.create_deployment_parameter());
-        console.log(validation);
-    }
-
-    //deployments.exportTemplateAtTenantScope
-    public async deployments_exportTemplateAtTenantScope(){
-        const result_export = await this.resourceClient.deployments.exportTemplateAtTenantScope(this.depolymentName);
-        if(!result_export.template){
-            console.assert(false);
+        ],
+        outPuts: {
+            myParamete: {
+                type: "object",
+                value: "[reference('Microsoft.Compute/availabilitySets/availabilitySet1')]"
+            }
         }
     }
+    return template;
+}
 
-    //deployments.deleteAtTenantScope 
-    public async deployments_deleteAtTenantScope(){
-        const result_delete = await this.resourceClient.deployments.beginDeleteAtTenantScopeAndWait(this.depolymentName);
-        console.log(result_delete);
+//deployments.checkExistence 
+async function deployments_checkExistence(){
+    const deployment_check = await resourceClient.deployments.checkExistence(resourceGroupName,depolymentName);
+    console.log(deployment_check);
+}
+
+//deployments.calculateTemplateHash
+async function deployments_calculateTemplateHash(){
+    await resourceClient.deployments.calculateTemplateHash(template).then(
+        result => {
+            console.log(result);
+        }
+    );
+}
+
+//deployments.createOrUpdate  
+async function deployments_createOrUpdate(){
+    const parameter : Deployment = {
+        properties: {
+            mode: "Incremental",
+            template: template,
+            parameters: {location: {value: "East US"}}
+        }
+    };
+    const createResult_deployment = await resourceClient.deployments.beginCreateOrUpdateAndWait(resourceGroupName,depolymentName,parameter);
+    console.log(createResult_deployment);
+}
+
+//deployments.listByResourceGroup
+async function deployments_listByResourceGroup(){
+    const listArray_deployment = new Array();
+    for await (let item of resourceClient.deployments.listByResourceGroup(resourceGroupName)){
+        listArray_deployment.push(item);
+    }
+    console.log(listArray_deployment);
+}
+
+//deployments.get
+async function deployments_get(){
+    const getResult_deployment = await resourceClient.deployments.get(resourceGroupName,depolymentName);
+    console.log(getResult_deployment);
+}
+
+//deployments.whatIf 
+async function deployments_whatIf(){
+    await resourceClient.deployments.beginWhatIfAndWait(resourceGroupName,depolymentName,{properties: {mode: "Incremental",template: template}}).then(
+        result => {
+            console.log(result);
+        }
+    )
+}
+
+//deployments.cancel
+async function deployments_cancel(){
+    await resourceClient.deployments.cancel(resourceGroupName,depolymentName).catch(
+        result => {
+            console.log(result.code);
+        }
+    );  
+}
+
+//deployments.validate 
+async function deployments_validate(){
+    const parameter : Deployment = {
+        properties: {
+            mode: "Incremental",
+            template: template,
+            parameters: {location: {value: "East US"}}
+        }
+    };
+    const validation = await resourceClient.deployments.beginValidateAndWait(resourceGroupName,depolymentName,parameter);
+    console.log(validation);
+}
+
+//deployments.exportTemplate
+async function deployments_exportTemplate(){
+    const result_export = await resourceClient.deployments.exportTemplate(resourceGroupName,depolymentName);
+    console.log(result_export);
+}
+
+//deployments.delete  
+async function deployments_delete(){
+    const result_delete = await resourceClient.deployments.beginDeleteAndWait(resourceGroupName,depolymentName);
+    console.log(result_delete);
+}
+
+//deploymentOperations.list
+async function deploymentOperations_list(){
+    const listArray_deploymentOperations = new Array();
+    for await (let item of resourceClient.deploymentOperations.list(resourceGroupName,depolymentName)){
+        listArray_deploymentOperations.push(item);
+    }
+    console.log(listArray_deploymentOperations);
+    return listArray_deploymentOperations;
+}
+
+//deploymentOperations.get
+async function deploymentOperations_get(){
+    const operationId = await deploymentOperations_list();
+    const getResult_deployment = await resourceClient.deploymentOperations.get(resourceGroupName,depolymentName,operationId[0].operationId);
+    console.log(getResult_deployment);
+}
+
+
+//--DeploymentAtScopeExamples--
+
+//deployments.checkExistenceAtScope   
+async function deployments_checkExistenceAtScope(){
+    const result_exist = await resourceClient.deployments.checkExistenceAtScope(resourceGroupName,depolymentName);
+    console.log(result_exist);
+}
+
+//deployments.createOrUpdateAtScope  
+async function deployments_createOrUpdateAtScope(){
+    const parameter : Deployment = {
+        properties: {
+            mode: "Incremental",
+            template: template,
+            parameters: {location: {value: "East US"}}
+        }
+    };
+    const createResult_deployment = await resourceClient.deployments.beginCreateOrUpdateAtScopeAndWait(scope,depolymentName,parameter);
+    console.log(createResult_deployment);
+}
+
+//deployments.listAtScope
+async function deployments_listAtScope(){
+    const listArray = new Array();
+    for await (let item of resourceClient.deployments.listAtScope(scope)){
+        listArray.push(item);
+    }
+    console.log(listArray);
+}
+
+//deployments.getAtScope
+async function deployments_getAtScope(){
+    const getResult = await resourceClient.deployments.getAtScope(scope,depolymentName);
+    console.log(getResult);
+}
+
+//deployments.cancelAtScope
+async function deployments_cancelAtScope(){
+    await resourceClient.deployments.cancelAtScope(scope,depolymentName).catch(
+        result => {
+            console.log(result.code);
+        }
+    );  
+}
+
+//deployments.validateAtScope 
+async function deployments_validateAtScope(){
+    const parameter : Deployment = {
+        properties: {
+            mode: "Incremental",
+            template: template,
+            parameters: {location: {value: "East US"}}
+        }
+    };
+    const validation = await resourceClient.deployments.beginValidateAtScopeAndWait(scope,depolymentName,parameter);
+    console.log(validation);
+}
+
+//deployments.exportTemplateAtScope
+async function deployments_exportTemplateAtScope(){
+    const result_export = await resourceClient.deployments.exportTemplateAtScope(scope,depolymentName);
+    console.log(result_export);
+}
+
+//deployments.deleteAtScope 
+async function deployments_deleteAtScope(){
+    const result_delete = await resourceClient.deployments.beginDeleteAtScopeAndWait(scope,depolymentName);
+    console.log(result_delete);
+}
+
+//deploymentOperations.listAtScope
+async function deploymentOperations_listAtScope(){
+    const listArray = new Array();
+    for await (let item of resourceClient.deploymentOperations.listAtScope(scope,depolymentName)){
+        listArray.push(item);
+    }
+    console.log(listArray);
+    return listArray;
+}
+
+//deploymentOperations.getAtScope
+async function deploymentOperations_getAtScope(){
+    const operationId = await deploymentOperations_listAtScope();
+    const getResult = await resourceClient.deploymentOperations.getAtScope(scope,depolymentName,operationId[0].operationId);
+    console.assert(getResult.operationId === operationId[0].operationId);
+}
+
+
+//--DeploymentsAtManagementGroupExamples--
+
+//managementGroups.createOrUpdate 
+async function managementGroups_createOrUpdate(){
+    const result_create = await managementGroupsApi.managementGroups.beginCreateOrUpdateAndWait(group_id,{name: group_id})
+    console.log(result_create);
+}
+
+//deployments.checkExistenceAtManagementGroupScope  
+async function deployments_checkExistenceAtManagementGroupScope(){
+    const result_exist = await resourceClient.deployments.checkExistenceAtManagementGroupScope(group_id,depolymentName);
+    console.log(result_exist);
+}
+
+//deployments.createOrUpdateAtManagementGroupScope 
+async function deployments_createOrUpdateAtManagementGroupScope(){
+    const parameter:ScopedDeployment = {
+        location: "West US",
+        properties: {
+            mode:"Incremental",
+            templateLink: {
+                uri: "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
+            },
+            parametersLink: {
+                uri: "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
+            }
+        }
+    };
+    const resultCreate_depolyments = await resourceClient.deployments.beginCreateOrUpdateAtManagementGroupScopeAndWait(group_id,depolymentName,parameter);
+    console.log(resultCreate_depolyments);
+}
+
+//deployments.listAtManagementGroupScope
+async function deployments_listAtManagementGroupScope(){
+    const listArray = new Array();
+    for await (let item of resourceClient.deployments.listAtManagementGroupScope(group_id)){
+        listArray.push(item);
+        console.log(item);
     }
 }
 
-class ProviderOperationsExamples {
+    //deployments.getAtManagementGroupScope
+    async function deployments_getAtManagementGroupScope(){
+    const getResult = await resourceClient.deployments.getAtManagementGroupScope(group_id,depolymentName);
+    console.log(getResult);
+}
 
-    private resourceClient = new resources.ResourceManagementClient(credential,subscriptionId);
+//deployments.cancelAtManagementGroupScope
+async function deployments_cancelAtManagementGroupScope(){
+    await resourceClient.deployments.cancelAtManagementGroupScope(group_id,depolymentName).catch(
+        result => {
+            console.log(result.code);
+        }
+    );  
+}
 
-    //providers.get
-    public async providers_get(){
-        const getArray = new Array();
-        const result_get = await this.resourceClient.providers.get("Microsoft.Web")
-        // console.log(result_get)
-        for(let item of result_get.resourceTypes){
-            if(item.resourceType === "sites"){
-                if(item.locations.indexOf("West US") >= 0){
-                    console.assert(true);
-                    break;
-                }else{
-                    console.assert(false);
-                    break;
-                }
+//deployments.validateAtManagementGroupScope 
+async function deployments_validateAtManagementGroupScope(){
+    const parameter:ScopedDeployment = {
+        location: "West US",
+        properties: {
+            mode:"Incremental",
+            templateLink: {
+                uri: "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
+            },
+            parametersLink: {
+                uri: "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
             }
         }
-    }
+    };
+    const validation = await resourceClient.deployments.beginValidateAtManagementGroupScopeAndWait(group_id,depolymentName,parameter);
+    console.log(validation);
+}
 
-    //providers.unregister providers.get providers.register
-    public async get_register(){
-        await this.resourceClient.providers.unregister("Microsoft.Search").then(
-            result => {
-                console.log(result);
-            }
-        );
-        await this.resourceClient.providers.get("Microsoft.Search").then(
-            result => {
-                console.log(result);
-            }
-        );
-        await this.resourceClient.providers.register("Microsoft.Search").then(
-            result => {
-                console.log(result);
-            }
-        );
-    }
+//deployments.exportTemplateAtManagementGroupScope
+async function deployments_exportTemplateAtManagementGroupScope(){
+    const result_export = await resourceClient.deployments.exportTemplateAtManagementGroupScope(group_id,depolymentName);
+    console.log(result_export);
+}
 
-    //providers.list
-    public async providers_list(){
-        const resultArray = new Array();
-        for await (let item of this.resourceClient.providers.list()){
-            console.log(item);
-            resultArray.push(item);
+//deployments.deleteAtManagementGroupScope 
+async function deployments_deleteAtManagementGroupScope(){
+    const result_delete = await resourceClient.deployments.beginDeleteAtManagementGroupScopeAndWait(group_id,depolymentName);
+    console.log(result_delete);
+}
+
+//deploymentOperations.listAtManagementGroupScope
+async function deploymentOperations_listAtManagementGroupScope(){
+    const listArray = new Array();
+    for await (let item of resourceClient.deploymentOperations.listAtManagementGroupScope(group_id,depolymentName)){
+        listArray.push(item);
+    }
+    console.log(listArray);
+    return listArray;
+}
+
+//deploymentOperations.getAtManagementGroupScope
+async function deploymentOperations_getAtManagementGroupScope(){
+    const operationId = await deploymentOperations_listAtManagementGroupScope();
+    const getResult = await resourceClient.deploymentOperations.getAtManagementGroupScope(group_id,depolymentName,operationId[0].operationId);
+    console.log(getResult);
+}  
+
+
+//--DeploymentsAtSubscriptionExamples--
+
+//return deployment_parameter
+async function create_deployment_parameter(){
+    const parameter:Deployment = {
+        location: "West US",
+        properties: {
+            mode: "Incremental",
+            templateLink: {
+                uri: "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
+            },
+            parametersLink: {
+                uri: "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
+            }
         }
-    }
+    };
+    return parameter;
+}
 
-    //providers.getAtTenantScope providers.listAtTenantScope
-    public async providers_getAtTenantScope(){
-        await this.resourceClient.providers.getAtTenantScope("Microsoft.Web").then(
-            result => {
-                console.log(result);
-            }
-        )
-        const resultArray = new Array();
-        for await (let item of this.resourceClient.providers.listAtTenantScope()){
-            console.log(item);
-            resultArray.push(item);
+//deployments.checkExistenceAtSubscriptionScope  
+async function deployments_checkExistenceAtSubscriptionScope(){
+    const result_exist = await resourceClient.deployments.checkExistenceAtSubscriptionScope(depolymentName);
+    console.log(result_exist)
+}
+
+//deployments.createOrUpdateAtSubscriptionScope 
+async function deployments_createOrUpdateAtSubscriptionScope(){
+    const parameter = await create_deployment_parameter();
+    const resultCreate_depolyments = await resourceClient.deployments.beginCreateOrUpdateAtSubscriptionScopeAndWait(depolymentName,parameter);
+    console.log(resultCreate_depolyments);
+}
+
+//deployments.listAtSubscriptionScope
+async function deployments_listAtSubscriptionScope(){
+    const listArray = new Array();
+    for await (let item of resourceClient.deployments.listAtSubscriptionScope()){
+        listArray.push(item);
+    }
+    console.log(listArray);
+}
+
+//deployments.getAtSubscriptionScope
+async function deployments_getAtSubscriptionScope(){
+    const getResult = await resourceClient.deployments.getAtSubscriptionScope(depolymentName);
+    console.log(getResult);
+}
+
+//deployments.whatIfAtSubscriptionScope 
+async function deployments_whatIfAtSubscriptionScope(){
+    const parameter = await create_deployment_parameter();
+    const result = await resourceClient.deployments.beginWhatIfAtSubscriptionScopeAndWait(depolymentName,parameter);
+    console.log(result);
+}
+
+//deployments.cancelAtSubscriptionScope
+async function deployments_cancelAtSubscriptionScope(){
+    await resourceClient.deployments.cancelAtSubscriptionScope(depolymentName).catch(
+        result => {
+            console.log(result.code);
         }
-    }
+    );  
+}
 
-    //operations.list
-    // RestError: The resource type 'operations' could not be found in the namespace 'Microsoft.Resources' for api version '2020-10-01'. 
-    // The supported api-versions are '2015-01-01'
-    public async operations_list(){
-        const resultArray = new Array();
-        for await (let item of this.resourceClient.operations.list()){
-            console.log(item);
-            resultArray.push(item)
+//deployments.validateAtSubscriptionScope 
+async function deployments_validateAtSubscriptionScope(){
+    const parameter = await create_deployment_parameter();
+    const validation = await resourceClient.deployments.beginValidateAtSubscriptionScopeAndWait(depolymentName,parameter);
+    console.log(validation);
+}
+
+//deployments.exportTemplateAtSubscriptionScope
+async function deployments_exportTemplateAtSubscriptionScope(){
+    const result_export = await resourceClient.deployments.exportTemplateAtSubscriptionScope(depolymentName);
+    console.log(result_export);
+}
+
+//deployments.deleteAtSubscriptionScope 
+async function deployments_deleteAtSubscriptionScope(){
+    const result_delete = await resourceClient.deployments.beginDeleteAtSubscriptionScopeAndWait(depolymentName);
+    console.log(result_delete);
+}
+
+//deploymentOperations.listAtSubscriptionScope
+async function deploymentOperations_listAtSubscriptionScope(){
+    const listArray = new Array();
+    for await (let item of resourceClient.deploymentOperations.listAtSubscriptionScope(depolymentName)){
+        listArray.push(item);
+    }
+    console.log(listArray);
+    return listArray;
+}
+
+//deploymentOperations.getAtSubscriptionScope
+async function deploymentOperations_getAtSubscriptionScope(){
+    const operationId = await deploymentOperations_listAtSubscriptionScope();
+    const getResult = await resourceClient.deploymentOperations.getAtSubscriptionScope(depolymentName,operationId[0].operationId);
+    console.log(getResult);
+}
+
+
+//--DeploymentsAtTenantExamples--
+
+//return deployment_parameter
+async function  create_deployment_parameter2(){
+    const parameter:ScopedDeployment = {
+        location: "West US",
+        properties: {
+            mode: "Incremental",
+            templateLink: {
+                uri: "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
+            },
+            parametersLink: {
+                uri: "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/100-blank-template/azuredeploy.json"
+            }
+        }
+    };
+    return parameter;
+}
+
+//deployments.checkExistenceAtTenantScope  
+async function deployments_checkExistenceAtTenantScope(){
+    const result_exist = await resourceClient.deployments.checkExistenceAtTenantScope(depolymentName);
+    console.log(result_exist);
+}
+
+//deployments.createOrUpdateAtTenantScope 
+async function deployments_createOrUpdateAtTenantScope(){
+    const parameter = await create_deployment_parameter2();
+    const resultCreate_depolyments = await resourceClient.deployments.beginCreateOrUpdateAtTenantScopeAndWait(depolymentName,parameter);
+    console.log(resultCreate_depolyments);
+}
+
+//deployments.listAtTenantScope
+async function deployments_listAtTenantScope(){
+    const listArray = new Array();
+    for await (let item of resourceClient.deployments.listAtTenantScope()){
+        listArray.push(item);
+    }
+    console.log(listArray);
+}
+
+//deployments.getAtTenantScope
+async function deployments_getAtTenantScope(){
+    const getResult = await resourceClient.deployments.getAtTenantScope(depolymentName);
+    console.log(getResult);
+}
+
+//deployments.whatIfAtTenantScope 
+async function deployments_whatIfAtTenantScope(){
+    const parameter = await create_deployment_parameter2();
+    const result = await resourceClient.deployments.beginWhatIfAtTenantScopeAndWait(depolymentName,parameter);
+    console.log(result);
+}
+
+//deploymentOperations.listAtTenantScope
+async function deploymentOperations_listAtTenantScope(){
+    const listArray = new Array();
+    for await (let item of resourceClient.deploymentOperations.listAtTenantScope(depolymentName)){
+        listArray.push(item);
+    }
+    console.assert(listArray.length > 0);
+    return listArray;
+}
+
+//deploymentOperations.getAtTenantScope
+async function deploymentOperations_getAtTenantScope(){
+    const operationId = await deploymentOperations_listAtTenantScope();
+    const getResult = await resourceClient.deploymentOperations.getAtTenantScope(depolymentName,operationId[0].operationId);
+    console.log(getResult);
+}
+
+//deployments.cancelAtTenantScope
+async function deployments_cancelAtTenantScope(){
+    await resourceClient.deployments.cancelAtTenantScope(depolymentName).catch(
+        result => {
+            console.assert(result.code === "DeploymentCannotBeCancelled");
+        }
+    );  
+}
+
+//deployments.validateAtTenantScope 
+async function deployments_validateAtTenantScope(){
+    const parameter = await create_deployment_parameter2();
+    const validation = await resourceClient.deployments.beginValidateAtTenantScopeAndWait(depolymentName,parameter);
+    console.log(validation);
+}
+
+//deployments.exportTemplateAtTenantScope
+async function deployments_exportTemplateAtTenantScope(){
+    const result_export = await resourceClient.deployments.exportTemplateAtTenantScope(depolymentName);
+    if(!result_export.template){
+        console.assert(false);
+    }
+}
+
+//deployments.deleteAtTenantScope 
+async function deployments_deleteAtTenantScope(){
+    const result_delete = await resourceClient.deployments.beginDeleteAtTenantScopeAndWait(depolymentName);
+    console.log(result_delete);
+}
+
+
+//--ProviderOperationsExamples--
+
+//providers.get
+async function providers_get(){
+    const getArray = new Array();
+    const result_get = await resourceClient.providers.get("Microsoft.Web")
+    // console.log(result_get)
+    for(let item of result_get.resourceTypes){
+        if(item.resourceType === "sites"){
+            if(item.locations.indexOf("West US") >= 0){
+                console.assert(true);
+                break;
+            }else{
+                console.assert(false);
+                break;
+            }
         }
     }
 }
+
+//providers.unregister providers.get providers.register
+async function get_register(){
+    await resourceClient.providers.unregister("Microsoft.Search").then(
+        result => {
+            console.log(result);
+        }
+    );
+    await resourceClient.providers.get("Microsoft.Search").then(
+        result => {
+            console.log(result);
+        }
+    );
+    await resourceClient.providers.register("Microsoft.Search").then(
+        result => {
+            console.log(result);
+        }
+    );
+}
+
+//providers.list
+async function providers_list(){
+    const resultArray = new Array();
+    for await (let item of resourceClient.providers.list()){
+        console.log(item);
+        resultArray.push(item);
+    }
+}
+
+//providers.getAtTenantScope providers.listAtTenantScope
+async function providers_getAtTenantScope(){
+    await resourceClient.providers.getAtTenantScope("Microsoft.Web").then(
+        result => {
+            console.log(result);
+        }
+    )
+    const resultArray = new Array();
+    for await (let item of resourceClient.providers.listAtTenantScope()){
+        console.log(item);
+        resultArray.push(item);
+    }
+}
+
+//operations.list
+async function operations_list(){
+    const resultArray = new Array();
+    for await (let item of resourceClient.operations.list()){
+        console.log(item);
+        resultArray.push(item)
+    }
+}
+
+async function main() {
+    resourceClient = new ResourceManagementClient(credential, subscriptionId);
+    managementGroupsApi = new ManagementGroupsAPI(credential);
+    await tags_createOrUpdate();
+}
+
+main();
 

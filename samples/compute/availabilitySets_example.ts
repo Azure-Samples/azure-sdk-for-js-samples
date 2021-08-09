@@ -1,71 +1,73 @@
-import * as compute from "@azure/arm-compute";
+import { ComputeManagementClient,AvailabilitySet,AvailabilitySetUpdate } from "@azure/arm-compute";
 import { DefaultAzureCredential } from "@azure/identity";
 
 const subscriptionId = process.env.subscriptionId;
 const credential = new DefaultAzureCredential();
+const resourceGroupName = "myjstest";
+const location = "eastus";
+const availabilitySetName = "availabilitySets123";
+let client: ComputeManagementClient;
 
- class AvailabilitySetsExamples{ 
-     
-    private client = new compute.ComputeManagementClient(credential, subscriptionId);
-    private resourceGroupName = "myjstest";
-    private availabilitySetName = "availabilitySets123";
-    private location = "eastus";
-
-    //availabilitySets.createOrUpdate
-    public async availabilitySets_createOrUpdate(){
-        const body: compute.AvailabilitySet = {
-            platformFaultDomainCount: 2,
-            platformUpdateDomainCount: 20,
-            location: this.location
-        };
-        await this.client.availabilitySets.createOrUpdate(this.resourceGroupName,this.availabilitySetName,body).then(
-            (response: any) => {
-                console.log(response)
-            }
-        );
-    }
-
-    //availabilitySets.update
-    public async availabilitySets_update(){
-        const body: compute.AvailabilitySetUpdate = {
-            platformFaultDomainCount: 2,
-            platformUpdateDomainCount: 20 
+//availabilitySets.createOrUpdate
+async function availabilitySets_createOrUpdate(){
+    const body: AvailabilitySet = {
+        platformFaultDomainCount: 2,
+        platformUpdateDomainCount: 20,
+        location: location
+    };
+    await client.availabilitySets.createOrUpdate(resourceGroupName,availabilitySetName,body).then(
+        (response: any) => {
+            console.log(response)
         }
-        await this.client.availabilitySets.update(this.resourceGroupName,this.availabilitySetName,body).then(
-            (response: any) => {
-                console.log(response)
-            }
-        );
-    }
+    );
+}
 
-    //availabilitySets.get
-    public async availabilitySets_get(){
-        await this.client.availabilitySets.get(this.resourceGroupName,this.availabilitySetName).then(
-            (response: any) => {
-                console.log(response)
-            }
-        );
+//availabilitySets.update
+async function availabilitySets_update(){
+    const body: AvailabilitySetUpdate = {
+        platformFaultDomainCount: 2,
+        platformUpdateDomainCount: 20 
     }
-
-    //availabilitySets.list
-    public async availabilitySets_list(){
-        for await (let item of this.client.availabilitySets.list(this.resourceGroupName)){
-            console.log(item);
+    await client.availabilitySets.update(resourceGroupName,availabilitySetName,body).then(
+        (response: any) => {
+            console.log(response)
         }
-    }
+    );
+}
 
-    // availabilitySets.listAvailableSizes
-    public async availabilitySets_listAvailableSizes(){
-        for await (let item of this.client.availabilitySets.listAvailableSizes(this.resourceGroupName,this.availabilitySetName)){
-            console.log(item);
+//availabilitySets.get
+async function availabilitySets_get(){
+    await client.availabilitySets.get(resourceGroupName,availabilitySetName).then(
+        (response: any) => {
+            console.log(response)
         }
-    }
+    );
+}
 
-    // availabilitySets.listBySubscription
-    public async availabilitySets_listBySubscription(){
-        for await (let item of this.client.availabilitySets.listBySubscription()){
-            console.log(item);
-        }
+//availabilitySets.list
+async function availabilitySets_list(){
+    for await (let item of client.availabilitySets.list(resourceGroupName)){
+        console.log(item);
     }
- }
+}
 
+// availabilitySets.listAvailableSizes
+async function availabilitySets_listAvailableSizes(){
+    for await (let item of client.availabilitySets.listAvailableSizes(resourceGroupName,availabilitySetName)){
+        console.log(item);
+    }
+}
+
+// availabilitySets.listBySubscription
+async function availabilitySets_listBySubscription(){
+    for await (let item of client.availabilitySets.listBySubscription()){
+        console.log(item);
+    }
+}
+
+async function main() {
+    client = new ComputeManagementClient(credential, subscriptionId);
+    await availabilitySets_createOrUpdate();
+}
+
+main();

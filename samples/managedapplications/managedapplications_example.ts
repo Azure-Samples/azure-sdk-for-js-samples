@@ -1,59 +1,50 @@
-import { ApplicationClient,ApplicationDefinition,Application,ApplicationsUpdateOptionalParams } from "@azure/arm-managedapplications";
+import { ApplicationClient } from "@azure/arm-managedapplications";
 import { ResourceManagementClient } from "@azure/arm-resources";
 import { DefaultAzureCredential } from "@azure/identity";
 
 const subscriptionId = process.env.subscriptionId;
 const credential = new DefaultAzureCredential();
+const applicationName = "jsapplictiontest";
+const resourceGroupName = "jssdktest";
+const appDefinitionName = "jsapplicationDefinition";
+const applicationId = "/subscriptions/"+subscriptionId+"/resourceGroups/"+resourceGroupName+"/providers/Microsoft.Solutions/applications/"+applicationName;
+let applicationClient: ApplicationClient;
+let resourceClient: ResourceManagementClient;
 
-class ApplicationByIdExamples {
 
-    private applicationClient = new ApplicationClient(credential,subscriptionId);
-    private resourceClient = new ResourceManagementClient(credential,subscriptionId);
-    private applicationName = "jsapplictiontest";
-    private appDefinitionName = "jsapplicationDefinition";
-    private resourceGroupName = "jssdktest";
-    private applicationId = "/subscriptions/"+subscriptionId+"/resourceGroups/"+this.resourceGroupName+"/providers/Microsoft.Solutions/applications/"+this.applicationName;
+//--ApplicationByIdExamples--
 
-    //resourceGroups.createOrUpdate
-    public async resourceGroups_createOrUpdate(){
-        const resourceGroup_create = await this.resourceClient.resourceGroups.createOrUpdate(this.resourceGroupName,{location: "eastus",tags: {tag1: "value1"}});
-        console.log(resourceGroup_create)
-    }
-
-    //applicationDefinitions.getById
-    public async applicationDefinitions_getById(){
-        await this.applicationClient.applicationDefinitions.getById(this.resourceGroupName,this.appDefinitionName).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //applications.getById
-    public async applications_getById(){
-        await this.applicationClient.applications.getById(this.applicationId).then(
-            result =>{
-                console.log(result);
-            }
-        )
-    }
-
-    //applications.deleteById
-    public async applications_deleteById(){
-        await this.applicationClient.applications.beginDeleteByIdAndWait(this.applicationId).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //resourceGroups.delete
-    public async resourceGroups_delete(){
-        await this.resourceClient.resourceGroups.beginDeleteAndWait(this.resourceGroupName).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
+//applicationDefinitions.getById
+async function applicationDefinitions_getById(){
+    await applicationClient.applicationDefinitions.getById(resourceGroupName,appDefinitionName).then(
+        result => {
+            console.log(result);
+        }
+    )
 }
 
+//applications.getById
+async function applications_getById(){
+    await applicationClient.applications.getById(applicationId).then(
+        result =>{
+            console.log(result);
+        }
+    )
+}
+
+//applications.deleteById
+async function applications_deleteById(){
+    await applicationClient.applications.beginDeleteByIdAndWait(applicationId).then(
+        result => {
+            console.log(result);
+        }
+    )
+}
+
+async function main() {
+    applicationClient = new ApplicationClient(credential, subscriptionId);
+    resourceClient = new ResourceManagementClient(credential,subscriptionId);
+    await applicationDefinitions_getById();
+}
+
+main();

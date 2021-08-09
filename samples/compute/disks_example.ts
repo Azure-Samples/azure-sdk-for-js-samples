@@ -1,273 +1,244 @@
-import * as compute from "@azure/arm-compute";
+import { ComputeManagementClient,Disk,DiskUpdate,GrantAccessData,Snapshot,Image,ImageUpdate } from "@azure/arm-compute";
 import { DefaultAzureCredential } from "@azure/identity";
 import { ResourceManagementClient } from "@azure/arm-resources";
 
-var subscriptionId = process.env.subscriptionId;
-var credential = new DefaultAzureCredential();
+const subscriptionId = process.env.subscriptionId;
+const credential = new DefaultAzureCredential();
+const resourceGroupName = "myjstest";
+const location = "eastus";
+const disk_name = "disknamex";
+const shapshot_name = "snapshotx";
+const image_name = "imagex";
+let client: ComputeManagementClient;
 
+//--DisksExamples--
 
-class DisksExamples{
-    private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
-    private resource_client = new ResourceManagementClient(credential, subscriptionId);
-    private resourceName = "myjstest";
-    private disk_name = "disknamex"
-    
+//disks.createOrUpdate
+async function disks_createOrUpdate(){
+    const parameter:Disk ={
+        location: "eastus",
+        creationData: {
+            createOption: "Empty"
+        },
+        diskSizeGB: 200
+    };
+    await client.disks.beginCreateOrUpdateAndWait(resourceGroupName,disk_name,parameter).then(
+        response => {
+            console.log(response)
+        } 
+    )
+}
 
-    //resource_groups_createOrUpdate
-    private resource_groups_createOrUpdate(){
-        this.resource_client.resourceGroups.createOrUpdate(this.resourceName,{location:"eastus"})
-    }
+//disks.get
+async function disks_get(){
+    await client.disks.get(resourceGroupName,disk_name).then(
+        response => {
+            console.log(response)
+        } 
+    )
+}
 
-
-    //disks.createOrUpdate
-    public async disks_createOrUpdate(){
-        const parameter:compute.Disk ={
-            location: "eastus",
-            creationData: {
-                createOption: "Empty"
-            },
-            diskSizeGB: 200
-        };
-        await this.compute_client.disks.beginCreateOrUpdateAndWait(this.resourceName,this.disk_name,parameter).then(
-            response => {
-                console.log(response)
-            } 
-        )
-    }
-
-    //disks.get
-    public async disks_get(){
-        await this.compute_client.disks.get(this.resourceName,this.disk_name).then(
-            response => {
-                console.log(response)
-            } 
-        )
-    }
-
-    //disks.listByResourceGroup
-    public async disks_listByResourceGroup(){
-        for await (let item of this.compute_client.disks.listByResourceGroup(this.resourceName)){
-            console.log(item)
-        }
-    }
-
-    //disks.list
-    public async disks_list(){
-        for await (let item of this.compute_client.disks.list()){
-            console.log(item)
-        }
-    }
-
-    //disks.update
-    public async disks_update(){
-        const parameter:compute.DiskUpdate= {
-            diskSizeGB: 200
-        };
-        await this.compute_client.disks.beginUpdateAndWait(this.resourceName,this.disk_name,parameter).then(
-            response => {
-                console.log(response)
-            } 
-        )
-    }
-
-    //disks.grantAccess
-    public async disks_grantAccess(){
-        const parameter:compute.GrantAccessData ={
-            access: "Read",
-            durationInSeconds: 1800
-        };
-        await this.compute_client.disks.beginGrantAccessAndWait(this.resourceName,this.disk_name,parameter).then(
-            response => {
-                console.log(response)
-            } 
-        )
-    }
-
-    //disks.revokeAccess
-    public async disks_revokeAccess(){
-        await this.compute_client.disks.beginRevokeAccessAndWait(this.resourceName,this.disk_name).then(
-            response => {
-                console.log(response)
-            }
-        )
-    }
-
-    //disks.delete
-    public async disks_delete(){
-        await this.compute_client.disks.beginDeleteAndWait(this.resourceName,this.disk_name).then(
-            response => {
-                console.log(response)
-            }
-        )
-    }
-
-    //resource_groups_delete
-    private resource_groups_delete(){
-        this.resource_client.resourceGroups.beginDeleteAndWait(this.resourceName)
+//disks.listByResourceGroup
+async function disks_listByResourceGroup(){
+    for await (let item of client.disks.listByResourceGroup(resourceGroupName)){
+        console.log(item)
     }
 }
 
-class SnapshotsExamples{
-    private compute_client = new compute.ComputeManagementClient(credential, subscriptionId);
-    private disk_name = "disknamex";
-    private resourceName = "myjstest";
-    private shapshot_name = "snapshotx";
-    private image_name = "imagex";
-
-    //disks.createOrUpdate
-    public async disks_createOrUpdate(){
-        const parameter:compute.Disk = {
-            location: "eastus",
-            creationData: {
-                createOption: "Empty"
-            },
-            diskSizeGB: 200
-        };
-        await this.compute_client.disks.beginCreateOrUpdateAndWait(this.resourceName,this.disk_name,parameter).then(
-            response => [
-                console.log(response)
-            ]
-        )
+//disks.list
+async function disks_list(){
+    for await (let item of client.disks.list()){
+        console.log(item)
     }
+}
 
-    //snapshots.createOrUpdate
-    public async snapshots_createOrUpdate(){
-        const parameter:compute.Snapshot = {
-            location: "eastus",
-            creationData: {
-                createOption: "Copy",
-                sourceUri: "/subscriptions/" + subscriptionId + "/resourceGroups/" + this.resourceName + "/providers/Microsoft.Compute/disks/" + this.disk_name
-            }
-        };
-        await this.compute_client.snapshots.beginCreateOrUpdateAndWait(this.resourceName,this.shapshot_name,parameter).then(
-            response =>{
-                console.log(response)
-            }
-        )
-    }
-
-    //snapshots.get
-    public async snapshots_get(){
-        await this.compute_client.snapshots.get(this.resourceName,this.shapshot_name).then(
-            response => {
-                console.log(response)
-            }
-        )
-    }
-
-    //snapshots.listByResourceGroup
-    public async snapshots_listByResourceGroup(){
-        for await (let item of this.compute_client.snapshots.listByResourceGroup(this.resourceName)){
-            console.log(item)
+//disks.update
+async function disks_update(){
+    const parameter:DiskUpdate= {
+        diskSizeGB: 200
+    };
+    await client.disks.beginUpdateAndWait(resourceGroupName,disk_name,parameter).then(
+        response => {
+            console.log(response)
         } 
-    }
+    )
+}
 
-    //snapshots.list
-    public async snapshots_list(){
-        for await (let item of this.compute_client.snapshots.list()){
-            console.log(item)
+//disks.grantAccess
+async function disks_grantAccess(){
+    const parameter:GrantAccessData ={
+        access: "Read",
+        durationInSeconds: 1800
+    };
+    await client.disks.beginGrantAccessAndWait(resourceGroupName,disk_name,parameter).then(
+        response => {
+            console.log(response)
         } 
-    }
+    )
+}
 
-    //snapshots.grantAccess
-    public async snapshots_grantAccess(){
-        const parameter:compute.GrantAccessData = {
-            access: "Read",
-            durationInSeconds: 1800
-        };
-        await this.compute_client.snapshots.beginGrantAccessAndWait(this.resourceName,this.shapshot_name,parameter).then(
-            response => {
-                console.log(response)
-            }
-        )
-    }
+//disks.revokeAccess
+async function disks_revokeAccess(){
+    await client.disks.beginRevokeAccessAndWait(resourceGroupName,disk_name).then(
+        response => {
+            console.log(response)
+        }
+    )
+}
 
-    //snapshots.revokeAccess
-    public async snapshots_revokeAccess(){
-        await this.compute_client.snapshots.beginRevokeAccessAndWait(this.resourceName,this.shapshot_name).then(
-            response => {
-                console.log(response)
-            }
-        )
-    }
+//--SnapshotsExamples--
 
-    //snapshots.delete
-    public async snapshots_delete(){
-        await this.compute_client.snapshots.beginDeleteAndWait(this.resourceName,this.shapshot_name).then(
-            response => {
-                console.log(response)
-            }
-        )
-    }
+//snapshots.createOrUpdate
+async function snapshots_createOrUpdate(){
+    const parameter:Snapshot = {
+        location: "eastus",
+        creationData: {
+            createOption: "Copy",
+            sourceUri: "/subscriptions/" + subscriptionId + "/resourceGroups/" + resourceGroupName + "/providers/Microsoft.Compute/disks/" + disk_name
+        }
+    };
+    await client.snapshots.beginCreateOrUpdateAndWait(resourceGroupName,shapshot_name,parameter).then(
+        response =>{
+            console.log(response)
+        }
+    )
+}
 
-    //images.createOrUpdate
-    public async images_createOrUpdate(){
-        const parameter:compute.Image = {
-            location: "eastus",
-            storageProfile: {
-                osDisk: {
-                    osType: "Linux",
-                    snapshot: {
-                        id: "subscriptions/" + subscriptionId + "/resourceGroups/" + this.resourceName + "/providers/Microsoft.Compute/snapshots/" + this.shapshot_name
-                    },
-                    osState: "Generalized",
+//snapshots.get
+async function snapshots_get(){
+    await client.snapshots.get(resourceGroupName,shapshot_name).then(
+        response => {
+            console.log(response)
+        }
+    )
+}
+
+//snapshots.listByResourceGroup
+async function snapshots_listByResourceGroup(){
+    for await (let item of client.snapshots.listByResourceGroup(resourceGroupName)){
+        console.log(item)
+    } 
+}
+
+//snapshots.list
+async function snapshots_list(){
+    for await (let item of client.snapshots.list()){
+        console.log(item)
+    } 
+}
+
+//snapshots.grantAccess
+async function snapshots_grantAccess(){
+    const parameter:GrantAccessData = {
+        access: "Read",
+        durationInSeconds: 1800
+    };
+    await client.snapshots.beginGrantAccessAndWait(resourceGroupName,shapshot_name,parameter).then(
+        response => {
+            console.log(response)
+        }
+    )
+}
+
+//snapshots.revokeAccess
+async function snapshots_revokeAccess(){
+    await client.snapshots.beginRevokeAccessAndWait(resourceGroupName,shapshot_name).then(
+        response => {
+            console.log(response)
+        }
+    )
+}
+
+//snapshots.delete
+async function snapshots_delete(){
+    await client.snapshots.beginDeleteAndWait(resourceGroupName,shapshot_name).then(
+        response => {
+            console.log(response)
+        }
+    )
+}
+
+//images.createOrUpdate
+async function images_createOrUpdate(){
+    const parameter:Image = {
+        location: "eastus",
+        storageProfile: {
+            osDisk: {
+                osType: "Linux",
+                snapshot: {
+                    id: "subscriptions/" + subscriptionId + "/resourceGroups/" + resourceGroupName + "/providers/Microsoft.Compute/snapshots/" + shapshot_name
                 },
-                zoneResilient: false
+                osState: "Generalized",
             },
-            hyperVGeneration: "V1"
-        };
-        await this.compute_client.images.beginCreateOrUpdateAndWait(this.resourceName,this.image_name,parameter).then(
-            response =>{
-                console.log(response)
-            }
-        )
-    }
-
-    //images.get
-    public async images_get(){
-        await this.compute_client.images.get(this.resourceName,this.image_name).then(
-            response => {
-                console.log(response)
-            }
-        ) 
-    }
-
-    //images.listByResourceGroup
-    public async images_listByResourceGroup(){
-        for await (let item of this.compute_client.images.listByResourceGroup(this.resourceName)){
-            console.log(item)
-        } 
-    }
-
-    //images.list
-    public async images_list(){
-        for await (let item of this.compute_client.images.list()){
-            console.log(item)
-        } 
-    }
-
-    //images.update
-    public async images_update(){
-        const parameter:compute.ImageUpdate = {
-            tags: {
-                ["department"]: "HR"
-            }
-        };
-        await this.compute_client.images.beginUpdateAndWait(this.resourceName,this.image_name,parameter).then(
-            response => {
-                console.log(response)
-            }
-        )
-    }
-
-    //images.delete
-    public async images_delete(){
-        await this.compute_client.images.beginDeleteAndWait(this.resourceName,this.image_name).then(
-            response => {
-                console.log(response)
-            }
-        )
-    }
-
+            zoneResilient: false
+        },
+        hyperVGeneration: "V1"
+    };
+    await client.images.beginCreateOrUpdateAndWait(resourceGroupName,image_name,parameter).then(
+        response =>{
+            console.log(response)
+        }
+    )
 }
 
+//images.get
+async function images_get(){
+    await client.images.get(resourceGroupName,image_name).then(
+        response => {
+            console.log(response)
+        }
+    ) 
+}
+
+//images.listByResourceGroup
+async function images_listByResourceGroup(){
+    for await (let item of client.images.listByResourceGroup(resourceGroupName)){
+        console.log(item)
+    } 
+}
+
+//images.list
+async function images_list(){
+    for await (let item of client.images.list()){
+        console.log(item)
+    } 
+}
+
+//images.update
+async function images_update(){
+    const parameter:ImageUpdate = {
+        tags: {
+            ["department"]: "HR"
+        }
+    };
+    await client.images.beginUpdateAndWait(resourceGroupName,image_name,parameter).then(
+        response => {
+            console.log(response)
+        }
+    )
+}
+
+//images.delete
+async function images_delete(){
+    await client.images.beginDeleteAndWait(resourceGroupName,image_name).then(
+        response => {
+            console.log(response)
+        }
+    )
+}
+
+//disks.delete
+async function disks_delete(){
+await client.disks.beginDeleteAndWait(resourceGroupName,disk_name).then(
+    response => {
+        console.log(response)
+        }
+    )
+}
+
+async function main() {
+    client = new ComputeManagementClient(credential, subscriptionId);
+    await disks_createOrUpdate();
+}
+
+main();

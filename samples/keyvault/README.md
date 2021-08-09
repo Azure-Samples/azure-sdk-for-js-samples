@@ -5,17 +5,17 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Features using Azure SDK for Javascript/Typescript."
-urlFragment: features
+description: "These code samples will show you how to manage KeyVault using Azure SDK for Javascript/Typescript."
+urlFragment: KeyVault
 ---
 
-# Getting started - Managing Features using Azure Javascript/Typescript SDK
+# Getting started - Managing KeyVault using Azure Javascript/Typescript SDK
 
-These code samples will show you how to manage Features using Azure SDK for Javascript/Typescript.
+These code samples will show you how to manage KeyVault using Azure SDK for Javascript/Typescript.
 
 
 ### Features
-* Using the Azure SDK for Javascript/Typescript - Features Management Library [@azure/arm-features](https://www.npmjs.com/package/@azure/arm-features) for the [Azure Resources API](https://docs.microsoft.com/en-us/rest/api/resources/)
+* Using the Azure SDK for Javascript/Typescript - KeyVault Management Library [@azure/arm-keyvault](https://www.npmjs.com/package/@azure/arm-keyvault) for the [Azure KeyVault API](https://docs.microsoft.com/en-us/rest/api/keyvault/)
 
 
 ### Installation
@@ -53,16 +53,16 @@ To run the complete demo, you need to call the methods you want to test in this 
 
     ```
     async function main() {
-        client = new FeatureClient(credential, subscriptionId);
-        await features_listAll();
+        client = new KeyVaultManagementClient(credential, subscriptionId);
+        await vaults_beginCreateOrUpdateAndWait();
     }
     ```
 
 execute below command on terminal
 
     ```
-    tsc features_example.ts (it will create a same name js file)
-    node features_example.js
+    tsc keyvault_examples.ts (it will create a same name js file)
+    node keyvault_examples.js
     ```
 
 ## Resources
