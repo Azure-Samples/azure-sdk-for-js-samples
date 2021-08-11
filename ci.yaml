@@ -2,6 +2,17 @@ trigger:
 - main
 
 jobs:
+  - job: ESLint
+    pool:
+      vmImage: 'vs2017-win2016'
+    steps:
+      - task: Npm@1
+        displayName: 'npm install'
+        inputs:
+          verbose: false
+      - script: 'node_modules\.bin\eslint . --ext .ts --ignore-pattern node_modules/ --ignore-pattern dist/'
+        displayName: 'eslint'
+
   - job: Windows
     displayName: CredScan
     pool:
