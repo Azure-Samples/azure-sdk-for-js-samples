@@ -42,6 +42,7 @@
     "@azure/arm-locks": "^30.0.0-beta.1",
     "@azure/arm-managedapplications": "^30.0.0-beta.1",
     "@azure/arm-policy": "^30.0.0-beta.1",
-    "@azure/identity": "^1.5.0"
+    "@azure/identity": "^1.5.0",
+    "azure-arm-managementgroups": "D:\\dev\\azure-samples-js-management\\samples\\policy\\managementGroupsAPI-1.0.0-beta.1-2020-10.tgz"
   }
 }
