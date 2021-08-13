@@ -45,7 +45,6 @@
     "@azure/arm-appservice": "^30.0.0-beta.1",
     "@azure/arm-keyvault": "^30.0.0-beta.1",
     "@azure/arm-sql": "^30.0.0-beta.1",
-    "azure-arm-managementgroups": "file:managementGroupsAPI-1.0.0-beta.1-2020-10.tgz",
     "@azure/identity": "^1.5.0"
   }
 }
