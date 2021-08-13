@@ -95,7 +95,7 @@ async function disks_revokeAccess() {
 }
 
 //--SnapshotsExamples--
-//
+
 //snapshots.createOrUpdate
 async function snapshots_createOrUpdate() {
   const parameter: Snapshot = {
