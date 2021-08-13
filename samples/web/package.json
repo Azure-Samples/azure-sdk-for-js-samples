@@ -9,7 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@azure/identity": "^1.5.0",
-    "azure-arm-appservice": "D:\\dev\\azure-samples-js-management\\samples\\web\\azure-arm-appservice-30.0.0-beta.1.tgz"
+    "@azure/arm-appservice": "^30.0.0-beta.1",
+    "@azure/identity": "^1.5.0"
   }
 }

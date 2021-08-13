@@ -2,8 +2,15 @@
     "tool": "Credential Scanner",
     "suppressions": [
         {
-            "placeholder": "Aa!1()-xyzUn53cuRE!SWsSsd__233$Sdsds#%Sd!",
-            
+            "placeholder": "Aa!1()-xyz",
+            "_justification": "This is the secret place holder used by my team"
+        },
+        {
+            "placeholder": "Un53cuRE",
+            "_justification": "This is the secret place holder used by my team"
+        },
+        {
+            "placeholder": "SWsSsd__233$Sdsds#%Sd!",
             "_justification": "This is the secret place holder used by my team"
         }
     ]

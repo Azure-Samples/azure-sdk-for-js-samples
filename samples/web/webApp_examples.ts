@@ -5,7 +5,7 @@ import {
   SitePatchResource,
   SiteSourceControl,
   WebSiteManagementClient,
-} from "azure-arm-appservice";
+} from "@azure/arm-appservice";
 import { DefaultAzureCredential } from "@azure/identity";
 
 const subscriptionId = process.env.subscriptionId;

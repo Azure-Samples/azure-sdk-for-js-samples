@@ -1,4 +1,4 @@
-import { Certificate, WebSiteManagementClient } from "azure-arm-appservice";
+import { Certificate, WebSiteManagementClient } from "@azure/arm-appservice";
 import { DefaultAzureCredential } from "@azure/identity";
 
 const subscriptionId = process.env.subscriptionId;

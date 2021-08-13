@@ -2,7 +2,7 @@ import { DefaultAzureCredential } from "@azure/identity";
 import {
   StaticSiteARMResource,
   WebSiteManagementClient,
-} from "azure-arm-appservice";
+} from "@azure/arm-appservice";
 
 const subscriptionId = process.env.subscriptionId;
 const token = process.env.GITHUB_TOKEN_FOR_APPSERVICE;

@@ -6,7 +6,7 @@ import {
   ServerSecurityAlertPolicy,
   SqlManagementClient,
   VirtualNetworkRule,
-} from "azure-arm-sql";
+} from "@azure/arm-sql";
 import { NetworkManagementClient } from "@azure/arm-network";
 import {
   StorageAccountCreateParameters,

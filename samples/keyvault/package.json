@@ -9,7 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@azure/identity": "^1.5.0",
-    "azure-arm-keyvault": "D:\\dev\\azure-samples-js-management\\samples\\keyvault\\azure-arm-keyvault-30.0.0-beta.1.tgz"
+    "@azure/arm-keyvault": "^30.0.0-beta.1",
+    "@azure/identity": "^1.5.0"
   }
 }

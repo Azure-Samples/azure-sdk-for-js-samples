@@ -1,4 +1,4 @@
-import { AppServicePlan, WebSiteManagementClient } from "azure-arm-appservice";
+import { AppServicePlan, WebSiteManagementClient } from "@azure/arm-appservice";
 import { DefaultAzureCredential } from "@azure/identity";
 
 const subscriptionId = process.env.subscriptionId;

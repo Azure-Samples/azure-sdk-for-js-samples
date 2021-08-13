@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   AvailabilitySet,
   AvailabilitySetUpdate,
@@ -50,14 +51,14 @@ async function availabilitySets_get() {
 
 //availabilitySets.list
 async function availabilitySets_list() {
-  for await (let item of client.availabilitySets.list(resourceGroupName)) {
+  for await (const item of client.availabilitySets.list(resourceGroupName)) {
     console.log(item);
   }
 }
 
 // availabilitySets.listAvailableSizes
 async function availabilitySets_listAvailableSizes() {
-  for await (let item of client.availabilitySets.listAvailableSizes(
+  for await (const item of client.availabilitySets.listAvailableSizes(
     resourceGroupName,
     availabilitySetName
   )) {
@@ -67,7 +68,7 @@ async function availabilitySets_listAvailableSizes() {
 
 // availabilitySets.listBySubscription
 async function availabilitySets_listBySubscription() {
-  for await (let item of client.availabilitySets.listBySubscription()) {
+  for await (const item of client.availabilitySets.listBySubscription()) {
     console.log(item);
   }
 }

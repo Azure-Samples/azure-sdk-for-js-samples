@@ -9,7 +9,7 @@ import {
   Server,
   SqlManagementClient,
   WorkloadGroup,
-} from "azure-arm-sql";
+} from "@azure/arm-sql";
 import { DefaultAzureCredential } from "@azure/identity";
 import {
   StorageAccountCreateParameters,

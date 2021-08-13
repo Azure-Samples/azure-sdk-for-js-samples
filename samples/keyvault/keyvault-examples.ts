@@ -4,7 +4,7 @@ import {
   VaultAccessPolicyParameters,
   VaultCreateOrUpdateParameters,
   VaultPatchParameters,
-} from "azure-arm-keyvault";
+} from "@azure/arm-keyvault";
 
 const subscriptionId = process.env.subscriptionId;
 const credential = new DefaultAzureCredential();
