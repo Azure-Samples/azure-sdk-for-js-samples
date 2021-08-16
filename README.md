@@ -17,3 +17,6 @@ Samples:
 - [Resources - Managed Application](https://github.com/Azure-Samples/azure-samples-js-management/tree/master/samples/managedapplications)
 - [Resources - Policy](https://github.com/Azure-Samples/azure-samples-js-management/tree/master/samples/policy)
 - [Storage](https://github.com/Azure-Samples/azure-samples-js-management/tree/master/samples/storage)
+- [Sql](https://github.com/Azure-Samples/azure-samples-js-management/tree/master/samples/sql)
+- [Keyvault](https://github.com/Azure-Samples/azure-samples-js-management/tree/master/samples/keyvault)
+- [Web](https://github.com/Azure-Samples/azure-samples-js-management/tree/master/samples/web)
