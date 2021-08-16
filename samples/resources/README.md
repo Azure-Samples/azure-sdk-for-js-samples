@@ -52,11 +52,14 @@ This project framework provides examples for the following services:
 
 A demo app is included to show how to use the project.
 
-To run the complete demo, you need to instantiate a class,and use it to call the methods you want to test in this class 
+To run the complete demo, you need to call the methods you want to test in main method.
 
     ```
-    const resources = new TagsOperationExamples()
-    resources.tags_createOrUpdate()
+    async function main() {
+        resourceClient = new ResourceManagementClient(credential, subscriptionId);
+        managementGroupsApi = new ManagementGroupsAPI(credential);
+        await tags_createOrUpdate();
+    }
     ```
 
 execute below command on terminal

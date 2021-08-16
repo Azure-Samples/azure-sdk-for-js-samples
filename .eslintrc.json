@@ -19,6 +19,7 @@
     },
     "plugins": ["@typescript-eslint", "sort-imports-es6-autofix"],
     "rules": {
+        "prettier/prettier": "off",
         "prefer-template": 0,
         "linebreak-style": 0,
         "indent": 0,
