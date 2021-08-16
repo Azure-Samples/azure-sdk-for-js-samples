@@ -47,7 +47,7 @@ const newResourceId =
 const depolymentName = "jstestdeployment";
 const scope =
   "subscriptions/" + subscriptionId + "/resourcegroups/" + resourceGroupName;
-const template =  createTmpleate();
+const template = createTmpleate();
 const group_id = "20000000-0001-0000-0000-000000000123456";
 let resourceClient: ResourceManagementClient;
 let managementGroupsApi: ManagementGroupsAPI;
