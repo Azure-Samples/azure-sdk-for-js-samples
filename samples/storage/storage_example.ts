@@ -1,667 +1,719 @@
-import * as storage from "@azure/arm-storage";
+import {
+  BlobContainer,
+  BlobContainersExtendImmutabilityPolicyOptionalParams,
+  BlobContainersLeaseOptionalParams,
+  BlobServiceProperties,
+  EncryptionScope,
+  FileServiceProperties,
+  LegalHold,
+  ManagementPolicy,
+  PrivateEndpointConnection,
+  StorageAccountCheckNameAvailabilityParameters,
+  StorageAccountCreateParameters,
+  StorageAccountRegenerateKeyParameters,
+  StorageManagementClient,
+} from "@azure/arm-storage";
 import { DefaultAzureCredential } from "@azure/identity";
-import { NetworkManagementClient,PrivateEndpoint } from "@azure/arm-network";
+import { NetworkManagementClient, PrivateEndpoint } from "@azure/arm-network";
 
-var subscriptionId = process.env.subscriptionId;
-var credential = new DefaultAzureCredential();
+const subscriptionId = process.env.subscriptionId;
+const credential = new DefaultAzureCredential();
+const resourceGroup = "myjstest";
+const storageAccountName = "storageaccountzzzxxx";
+const containerName = "containerzzz";
+const encryptionScopeName = "encryptionscopezzz";
+const vnetName = "virualnetworkzzz";
+const subName = "subnetzzz";
+const endpointName = "endpointzzz";
+let client: StorageManagementClient;
+let network_client: NetworkManagementClient;
 
-class StorageExamples {
+//--StorageExamples--
 
-    private client = new storage.StorageManagementClient(credential,subscriptionId);
-    private network_client = new NetworkManagementClient(credential,subscriptionId);
-    private resourceGroup = "myjstest";
-    private storageAccountName = "storageaccountzzzxxx";
-    private containerName = "containerzzz";
-    private encryptionScopeName = "encryptionscopezzz";
-    private vnetName = "virualnetworkzzz";
-    private subName = "subnetzzz";
-    private endpointName = "endpointzzz";
+//network_client.virtualNetworks.beginCreateOrUpdateAndWait
+//network_client.subnets.beginCreateOrUpdateAndWait
+//privateEndpoints.beginCreateOrUpdateAndWait
+async function create_endpoint(
+  resourceGroup: any,
+  location: any,
+  vnet_name: any,
+  sub_net: any,
+  endpoint_name: any,
+  resource_id: any
+) {
+  //create VNet
+  const vnet_create = await network_client.virtualNetworks.beginCreateOrUpdateAndWait(
+    resourceGroup,
+    vnet_name,
+    { location: location, addressSpace: { addressPrefixes: ["10.0.0.0/16"] } }
+  );
+  console.log(vnet_create);
 
-    private async create_endpoint(resourceGroup:any,location:any,vnet_name:any,sub_net:any,endpoint_name:any,resource_id:any){
-        //create VNet
-        const vnet_create = await this.network_client.virtualNetworks.beginCreateOrUpdateAndWait(resourceGroup,vnet_name,{location: location,addressSpace: {addressPrefixes: ["10.0.0.0/16"]}});
-        console.log(vnet_create)
-
-        //create Subnet
-        const sunbet_create = await this.network_client.subnets.beginCreateOrUpdateAndWait(resourceGroup,vnet_name,sub_net,{addressPrefix: "10.0.0.0/24",privateLinkServiceNetworkPolicies: "disabled",privateEndpointNetworkPolicies: "disabled"});
-        console.log(sunbet_create);
-
-        //create private endpoint
-        const parameter:PrivateEndpoint = {
-            location: location,
-            privateLinkServiceConnections: [
-                {
-                    name: "myconnection",
-                    privateLinkServiceId: resource_id,
-                    groupIds: ["blob"]
-                }
-            ],
-            subnet: {
-                id: "/subscriptions/" + subscriptionId + "/resourceGroups/" + resourceGroup + "/providers/Microsoft.Network/virtualNetworks/" + vnet_name + "/subnets/" + sub_net
-            }
-        };
-        const endpoint_create = await this.network_client.privateEndpoints.beginCreateOrUpdateAndWait(resourceGroup,endpoint_name,parameter);
-        console.log(endpoint_create);
-        return endpoint_create.id;
+  //create Subnet
+  const sunbet_create = await network_client.subnets.beginCreateOrUpdateAndWait(
+    resourceGroup,
+    vnet_name,
+    sub_net,
+    {
+      addressPrefix: "10.0.0.0/24",
+      privateLinkServiceNetworkPolicies: "disabled",
+      privateEndpointNetworkPolicies: "disabled",
     }
+  );
+  console.log(sunbet_create);
 
-    // storageAccounts.beginCreateAndWait
-    public async storageAccounts_beginCreateAndWait(){
-        const parameter: storage.StorageAccountCreateParameters = {
-            sku: {
-                name: "Standard_GRS"
-            },
-            kind: "StorageV2",
-            location: "westeurope",
-            encryption: {
-                services: {
-                    file: {
-                        keyType: "Account",
-                        enabled: true
-                    },
-                    blob: {
-                        keyType: "Account",
-                        enabled: true
-                    }
-                },
-                keySource: "Microsoft.Storage"
-            },
-            tags: {
-                key1: "value1",
-                key2: "value2"
-            }
-        };
-        const storageaccount = await this.client.storageAccounts.beginCreateAndWait(this.resourceGroup,this.storageAccountName,parameter);
-        console.log(storageaccount);
-
-        //create endpoint
-        await this.create_endpoint(this.resourceGroup,"eastus",this.vnetName,this.subName,this.endpointName,storageaccount.id).then(
-            result => {
-                console.log(result)
-            }
-        )
-    }
-
-    //storageAccounts.getProperties
-    public async storageAccounts_getProperties(){
-        const storageaccount = await this.client.storageAccounts.getProperties(this.resourceGroup,this.storageAccountName);
-        console.log(storageaccount);
-        return storageaccount;
-    }
-
-    //storageAccounts.listByResourceGroup
-    public async storageAccounts_listByResourceGroup(){
-        for await (let item of this.client.storageAccounts.listByResourceGroup(this.resourceGroup)){
-            console.log(item);
-        }
-    }
-
-    //storageAccounts.list
-    public async storageAccounts_list(){
-        for await (let item of this.client.storageAccounts.list()){
-            console.log(item);
-        }
-    }
-
-    //storageAccounts.revokeUserDelegationKeys
-    public async storageAccounts_revokeUserDelegationKeys(){
-        await this.client.storageAccounts.revokeUserDelegationKeys(this.resourceGroup,this.storageAccountName).then(
-            res => {
-                console.log(res);
-            }
-        )
-    }
-
-    //storageAccounts.regenerateKey
-    public async storageAccounts_regenerateKey(){
-        const parameter:storage.StorageAccountRegenerateKeyParameters = {
-            keyName: "key2"
-        };
-        await this.client.storageAccounts.regenerateKey(this.resourceGroup,this.storageAccountName,parameter).then(
-            res => {
-                console.log(res);
-            }
-        )
-    }
-
-    //storageAccounts_listKeys
-    public async storageAccounts_listKeys(){
-        await this.client.storageAccounts.listKeys(this.resourceGroup,this.storageAccountName).then(
-            res => {
-                console.log(res)
-            }
-        )
-    }
-
-    //storageAccounts.checkNameAvailability
-    public async storageAccounts_checkNameAvailability(){
-        const parameter:storage.StorageAccountCheckNameAvailabilityParameters={
-            name: "sto3363",
-            type: "Microsoft.Storage/storageAccounts"
-        };
-        await this.client.storageAccounts.checkNameAvailability(parameter).then(
-            res => {
-                console.log(res)
-            }
-        )
-    }
-
-    //fileServices.setServiceProperties
-    public async fileServices_setServiceProperties(){
-        const parameter:storage.FileServiceProperties = {
-            cors: {
-                corsRules: [
-                    {
-                        allowedOrigins: [
-                            "http://www.contoso.com",
-                            "http://www.fabrikam.com"
-                        ],
-                        allowedMethods: [
-                            "GET",
-                            "HEAD",
-                            "POST",
-                            "OPTIONS",
-                            "MERGE",
-                            "PUT" 
-                        ],
-                        maxAgeInSeconds: 100,
-                        exposedHeaders: [
-                            "x-ms-meta-*"
-                        ],
-                        allowedHeaders: [
-                            "x-ms-meta-abc",
-                            "x-ms-meta-data*",
-                            "x-ms-meta-target*"
-                        ]
-                    },
-                    {
-                        allowedOrigins: [
-                            "*"
-                        ],
-                        allowedMethods: [
-                            "GET"
-                        ],
-                        maxAgeInSeconds: 2,
-                        exposedHeaders: [
-                            "*"
-                        ],
-                        allowedHeaders: [
-                            "*"
-                        ]
-                    },
-                    {
-                        allowedOrigins: [
-                            "http://www.abc23.com",
-                            "https://www.fabrikam.com/*"
-                        ],
-                        allowedMethods: [
-                            "GET",
-                            "PUT"
-                        ],
-                        maxAgeInSeconds: 2000,
-                        exposedHeaders: [
-                            "x-ms-meta-abc",
-                            "x-ms-meta-data*",
-                            "x-ms-meta-target*"
-                        ],
-                        allowedHeaders: [
-                            "x-ms-meta-12345675754564*"
-                        ]
-                    }
-                ]
-            }
-        };
-        await this.client.fileServices.setServiceProperties(this.resourceGroup,this.storageAccountName,parameter).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //fileServices.getServiceProperties
-    public async fileServices_getServiceProperties(){
-        await this.client.fileServices.getServiceProperties(this.resourceGroup,this.storageAccountName).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //fileServices.list
-    public async fileServices_list(){
-       await this.client.fileServices.list(this.resourceGroup,this.storageAccountName).then(
-           result => {
-               console.log(result);
-           }
-       )
-    }
-
-    //blobServices.setServiceProperties
-    public async blobServices_setServiceProperties(){
-        const parameter:storage.BlobServiceProperties = {
-            cors: {
-                corsRules: [
-                    {
-                        allowedOrigins: [
-                            "http://www.contoso.com",
-                            "http://www.fabrikam.com"
-                        ],
-                        allowedMethods: [
-                            "GET",
-                            "HEAD",
-                            "POST",
-                            "OPTIONS",
-                            "MERGE",
-                            "PUT" 
-                        ],
-                        maxAgeInSeconds: 100,
-                        exposedHeaders: [
-                            "x-ms-meta-*"
-                        ],
-                        allowedHeaders: [
-                            "x-ms-meta-abc",
-                            "x-ms-meta-data*",
-                            "x-ms-meta-target*"
-                        ]
-                    },
-                    {
-                        allowedOrigins: [
-                            "*"
-                        ],
-                        allowedMethods: [
-                            "GET"
-                        ],
-                        maxAgeInSeconds: 2,
-                        exposedHeaders: [
-                            "*"
-                        ],
-                        allowedHeaders: [
-                            "*"
-                        ]
-                    },
-                    {
-                        allowedOrigins: [
-                            "http://www.abc23.com",
-                            "https://www.fabrikam.com/*"
-                        ],
-                        allowedMethods: [
-                            "GET",
-                            "PUT"
-                        ],
-                        maxAgeInSeconds: 2000,
-                        exposedHeaders: [
-                            "x-ms-meta-abc",
-                            "x-ms-meta-data*",
-                            "x-ms-meta-target*"
-                        ],
-                        allowedHeaders: [
-                            "x-ms-meta-12345675754564*"
-                        ]
-                    }
-                ]
-            },
-            defaultServiceVersion: "2017-07-29",
-            deleteRetentionPolicy: {
-                enabled: true,
-                days: 300
-            },
-            // isVersioningEnabled: true,    Change Feed is not supported for the account.
-            // changeFeed: {
-            //     enabled: true,
-            //     retentionInDays: 7
-            // }
-        };
-        await this.client.blobServices.setServiceProperties(this.resourceGroup,this.storageAccountName,parameter).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //blobServices.getServiceProperties
-    public async blobServices_getServiceProperties(){
-        await this.client.blobServices.getServiceProperties(this.resourceGroup,this.storageAccountName).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //blobServices.list
-    public async blobServices_list(){
-        for await (let item of this.client.blobServices.list(this.resourceGroup,this.storageAccountName)){
-            console.log(item);
-        }
-    }
-
-    //encryptionScopes.put
-    public async encryptionScopes_put(){
-        const parameter:storage.EncryptionScope = {
-            source: "Microsoft.Storage",
-            state: "Enabled"
-        };
-        await this.client.encryptionScopes.put(this.resourceGroup,this.storageAccountName,this.encryptionScopeName,parameter).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //encryptionScopes.get
-    public async encryptionScopes_get(){
-        await this.client.encryptionScopes.get(this.resourceGroup,this.storageAccountName,this.encryptionScopeName).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //encryptionScopes.list
-    public async encryptionScopes_list(){
-        for await (let item of this.client.encryptionScopes.list(this.resourceGroup,this.storageAccountName)){
-            console.log(item);
-        }
-    }
-
-    //encryptionScopes.patch
-    public async encryptionScopes_patch(){
-        const parameter:storage.EncryptionScope= {
-            source: "Microsoft.Storage",
-            state: "Enabled"
-        };
-        await this.client.encryptionScopes.patch(this.resourceGroup,this.storageAccountName,this.encryptionScopeName,parameter).then(
-            result => {
-                console.log(result)
-            }    
-        )
-    }
-
-    //managementPolicies.createOrUpdate
-    public async managementPolicies_createOrUpdate(){
-        const parameter:storage.ManagementPolicy = {
-            policy: {
-                rules: [
-                    {
-                        enabled: true,
-                        name: "olcmtest",
-                        type: "Lifecycle",
-                        definition: {
-                            filters: {
-                                blobTypes: [
-                                    "blockBlob"
-                                ],
-                                prefixMatch: [
-                                    "olcmtestcontainer"
-                                ]
-                            },
-                            actions: {
-                                baseBlob: {
-                                    tierToCool: {
-                                        daysAfterModificationGreaterThan: 30
-                                    },
-                                    tierToArchive: {
-                                        daysAfterModificationGreaterThan: 90
-                                    },
-                                    delete: {
-                                        daysAfterModificationGreaterThan: 1000
-                                    }
-                                },
-                                snapshot: {
-                                    delete: {
-                                        daysAfterCreationGreaterThan: 30
-                                    }
-                                }
-                            }
-                        }
-                    }
-                ]
-            }
-        };
-        await this.client.managementPolicies.createOrUpdate(this.resourceGroup,this.storageAccountName,"default",parameter).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //managementPolicies.get
-    public async managementPolicies_get(){
-        await this.client.managementPolicies.get(this.resourceGroup,this.storageAccountName,"default").then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //privateEndpointConnections.put
-    public async privateEndpointConnections_put(){
-        const privateEndpointConnections = (await this.storageAccounts_getProperties()).privateEndpointConnections[0].name;
-
-        const parameter:storage.PrivateEndpointConnection = {
-            privateLinkServiceConnectionState: {
-                status: "Rejected",
-                description: "Auto-Approved"
-            }
-        };
-        await this.client.privateEndpointConnections.put(this.resourceGroup,this.storageAccountName,privateEndpointConnections,parameter).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //privateEndpointConnections.get
-    public async privateEndpointConnections_get(){
-        const privateEndpointConnections = (await this.storageAccounts_getProperties()).privateEndpointConnections[0].name;
-        await this.client.privateEndpointConnections.get(this.resourceGroup,this.storageAccountName,privateEndpointConnections).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //blobContainers.create
-    public async blobContainers_create(){
-        await this.client.blobContainers.create(this.resourceGroup,this.storageAccountName,this.containerName,{}).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //blobContainers.createOrUpdateImmutabilityPolicy
-    public async blobContainers_createOrUpdateImmutabilityPolicy(){
-        const create_result = await this.client.blobContainers.createOrUpdateImmutabilityPolicy(this.resourceGroup,this.storageAccountName,this.containerName,{parameters: {immutabilityPeriodSinceCreationInDays: 3,allowProtectedAppendWrites: true}});
-        console.log(create_result);
-    }
-
-    //blobContainers.getImmutabilityPolicy
-    public async blobContainers_getImmutabilityPolicy(){
-        const get_result = await this.client.blobContainers.getImmutabilityPolicy(this.resourceGroup,this.storageAccountName,this.containerName);
-        console.log(get_result);
-        return get_result;
-    }
-
-    //blobContainers.get
-    public async blobContainers_get(){
-        await this.client.blobContainers.get(this.resourceGroup,this.storageAccountName,this.containerName).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //blobContainers.list
-    public async blobContainers_list(){
-        for await (let item of this.client.blobContainers.list(this.resourceGroup,this.storageAccountName)){
-            console.log(item);
-        }
-    }
-
-    //blobContainers.setLegalHold
-    public async blobContainers_setLegalHold(){
-        const parameter:storage.LegalHold = {
-            tags: [
-                "tag1",
-                "tag2",
-                "tag3"
-            ]
-        };
-        await this.client.blobContainers.setLegalHold(this.resourceGroup,this.storageAccountName,this.containerName,parameter).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //blobContainers.clearLegalHold
-    public async blobContainers_clearLegalHold(){
-        const parameter:storage.LegalHold = {
-            tags: [
-                "tag1",
-                "tag2",
-                "tag3"
-            ]
-        };
-        await this.client.blobContainers.clearLegalHold(this.resourceGroup,this.storageAccountName,this.containerName,parameter).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //blobContainers.lease
-    public async blobContainers_lease(){
-        const parameter:storage.BlobContainersLeaseOptionalParams = {
-            parameters: {
-                action: "Acquire",
-                leaseDuration: -1
-            }
-        };
-        const lease_info = await this.client.blobContainers.lease(this.resourceGroup,this.storageAccountName,this.containerName,parameter);
-        console.log(lease_info);
-        return lease_info;
-    }
-
-    //blobContainers.update
-    public async blobContainers_update(){
-
-        const parameter:storage.BlobContainer={
-            publicAccess: "Container",
-            metadata: {
-                metadata: "true"
-            }
-        };
-        await this.client.blobContainers.update(this.resourceGroup,this.storageAccountName,this.containerName,parameter).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //blobContainers.deleteImmutabilityPolicy
-    public async blobContainers_deleteImmutabilityPolicy(){
-        const etag = (await this.blobContainers_getImmutabilityPolicy()).eTag;
-        await this.client.blobContainers.deleteImmutabilityPolicy(this.resourceGroup,this.storageAccountName,this.containerName,etag).then(
-            result => {
-                console.log(result)                
-            }
-        )
-    }
-
-    //blobContainers.lockImmutabilityPolicy
-    public async blobContainers_lockImmutabilityPolicy(){
-        const etag = (await this.blobContainers_getImmutabilityPolicy()).eTag;
-        await this.client.blobContainers.lockImmutabilityPolicy(this.resourceGroup,this.storageAccountName,this.containerName,etag).then(
-            res => {
-                console.log(res);
-            }
-        )
-    }
-
-    //blobContainers.extendImmutabilityPolicy
-    public async blobContainers_extendImmutabilityPolicy(){
-        const etag = (await this.blobContainers_getImmutabilityPolicy()).eTag;
-        const parameter:storage.BlobContainersExtendImmutabilityPolicyOptionalParams = {
-            parameters: {
-                immutabilityPeriodSinceCreationInDays: 100
-            }
-        };
-        await this.client.blobContainers.extendImmutabilityPolicy(this.resourceGroup,this.storageAccountName,this.containerName,etag,parameter).then(
-            res => {
-                console.log(res);
-            }
-        )
-    }
-
-    //blobContainers.delete
-    public async blobContainers_delete(){
-        
-        await this.client.blobContainers.delete(this.resourceGroup,this.storageAccountName,this.containerName).then(
-            res => {
-                console.log(res);
-            }
-        )
-    }
-
-    //privateLinkResources.listByStorageAccount
-    public async privateLinkResources_listByStorageAccount(){
-        await this.client.privateLinkResources.listByStorageAccount(this.resourceGroup,this.storageAccountName).then(
-            result => {
-                console.log(result);
-            }
-        )
-    }
-
-    //usages.listByLocation
-    public async usages_listByLocation(){
-        for await (let item of this.client.usages.listByLocation("westeurope")){
-            console.log(item);
-        }
-    }
-
-    //skus.list
-    public async skus_list(){
-        for await (let item of this.client.skus.list()){
-            console.log(item)
-        }
-    }
-
-    //operations.list
-    public async operations_list(){
-        for await (let item of this.client.operations.list()){
-            console.log(item)
-        }
-    }
-
-    //privateEndpointConnections.delete
-    public async privateEndpointConnections_delete(){
-        const privateEndpointConnections = (await this.storageAccounts_getProperties()).privateEndpointConnections[0].name;
-        await this.client.privateEndpointConnections.delete(this.resourceGroup,this.storageAccountName,privateEndpointConnections).then(
-            res => {
-                console.log(res);
-            }
-        )
-    }
-
-    //managementPolicies.delete
-    public async managementPolicies_delete(){
-        
-        await this.client.managementPolicies.delete(this.resourceGroup,this.storageAccountName,"default").then(
-            res => {
-                console.log(res);
-            }
-        )
-    }
-
-    //storageAccounts.delete
-    public async storageAccounts_delete(){
-        
-        await this.client.storageAccounts.delete(this.resourceGroup,this.storageAccountName).then(
-            res => {
-                console.log(res);
-            }
-        )
-    }
+  //create private endpoint
+  const parameter: PrivateEndpoint = {
+    location: location,
+    privateLinkServiceConnections: [
+      {
+        name: "myconnection",
+        privateLinkServiceId: resource_id,
+        groupIds: ["blob"],
+      },
+    ],
+    subnet: {
+      id:
+        "/subscriptions/" +
+        subscriptionId +
+        "/resourceGroups/" +
+        resourceGroup +
+        "/providers/Microsoft.Network/virtualNetworks/" +
+        vnet_name +
+        "/subnets/" +
+        sub_net,
+    },
+  };
+  const endpoint_create = await network_client.privateEndpoints.beginCreateOrUpdateAndWait(
+    resourceGroup,
+    endpoint_name,
+    parameter
+  );
+  console.log(endpoint_create);
+  return endpoint_create.id;
 }
 
+// storageAccounts.beginCreateAndWait
+async function storageAccounts_beginCreateAndWait() {
+  const parameter: StorageAccountCreateParameters = {
+    sku: {
+      name: "Standard_GRS",
+    },
+    kind: "StorageV2",
+    location: "westeurope",
+    encryption: {
+      services: {
+        file: {
+          keyType: "Account",
+          enabled: true,
+        },
+        blob: {
+          keyType: "Account",
+          enabled: true,
+        },
+      },
+      keySource: "Microsoft.Storage",
+    },
+    tags: {
+      key1: "value1",
+      key2: "value2",
+    },
+  };
+  const storageaccount = await client.storageAccounts.beginCreateAndWait(
+    resourceGroup,
+    storageAccountName,
+    parameter
+  );
+  console.log(storageaccount);
+
+  //create endpoint
+  await create_endpoint(
+    resourceGroup,
+    "eastus",
+    vnetName,
+    subName,
+    endpointName,
+    storageaccount.id
+  ).then((result) => {
+    console.log(result);
+  });
+}
+
+//storageAccounts.getProperties
+async function storageAccounts_getProperties() {
+  const storageaccount = await client.storageAccounts.getProperties(
+    resourceGroup,
+    storageAccountName
+  );
+  console.log(storageaccount);
+  return storageaccount;
+}
+
+//storageAccounts.listByResourceGroup
+async function storageAccounts_listByResourceGroup() {
+  for await (const item of client.storageAccounts.listByResourceGroup(
+    resourceGroup
+  )) {
+    console.log(item);
+  }
+}
+
+//storageAccounts.list
+async function storageAccounts_list() {
+  for await (const item of client.storageAccounts.list()) {
+    console.log(item);
+  }
+}
+
+//storageAccounts.revokeUserDelegationKeys
+async function storageAccounts_revokeUserDelegationKeys() {
+  await client.storageAccounts
+    .revokeUserDelegationKeys(resourceGroup, storageAccountName)
+    .then((res) => {
+      console.log(res);
+    });
+}
+
+//storageAccounts.regenerateKey
+async function storageAccounts_regenerateKey() {
+  const parameter: StorageAccountRegenerateKeyParameters = {
+    keyName: "key2",
+  };
+  await client.storageAccounts
+    .regenerateKey(resourceGroup, storageAccountName, parameter)
+    .then((res) => {
+      console.log(res);
+    });
+}
+
+//storageAccounts_listKeys
+async function storageAccounts_listKeys() {
+  await client.storageAccounts
+    .listKeys(resourceGroup, storageAccountName)
+    .then((res) => {
+      console.log(res);
+    });
+}
+
+//storageAccounts.checkNameAvailability
+async function storageAccounts_checkNameAvailability() {
+  const parameter: StorageAccountCheckNameAvailabilityParameters = {
+    name: "sto3363",
+    type: "Microsoft.Storage/storageAccounts",
+  };
+  await client.storageAccounts.checkNameAvailability(parameter).then((res) => {
+    console.log(res);
+  });
+}
+
+//fileServices.setServiceProperties
+async function fileServices_setServiceProperties() {
+  const parameter: FileServiceProperties = {
+    cors: {
+      corsRules: [
+        {
+          allowedOrigins: ["http://www.contoso.com", "http://www.fabrikam.com"],
+          allowedMethods: ["GET", "HEAD", "POST", "OPTIONS", "MERGE", "PUT"],
+          maxAgeInSeconds: 100,
+          exposedHeaders: ["x-ms-meta-*"],
+          allowedHeaders: [
+            "x-ms-meta-abc",
+            "x-ms-meta-data*",
+            "x-ms-meta-target*",
+          ],
+        },
+        {
+          allowedOrigins: ["*"],
+          allowedMethods: ["GET"],
+          maxAgeInSeconds: 2,
+          exposedHeaders: ["*"],
+          allowedHeaders: ["*"],
+        },
+        {
+          allowedOrigins: [
+            "http://www.abc23.com",
+            "https://www.fabrikam.com/*",
+          ],
+          allowedMethods: ["GET", "PUT"],
+          maxAgeInSeconds: 2000,
+          exposedHeaders: [
+            "x-ms-meta-abc",
+            "x-ms-meta-data*",
+            "x-ms-meta-target*",
+          ],
+          allowedHeaders: ["x-ms-meta-12345675754564*"],
+        },
+      ],
+    },
+  };
+  await client.fileServices
+    .setServiceProperties(resourceGroup, storageAccountName, parameter)
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//fileServices.getServiceProperties
+async function fileServices_getServiceProperties() {
+  await client.fileServices
+    .getServiceProperties(resourceGroup, storageAccountName)
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//fileServices.list
+async function fileServices_list() {
+  await client.fileServices
+    .list(resourceGroup, storageAccountName)
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//blobServices.setServiceProperties
+async function blobServices_setServiceProperties() {
+  const parameter: BlobServiceProperties = {
+    cors: {
+      corsRules: [
+        {
+          allowedOrigins: ["http://www.contoso.com", "http://www.fabrikam.com"],
+          allowedMethods: ["GET", "HEAD", "POST", "OPTIONS", "MERGE", "PUT"],
+          maxAgeInSeconds: 100,
+          exposedHeaders: ["x-ms-meta-*"],
+          allowedHeaders: [
+            "x-ms-meta-abc",
+            "x-ms-meta-data*",
+            "x-ms-meta-target*",
+          ],
+        },
+        {
+          allowedOrigins: ["*"],
+          allowedMethods: ["GET"],
+          maxAgeInSeconds: 2,
+          exposedHeaders: ["*"],
+          allowedHeaders: ["*"],
+        },
+        {
+          allowedOrigins: [
+            "http://www.abc23.com",
+            "https://www.fabrikam.com/*",
+          ],
+          allowedMethods: ["GET", "PUT"],
+          maxAgeInSeconds: 2000,
+          exposedHeaders: [
+            "x-ms-meta-abc",
+            "x-ms-meta-data*",
+            "x-ms-meta-target*",
+          ],
+          allowedHeaders: ["x-ms-meta-12345675754564*"],
+        },
+      ],
+    },
+    defaultServiceVersion: "2017-07-29",
+    deleteRetentionPolicy: {
+      enabled: true,
+      days: 300,
+    },
+    // isVersioningEnabled: true,    Change Feed is not supported for the account.
+    // changeFeed: {
+    //     enabled: true,
+    //     retentionInDays: 7
+    // }
+  };
+  await client.blobServices
+    .setServiceProperties(resourceGroup, storageAccountName, parameter)
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//blobServices.getServiceProperties
+async function blobServices_getServiceProperties() {
+  await client.blobServices
+    .getServiceProperties(resourceGroup, storageAccountName)
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//blobServices.list
+async function blobServices_list() {
+  for await (const item of client.blobServices.list(
+    resourceGroup,
+    storageAccountName
+  )) {
+    console.log(item);
+  }
+}
+
+//encryptionScopes.put
+async function encryptionScopes_put() {
+  const parameter: EncryptionScope = {
+    source: "Microsoft.Storage",
+    state: "Enabled",
+  };
+  await client.encryptionScopes
+    .put(resourceGroup, storageAccountName, encryptionScopeName, parameter)
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//encryptionScopes.get
+async function encryptionScopes_get() {
+  await client.encryptionScopes
+    .get(resourceGroup, storageAccountName, encryptionScopeName)
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//encryptionScopes.list
+async function encryptionScopes_list() {
+  for await (const item of client.encryptionScopes.list(
+    resourceGroup,
+    storageAccountName
+  )) {
+    console.log(item);
+  }
+}
+
+//encryptionScopes.patch
+async function encryptionScopes_patch() {
+  const parameter: EncryptionScope = {
+    source: "Microsoft.Storage",
+    state: "Enabled",
+  };
+  await client.encryptionScopes
+    .patch(resourceGroup, storageAccountName, encryptionScopeName, parameter)
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//managementPolicies.createOrUpdate
+async function managementPolicies_createOrUpdate() {
+  const parameter: ManagementPolicy = {
+    policy: {
+      rules: [
+        {
+          enabled: true,
+          name: "olcmtest",
+          type: "Lifecycle",
+          definition: {
+            filters: {
+              blobTypes: ["blockBlob"],
+              prefixMatch: ["olcmtestcontainer"],
+            },
+            actions: {
+              baseBlob: {
+                tierToCool: {
+                  daysAfterModificationGreaterThan: 30,
+                },
+                tierToArchive: {
+                  daysAfterModificationGreaterThan: 90,
+                },
+                delete: {
+                  daysAfterModificationGreaterThan: 1000,
+                },
+              },
+              snapshot: {
+                delete: {
+                  daysAfterCreationGreaterThan: 30,
+                },
+              },
+            },
+          },
+        },
+      ],
+    },
+  };
+  await client.managementPolicies
+    .createOrUpdate(resourceGroup, storageAccountName, "default", parameter)
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//managementPolicies.get
+async function managementPolicies_get() {
+  await client.managementPolicies
+    .get(resourceGroup, storageAccountName, "default")
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//privateEndpointConnections.put
+async function privateEndpointConnections_put() {
+  const privateEndpointConnections = (await storageAccounts_getProperties())
+    .privateEndpointConnections[0].name;
+
+  const parameter: PrivateEndpointConnection = {
+    privateLinkServiceConnectionState: {
+      status: "Rejected",
+      description: "Auto-Approved",
+    },
+  };
+  await client.privateEndpointConnections
+    .put(
+      resourceGroup,
+      storageAccountName,
+      privateEndpointConnections,
+      parameter
+    )
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//privateEndpointConnections.get
+async function privateEndpointConnections_get() {
+  const privateEndpointConnections = (await storageAccounts_getProperties())
+    .privateEndpointConnections[0].name;
+  await client.privateEndpointConnections
+    .get(resourceGroup, storageAccountName, privateEndpointConnections)
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//blobContainers.create
+async function blobContainers_create() {
+  await client.blobContainers
+    .create(resourceGroup, storageAccountName, containerName, {})
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//blobContainers.createOrUpdateImmutabilityPolicy
+async function blobContainers_createOrUpdateImmutabilityPolicy() {
+  const create_result = await client.blobContainers.createOrUpdateImmutabilityPolicy(
+    resourceGroup,
+    storageAccountName,
+    containerName,
+    {
+      parameters: {
+        immutabilityPeriodSinceCreationInDays: 3,
+        allowProtectedAppendWrites: true,
+      },
+    }
+  );
+  console.log(create_result);
+}
+
+//blobContainers.getImmutabilityPolicy
+async function blobContainers_getImmutabilityPolicy() {
+  const get_result = await client.blobContainers.getImmutabilityPolicy(
+    resourceGroup,
+    storageAccountName,
+    containerName
+  );
+  console.log(get_result);
+  return get_result;
+}
+
+//blobContainers.get
+async function blobContainers_get() {
+  await client.blobContainers
+    .get(resourceGroup, storageAccountName, containerName)
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//blobContainers.list
+async function blobContainers_list() {
+  for await (const item of client.blobContainers.list(
+    resourceGroup,
+    storageAccountName
+  )) {
+    console.log(item);
+  }
+}
+
+//blobContainers.setLegalHold
+async function blobContainers_setLegalHold() {
+  const parameter: LegalHold = {
+    tags: ["tag1", "tag2", "tag3"],
+  };
+  await client.blobContainers
+    .setLegalHold(resourceGroup, storageAccountName, containerName, parameter)
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//blobContainers.clearLegalHold
+async function blobContainers_clearLegalHold() {
+  const parameter: LegalHold = {
+    tags: ["tag1", "tag2", "tag3"],
+  };
+  await client.blobContainers
+    .clearLegalHold(resourceGroup, storageAccountName, containerName, parameter)
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//blobContainers.lease
+async function blobContainers_lease() {
+  const parameter: BlobContainersLeaseOptionalParams = {
+    parameters: {
+      action: "Acquire",
+      leaseDuration: -1,
+    },
+  };
+  const lease_info = await client.blobContainers.lease(
+    resourceGroup,
+    storageAccountName,
+    containerName,
+    parameter
+  );
+  console.log(lease_info);
+  return lease_info;
+}
+
+//blobContainers.update
+async function blobContainers_update() {
+  const parameter: BlobContainer = {
+    publicAccess: "Container",
+    metadata: {
+      metadata: "true",
+    },
+  };
+  await client.blobContainers
+    .update(resourceGroup, storageAccountName, containerName, parameter)
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//blobContainers.deleteImmutabilityPolicy
+async function blobContainers_deleteImmutabilityPolicy() {
+  const etag = (await blobContainers_getImmutabilityPolicy()).eTag;
+  await client.blobContainers
+    .deleteImmutabilityPolicy(
+      resourceGroup,
+      storageAccountName,
+      containerName,
+      etag
+    )
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//blobContainers.lockImmutabilityPolicy
+async function blobContainers_lockImmutabilityPolicy() {
+  const etag = (await blobContainers_getImmutabilityPolicy()).eTag;
+  await client.blobContainers
+    .lockImmutabilityPolicy(
+      resourceGroup,
+      storageAccountName,
+      containerName,
+      etag
+    )
+    .then((res) => {
+      console.log(res);
+    });
+}
+
+//blobContainers.extendImmutabilityPolicy
+async function blobContainers_extendImmutabilityPolicy() {
+  const etag = (await blobContainers_getImmutabilityPolicy()).eTag;
+  const parameter: BlobContainersExtendImmutabilityPolicyOptionalParams = {
+    parameters: {
+      immutabilityPeriodSinceCreationInDays: 100,
+    },
+  };
+  await client.blobContainers
+    .extendImmutabilityPolicy(
+      resourceGroup,
+      storageAccountName,
+      containerName,
+      etag,
+      parameter
+    )
+    .then((res) => {
+      console.log(res);
+    });
+}
+
+//blobContainers.delete
+async function blobContainers_delete() {
+  await client.blobContainers
+    .delete(resourceGroup, storageAccountName, containerName)
+    .then((res) => {
+      console.log(res);
+    });
+}
+
+//privateLinkResources.listByStorageAccount
+async function privateLinkResources_listByStorageAccount() {
+  await client.privateLinkResources
+    .listByStorageAccount(resourceGroup, storageAccountName)
+    .then((result) => {
+      console.log(result);
+    });
+}
+
+//usages.listByLocation
+async function usages_listByLocation() {
+  for await (const item of client.usages.listByLocation("westeurope")) {
+    console.log(item);
+  }
+}
+
+//skus.list
+async function skus_list() {
+  for await (const item of client.skus.list()) {
+    console.log(item);
+  }
+}
+
+//operations.list
+async function operations_list() {
+  for await (const item of client.operations.list()) {
+    console.log(item);
+  }
+}
+
+//privateEndpointConnections.delete
+async function privateEndpointConnections_delete() {
+  const privateEndpointConnections = (await storageAccounts_getProperties())
+    .privateEndpointConnections[0].name;
+  await client.privateEndpointConnections
+    .delete(resourceGroup, storageAccountName, privateEndpointConnections)
+    .then((res) => {
+      console.log(res);
+    });
+}
+
+//managementPolicies.delete
+async function managementPolicies_delete() {
+  await client.managementPolicies
+    .delete(resourceGroup, storageAccountName, "default")
+    .then((res) => {
+      console.log(res);
+    });
+}
+
+//storageAccounts.delete
+async function storageAccounts_delete() {
+  await client.storageAccounts
+    .delete(resourceGroup, storageAccountName)
+    .then((res) => {
+      console.log(res);
+    });
+}
+
+async function main() {
+  client = new StorageManagementClient(credential, subscriptionId);
+  network_client = new NetworkManagementClient(credential, subscriptionId);
+  await storageAccounts_beginCreateAndWait();
+}
+
+main();

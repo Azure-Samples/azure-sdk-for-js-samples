@@ -51,11 +51,14 @@ This project framework provides examples for the following services:
 
 A demo app is included to show how to use the project.
 
-To run the complete demo, you need to instantiate a class,and use it to call the methods you want to test in this class 
+To run the complete demo, you need to call the methods you want to test in main method. 
 
     ```
-    const storage = new StorageExamples()
-    storage.storageAccounts_beginCreateAndWait()
+    async function main() {
+        client = new StorageManagementClient(credential, subscriptionId);
+        network_client = new NetworkManagementClient(credential,subscriptionId);
+        await storageAccounts_beginCreateAndWait();
+    }
     ```
 
 execute below command on terminal

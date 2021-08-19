@@ -1,0 +1,50 @@
+{
+  "name": "azure-samples-for-js-management",
+  "version": "1.0.0",
+  "description": "Azure Samples For JS management SDK",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint": "eslint . --ext .ts --ignore-pattern node_modules/ --ignore-pattern dist/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Azure-Samples/azure-samples-js-management.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Azure-Samples/azure-samples-js-management/issues"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.11.1",
+    "@typescript-eslint/parser": "^4.11.0",
+    "eslint": "^7.16.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
+    "prettier": "2.2.1",
+    "typescript": "^3.7.5"
+  },
+  "homepage": "https://github.com/Azure-Samples/azure-samples-js-management#readme",
+  "dependencies": {
+    "@azure/arm-compute": "^30.0.0-beta.1",
+    "@azure/arm-network": "^30.0.0-beta.1",
+    "@azure/arm-resources": "^30.0.0-beta.1",
+    "@azure/keyvault-keys": "^4.2.1",
+    "@azure/arm-features": "^30.0.0-beta.2",
+    "@azure/arm-storage": "^30.0.0-beta.1",
+    "@azure/arm-links": "^30.0.0-beta.1",
+    "@azure/arm-locks": "^30.0.0-beta.1",
+    "@azure/arm-managedapplications": "^30.0.0-beta.1",
+    "@azure/arm-policy": "^30.0.0-beta.1",
+    "@azure/arm-appservice": "^30.0.0-beta.1",
+    "@azure/arm-keyvault": "^30.0.0-beta.1",
+    "@azure/arm-sql": "^30.0.0-beta.1",
+    "@azure/identity": "^1.5.0"
+  }
+}

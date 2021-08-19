@@ -52,11 +52,14 @@ This project framework provides examples for the following services:
 
 A demo app is included to show how to use the project.
 
-To run the complete demo, you need to instantiate a class,and use it to call the methods you want to test in this class 
+To run the complete demo, you need to call the methods you want to test in main method. 
 
     ```
-    const locks = new LocksAtSubscriptionLevelExamples()
-    locks.managementLocks_createOrUpdateAtSubscriptionLevel()
+    async function main() {
+        lockClient = new ManagementLockClient(credential, subscriptionId);
+        resourceClient = new ResourceManagementClient(credential,subscriptionId);
+        await managementLocks_createOrUpdateAtSubscriptionLevel();
+    }
     ```
 
 execute below command on terminal
