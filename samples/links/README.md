@@ -5,20 +5,20 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Links using Azure SDK for Javascript/Typescript."
+description: "These code samples will show you how to manage Links using Azure SDK for JavaScript/TypeScript."
 urlFragment: links
 ---
 
-# Getting started - Managing Links using Azure Javascript/Typescript SDK
+# Getting started - Managing Links using Azure JavaScript/TypeScript SDK
 
-These code samples will show you how to manage Links using Azure SDK for Javascript/Typescript.
+These code samples will show you how to manage Links using Azure SDK for JavaScript/TypeScript.
 
 ## Features
 
 This project framework provides examples for the following services:
 
 ### Links
-* Using the Azure SDK for Javascript/Typescript - Links Management Library [@azure/arm-links](https://www.npmjs.com/package/@azure/arm-links) for the [Azure Resources API](https://docs.microsoft.com/en-us/rest/api/resources/)
+* Using the Azure SDK for JavaScript/TypeScript - Links Management Library [@azure/arm-links](https://www.npmjs.com/package/@azure/arm-links) for the [Azure Resources API](https://docs.microsoft.com/en-us/rest/api/resources/)
 
 
 ### Installation
