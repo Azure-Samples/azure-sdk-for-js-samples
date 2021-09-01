@@ -5,20 +5,20 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Network using Azure SDK for Javascript/Typescript."
+description: "These code samples will show you how to manage Network using Azure SDK for JavaScript/TypeScript."
 urlFragment: network
 ---
 
-# Getting started - Managing Network using Azure Javascript/Typescript SDK
+# Getting started - Managing Network using Azure JavaScript/TypeScript SDK
 
-These code samples will show you how to manage Network using Azure SDK for Javascript/Typescript.
+These code samples will show you how to manage Network using Azure SDK for JavaScript/TypeScript.
 
 ## Features
 
 This project framework provides examples for the following services:
 
 ### Network
-* Using the Azure SDK for Javascript/Typescript - Network Manamgement Library [@azure/arm-network](https://www.npmjs.com/package/@azure/arm-network) for the [Virtual Network API](https://docs.microsoft.com/en-us/rest/api/virtual-network/), [Virtual WAN API](https://docs.microsoft.com/en-us/rest/api/virtualwan/), [Network Wather API](https://docs.microsoft.com/en-us/rest/api/network-watcher/), [Network Gateway API](https://docs.microsoft.com/en-us/rest/api/network-gateway/), [Firewall API](https://docs.microsoft.com/en-us/rest/api/firewall/), [ExpressRoute API](https://docs.microsoft.com/en-us/rest/api/expressroute/)
+* Using the Azure SDK for JavaScript/TypeScript - Network Manamgement Library [@azure/arm-network](https://www.npmjs.com/package/@azure/arm-network) for the [Virtual Network API](https://docs.microsoft.com/en-us/rest/api/virtual-network/), [Virtual WAN API](https://docs.microsoft.com/en-us/rest/api/virtualwan/), [Network Wather API](https://docs.microsoft.com/en-us/rest/api/network-watcher/), [Network Gateway API](https://docs.microsoft.com/en-us/rest/api/network-gateway/), [Firewall API](https://docs.microsoft.com/en-us/rest/api/firewall/), [ExpressRoute API](https://docs.microsoft.com/en-us/rest/api/expressroute/)
 
 
 ### Installation
