@@ -1,7 +1,7 @@
 import {
   AuthorizationManagementClient,
   RoleAssignmentCreateParameters,
-} from "azure-arm-authorization";
+} from "@azure/arm-authorization";
 import { DefaultAzureCredential } from "@azure/identity";
 
 const subscriptionId = process.env.subscriptionId;

@@ -1,4 +1,5 @@
 import { DefaultAzureCredential } from "@azure/identity";
+// eslint-disable-next-line import/no-unresolved
 import {
   MigrationConfigProperties,
   NetworkRuleSet,
