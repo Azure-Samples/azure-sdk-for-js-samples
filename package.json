@@ -45,6 +45,7 @@
     "@azure/arm-appservice": "^30.0.0-beta.1",
     "@azure/arm-keyvault": "^30.0.0-beta.1",
     "@azure/arm-sql": "^30.0.0-beta.1",
+    "@azure/arm-authorization": "^30.0.0-beta.1",
     "@azure/identity": "^1.5.0"
   }
 }
