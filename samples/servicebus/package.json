@@ -1,0 +1,16 @@
+{
+  "name": "servicebus-examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@azure/arm-network": "^30.0.0-beta.1",
+    "@azure/identity": "^1.5.1",
+    "azure-arm-servicebus": "D:\\mydev\\azure-samples-js-management\\samples\\servicebus\\azure-arm-servicebus-30.0.0-beta.1.tgz"
+  }
+}
