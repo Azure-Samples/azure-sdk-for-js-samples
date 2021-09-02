@@ -5,17 +5,17 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage SQL using Azure SDK for Javascript/Typescript."
+description: "These code samples will show you how to manage SQL using Azure SDK for JavaScript/TypeScript."
 urlFragment: SQL
 ---
 
-# Getting started - Managing SQL using Azure Javascript/Typescript SDK
+# Getting started - Managing SQL using Azure JavaScript/TypeScript SDK
 
-These code samples will show you how to manage SQL using Azure SDK for Javascript/Typescript.
+These code samples will show you how to manage SQL using Azure SDK for JavaScript/TypeScript.
 
 
 ### Features
-* Using the Azure SDK for Javascript/Typescript - SQL Management Library [@azure/arm-sql](https://www.npmjs.com/package/@azure/arm-sql) for the [Azure SQL API](https://docs.microsoft.com/en-us/rest/api/sql/)
+* Using the Azure SDK for JavaScript/TypeScript - SQL Management Library [@azure/arm-sql](https://www.npmjs.com/package/@azure/arm-sql) for the [Azure SQL API](https://docs.microsoft.com/en-us/rest/api/sql/)
 
 
 ### Installation
