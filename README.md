@@ -21,3 +21,4 @@ Samples:
 - [Keyvault](https://github.com/Azure-Samples/azure-samples-js-management/tree/master/samples/keyvault)
 - [Web](https://github.com/Azure-Samples/azure-samples-js-management/tree/master/samples/web)
 - [Eventhub](https://github.com/Azure-Samples/azure-samples-js-management/tree/master/samples/eventhub)
+- [ServiceBus](https://github.com/Azure-Samples/azure-samples-js-management/tree/master/samples/servicebus)
