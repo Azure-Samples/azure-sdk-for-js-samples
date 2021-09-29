@@ -5,11 +5,11 @@ import {
   RedisFirewallRule,
   RedisManagementClient,
   RedisPatchSchedule,
-} from "azure-arm-redis";
+} from "@azure/arm-rediscache";
 
 const subscriptionId = process.env.SUBSCRIPTION_ID;
 const credential = new DefaultAzureCredential();
-const resourceGroupName = "myjstest1";
+const resourceGroupName = "myjstest";
 const location = "eastus";
 const networkName = "networknamex";
 const subnetName = "subnetworknamex";
