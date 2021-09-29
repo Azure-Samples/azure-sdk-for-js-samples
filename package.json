@@ -19,7 +19,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.11.1",
     "@typescript-eslint/parser": "^4.11.0",
-    "eslint": "^7.16.0",
+    "eslint": "^7.32.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
@@ -33,11 +33,11 @@
   "homepage": "https://github.com/Azure-Samples/azure-samples-js-management#readme",
   "dependencies": {
     "@azure/arm-compute": "^30.0.0-beta.1",
-    "@azure/arm-network": "^30.0.0-beta.1",
+    "@azure/arm-network": "^30.0.0-beta.3",
     "@azure/arm-resources": "^30.0.0-beta.1",
     "@azure/keyvault-keys": "^4.2.1",
     "@azure/arm-features": "^30.0.0-beta.2",
-    "@azure/arm-storage": "^30.0.0-beta.1",
+    "@azure/arm-storage": "^30.0.0-beta.2",
     "@azure/arm-links": "^30.0.0-beta.1",
     "@azure/arm-locks": "^30.0.0-beta.1",
     "@azure/arm-managedapplications": "^30.0.0-beta.1",
@@ -48,6 +48,9 @@
     "@azure/arm-authorization": "^30.0.0-beta.1",
     "@azure/arm-eventhub": "^30.0.0-beta.1",
     "@azure/arm-servicebus": "^30.0.0-beta.1",
+    "@azure/arm-apimanagement": "^30.0.0-beta.1",
+    "@azure/arm-eventgrid": "^30.0.0-beta.1",
+    "@azure/arm-rediscache": "^30.0.0-beta.1",
     "@azure/identity": "^1.5.0"
   }
 }
