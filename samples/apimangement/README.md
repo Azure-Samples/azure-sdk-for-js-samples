@@ -5,20 +5,20 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Apimanagement using Azure SDK for Javascript/Typescript."
+description: "These code samples will show you how to manage Apimanagement using Azure SDK for JavaScript/TypeScript."
 urlFragment: apimanagement
 ---
 
-# Getting started - Managing Apimanagement using Azure Javascript/Typescript SDK
+# Getting started - Managing Apimanagement using Azure JavaScript/TypeScript SDK
 
-These code samples will show you how to manage Apimanagement using Azure SDK for Javascript/Typescript.
+These code samples will show you how to manage Apimanagement using Azure SDK for JavaScript/TypeScript.
 
 ## Features
 
 This project framework provides examples for the following services:
 
 ### Apimanagement
-* Using the Azure SDK for Javascript/Typescript - Apimanagement Management Library [@azure/arm-apimanagement](https://www.npmjs.com/package/@azure/arm-apimanagement) for the [Azure Apimanagement API](https://docs.microsoft.com/en-us/rest/api/apimanagement/)
+* Using the Azure SDK for JavaScript/TypeScript - Apimanagement Management Library [@azure/arm-apimanagement](https://www.npmjs.com/package/@azure/arm-apimanagement) for the [Azure Apimanagement API](https://docs.microsoft.com/en-us/rest/api/apimanagement/)
 
 
 ### Installation
