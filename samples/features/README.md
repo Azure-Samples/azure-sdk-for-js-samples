@@ -5,17 +5,17 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Features using Azure SDK for Javascript/Typescript."
+description: "These code samples will show you how to manage Features using Azure SDK for JavaScript/TypeScript."
 urlFragment: features
 ---
 
-# Getting started - Managing Features using Azure Javascript/Typescript SDK
+# Getting started - Managing Features using Azure JavaScript/TypeScript SDK
 
-These code samples will show you how to manage Features using Azure SDK for Javascript/Typescript.
+These code samples will show you how to manage Features using Azure SDK for JavaScript/TypeScript.
 
 
 ### Features
-* Using the Azure SDK for Javascript/Typescript - Features Management Library [@azure/arm-features](https://www.npmjs.com/package/@azure/arm-features) for the [Azure Resources API](https://docs.microsoft.com/en-us/rest/api/resources/)
+* Using the Azure SDK for JavaScript/TypeScript - Features Management Library [@azure/arm-features](https://www.npmjs.com/package/@azure/arm-features) for the [Azure Resources API](https://docs.microsoft.com/en-us/rest/api/resources/)
 
 
 ### Installation
