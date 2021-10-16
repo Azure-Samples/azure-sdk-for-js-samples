@@ -5,20 +5,20 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Eventgrid using Azure SDK for Javascript/Typescript."
+description: "These code samples will show you how to manage Eventgrid using Azure SDK for JavaScript/TypeScript."
 urlFragment: eventgrid
 ---
 
-# Getting started - Managing Eventgrid using Azure Javascript/Typescript SDK
+# Getting started - Managing Eventgrid using Azure JavaScript/TypeScript SDK
 
-These code samples will show you how to manage Eventgrid using Azure SDK for Javascript/Typescript.
+These code samples will show you how to manage Eventgrid using Azure SDK for JavaScript/TypeScript.
 
 ## Features
 
 This project framework provides examples for the following services:
 
 ### Eventgrid
-* Using the Azure SDK for Javascript/Typescript - Eventgrid Management Library [@azure/arm-eventgrid](https://www.npmjs.com/package/@azure/arm-eventgrid) for the [Azure Eventgrid API](https://docs.microsoft.com/en-us/rest/api/eventgrid/)
+* Using the Azure SDK for JavaScript/TypeScript - Eventgrid Management Library [@azure/arm-eventgrid](https://www.npmjs.com/package/@azure/arm-eventgrid) for the [Azure Eventgrid API](https://docs.microsoft.com/en-us/rest/api/eventgrid/)
 
 
 ### Installation
