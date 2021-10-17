@@ -5,20 +5,20 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Eventhub using Azure SDK for Javascript/Typescript."
+description: "These code samples will show you how to manage Eventhub using Azure SDK for JavaScript/TypeScript."
 urlFragment: eventhub
 ---
 
-# Getting started - Managing Eventhub using Azure Javascript/Typescript SDK
+# Getting started - Managing Eventhub using Azure JavaScript/TypeScript SDK
 
-These code samples will show you how to manage Eventhub using Azure SDK for Javascript/Typescript.
+These code samples will show you how to manage Eventhub using Azure SDK for JavaScript/TypeScript.
 
 ## Features
 
 This project framework provides examples for the following services:
 
 ### Eventhub
-* Using the Azure SDK for Javascript/Typescript - Eventhub Management Library [@azure/arm-eventhub](https://www.npmjs.com/package/@azure/arm-eventhub) for the [Azure Eventhub API](https://docs.microsoft.com/en-us/rest/api/eventhub/)
+* Using the Azure SDK for JavaScript/TypeScript - Eventhub Management Library [@azure/arm-eventhub](https://www.npmjs.com/package/@azure/arm-eventhub) for the [Azure Eventhub API](https://docs.microsoft.com/en-us/rest/api/eventhub/)
 
 
 ### Installation
