@@ -5,17 +5,17 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage KeyVault using Azure SDK for Javascript/Typescript."
+description: "These code samples will show you how to manage KeyVault using Azure SDK for JavaScript/TypeScript."
 urlFragment: KeyVault
 ---
 
-# Getting started - Managing KeyVault using Azure Javascript/Typescript SDK
+# Getting started - Managing KeyVault using Azure JavaScript/TypeScript SDK
 
-These code samples will show you how to manage KeyVault using Azure SDK for Javascript/Typescript.
+These code samples will show you how to manage KeyVault using Azure SDK for JavaScript/TypeScript.
 
 
 ### Features
-* Using the Azure SDK for Javascript/Typescript - KeyVault Management Library [@azure/arm-keyvault](https://www.npmjs.com/package/@azure/arm-keyvault) for the [Azure KeyVault API](https://docs.microsoft.com/en-us/rest/api/keyvault/)
+* Using the Azure SDK for JavaScript/TypeScript - KeyVault Management Library [@azure/arm-keyvault](https://www.npmjs.com/package/@azure/arm-keyvault) for the [Azure KeyVault API](https://docs.microsoft.com/en-us/rest/api/keyvault/)
 
 
 ### Installation
