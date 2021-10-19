@@ -9,7 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@azure/arm-authorization": "^30.0.0-beta.1",
-    "@azure/identity": "^1.5.1"
+    "@azure/arm-authorization": "^9.0.0-beta.1",
+    "@azure/identity": "^2.0.0"
   }
 }
