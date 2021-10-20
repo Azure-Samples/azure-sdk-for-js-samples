@@ -5,20 +5,20 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Locks using Azure SDK for Javascript/Typescript."
+description: "These code samples will show you how to manage Locks using Azure SDK for JavaScript/TypeScript."
 urlFragment: locks
 ---
 
-# Getting started - Managing Locks using Azure Javascript/Typescript SDK
+# Getting started - Managing Locks using Azure JavaScript/TypeScript SDK
 
-These code samples will show you how to manage Locks using Azure SDK for Javascript/Typescript.
+These code samples will show you how to manage Locks using Azure SDK for JavaScript/TypeScript.
 
 ## Features
 
 This project framework provides examples for the following services:
 
 ### Locks
-* Using the Azure SDK for Javascript/Typescript - Locks Management Library [@azure/arm-locks](https://www.npmjs.com/package/@azure/arm-locks) for the [Azure Resources API](https://docs.microsoft.com/en-us/rest/api/resources/)
+* Using the Azure SDK for JavaScript/TypeScript - Locks Management Library [@azure/arm-locks](https://www.npmjs.com/package/@azure/arm-locks) for the [Azure Resources API](https://docs.microsoft.com/en-us/rest/api/resources/)
 
 
 ### Installation
