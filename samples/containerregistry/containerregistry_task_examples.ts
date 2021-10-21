@@ -7,7 +7,7 @@ import {
   TaskRun,
   TaskRunUpdateParameters,
   TaskUpdateParameters,
-} from "azure-arm-containerregistry";
+} from "@azure/arm-containerregistry";
 import { DefaultAzureCredential } from "@azure/identity";
 
 const subscriptionId = process.env.SUBSCRIPTION_ID;
