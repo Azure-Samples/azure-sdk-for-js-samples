@@ -1,0 +1,15 @@
+{
+  "name": "containerregistry-examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@azure/arm-containerregistry": "^9.0.0-beta.1",
+    "@azure/identity": "^2.0.0"
+  }
+}
