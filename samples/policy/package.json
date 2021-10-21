@@ -9,9 +9,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@azure/arm-policy": "^30.0.0-beta.1",
-    "@azure/arm-resources": "^30.0.0-beta.1",
-    "@azure/identity": "^1.3.0",
+    "@azure/arm-policy": "^5.0.0-beta.2",
+    "@azure/arm-resources": "^5.0.0-beta.1",
+    "@azure/identity": "^2.0.0",
     "azure-arm-managementgroups": "file:managementGroupsAPI-1.0.0-beta.1-2020-10.tgz"
   }
 }
