@@ -5,20 +5,20 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Service Bus using Azure SDK for Javascript/Typescript."
+description: "These code samples will show you how to manage Service Bus using Azure SDK for JavaScript/TypeScript."
 urlFragment: servicebus
 ---
 
-# Getting started - Managing Service Bus using Azure Javascript/Typescript SDK
+# Getting started - Managing Service Bus using Azure JavaScript/TypeScript SDK
 
-These code samples will show you how to manage Service Bus using Azure SDK for Javascript/Typescript.
+These code samples will show you how to manage Service Bus using Azure SDK for JavaScript/TypeScript.
 
 ## Features
 
 This project framework provides examples for the following services:
 
 ### Service Bus
-* Using the Azure SDK for Javascript/Typescript - Service Bus Management Library [@azure/arm-servicebus](https://www.npmjs.com/package/@azure/arm-servicebus) for the [Azure Service Bus API](https://docs.microsoft.com/en-us/rest/api/servicebus/)
+* Using the Azure SDK for JavaScript/TypeScript - Service Bus Management Library [@azure/arm-servicebus](https://www.npmjs.com/package/@azure/arm-servicebus) for the [Azure Service Bus API](https://docs.microsoft.com/en-us/rest/api/servicebus/)
 
 
 ### Installation
