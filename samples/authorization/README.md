@@ -5,20 +5,20 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Authorization using Azure SDK for Javascript/Typescript."
+description: "These code samples will show you how to manage Authorization using Azure SDK for JavaScript/TypeScript."
 urlFragment: authorization
 ---
 
-# Getting started - Managing Authorization using Azure Javascript/Typescript SDK
+# Getting started - Managing Authorization using Azure JavaScript/TypeScript SDK
 
-These code samples will show you how to manage Authorization using Azure SDK for Javascript/Typescript.
+These code samples will show you how to manage Authorization using Azure SDK for JavaScript/TypeScript.
 
 ## Features
 
 This project framework provides examples for the following services:
 
 ### Authorization
-* Using the Azure SDK for Javascript/Typescript - Authorization Management Library [@azure/arm-authorization](https://www.npmjs.com/package/@azure/arm-authorization) for the [Azure Authorization API](https://docs.microsoft.com/en-us/rest/api/authorization/)
+* Using the Azure SDK for JavaScript/TypeScript - Authorization Management Library [@azure/arm-authorization](https://www.npmjs.com/package/@azure/arm-authorization) for the [Azure Authorization API](https://docs.microsoft.com/en-us/rest/api/authorization/)
 
 
 ### Installation
