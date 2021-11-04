@@ -5,20 +5,20 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Redis using Azure SDK for Javascript/Typescript."
+description: "These code samples will show you how to manage Redis using Azure SDK for JavaScript/TypeScript."
 urlFragment: redis
 ---
 
-# Getting started - Managing Redis using Azure Javascript/Typescript SDK
+# Getting started - Managing Redis using Azure JavaScript/TypeScript SDK
 
-These code samples will show you how to manage Redis using Azure SDK for Javascript/Typescript.
+These code samples will show you how to manage Redis using Azure SDK for JavaScript/TypeScript.
 
 ## Features
 
 This project framework provides examples for the following services:
 
 ### Redis
-* Using the Azure SDK for Javascript/Typescript - Redis Management Library [@azure/arm-redis](https://www.npmjs.com/package/@azure/arm-redis) for the [Azure Redis API](https://docs.microsoft.com/en-us/rest/api/resources/)
+* Using the Azure SDK for JavaScript/TypeScript - Redis Management Library [@azure/arm-redis](https://www.npmjs.com/package/@azure/arm-redis) for the [Azure Redis API](https://docs.microsoft.com/en-us/rest/api/resources/)
 
 
 ### Installation
