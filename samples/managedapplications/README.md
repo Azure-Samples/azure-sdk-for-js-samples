@@ -5,20 +5,20 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Managedapplications using Azure SDK for Javascript/Typescript."
+description: "These code samples will show you how to manage Managedapplications using Azure SDK for JavaScript/TypeScript."
 urlFragment: managedapplications
 ---
 
-# Getting started - Managing Managedapplications using Azure Javascript/Typescript SDK
+# Getting started - Managing Managedapplications using Azure JavaScript/TypeScript SDK
 
-These code samples will show you how to manage Managedapplications using Azure SDK for Javascript/Typescript.
+These code samples will show you how to manage Managedapplications using Azure SDK for JavaScript/TypeScript.
 
 ## Features
 
 This project framework provides examples for the following services:
 
 ### Managedapplications
-* Using the Azure SDK for Javascript/Typescript - Managedapplications Management Library [@azure/arm-managedapplications](https://www.npmjs.com/package/@azure/arm-managedapplications) for the [Azure Resources API](https://docs.microsoft.com/en-us/rest/api/resources/)
+* Using the Azure SDK for JavaScript/TypeScript - Managedapplications Management Library [@azure/arm-managedapplications](https://www.npmjs.com/package/@azure/arm-managedapplications) for the [Azure Resources API](https://docs.microsoft.com/en-us/rest/api/resources/)
 
 
 ### Installation
