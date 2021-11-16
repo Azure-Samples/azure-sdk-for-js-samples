@@ -5,17 +5,17 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage App Service using Azure SDK for Javascript/Typescript."
+description: "These code samples will show you how to manage App Service using Azure SDK for JavaScript/TypeScript."
 urlFragment: App Service
 ---
 
-# Getting started - Managing App Service using Azure Javascript/Typescript SDK
+# Getting started - Managing App Service using Azure JavaScript/TypeScript SDK
 
-These code samples will show you how to manage App Service using Azure SDK for Javascript/Typescript.
+These code samples will show you how to manage App Service using Azure SDK for JavaScript/TypeScript.
 
 
 ### Features
-* Using the Azure SDK for Javascript/Typescript - App Service Management Library [@azure/arm-appservice](https://www.npmjs.com/package/@azure/arm-appservice) for the [Azure App Service API](https://docs.microsoft.com/en-us/rest/api/appservice/)
+* Using the Azure SDK for JavaScript/TypeScript - App Service Management Library [@azure/arm-appservice](https://www.npmjs.com/package/@azure/arm-appservice) for the [Azure App Service API](https://docs.microsoft.com/en-us/rest/api/appservice/)
 
 
 ### Installation
