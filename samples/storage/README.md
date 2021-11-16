@@ -5,20 +5,20 @@ languages:
 - typescript
 products:
 - azure
-description: "These code samples will show you how to manage Storage using Azure SDK for Javascript/Typescript."
+description: "These code samples will show you how to manage Storage using Azure SDK for JavaScript/TypeScript."
 urlFragment: storage
 ---
 
-# Getting started - Managing Storage using Azure Javascript/Typescript SDK
+# Getting started - Managing Storage using Azure JavaScript/TypeScript SDK
 
-These code samples will show you how to manage Storage using Azure SDK for Javascript/Typescript.
+These code samples will show you how to manage Storage using Azure SDK for JavaScript/TypeScript.
 
 ## Features
 
 This project framework provides examples for the following services:
 
 ### Storage
-* Using the Azure SDK for Javascript/Typescript - Storage Management Library [@azure/arm-storage](https://www.npmjs.com/package/@azure/arm-storage) for the [Azure Storage API](https://docs.microsoft.com/en-us/rest/api/storagerp/)
+* Using the Azure SDK for JavaScript/TypeScript - Storage Management Library [@azure/arm-storage](https://www.npmjs.com/package/@azure/arm-storage) for the [Azure Storage API](https://docs.microsoft.com/en-us/rest/api/storagerp/)
 
 
 ### Installation
