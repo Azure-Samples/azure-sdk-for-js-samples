@@ -1,4 +1,4 @@
-## Code Samples of Azure JavaScript/TypeScript SDK Management Libraries 
+## Azure SDK for TypeScript/JavaScript Samples
 
 This repo contains code samples that demonstrate the usage of next-generation management client libraries of Azure JavaScript/TypeScript SDK.
 
