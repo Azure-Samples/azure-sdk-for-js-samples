@@ -25,3 +25,4 @@ Samples:
 - [Redis](https://github.com/Azure-Samples/azure-samples-js-management/tree/master/samples/redis)
 - [Apimanagement](https://github.com/Azure-Samples/azure-samples-js-management/tree/master/samples/apimanagement)
 - [eventgrid](https://github.com/Azure-Samples/azure-samples-js-management/tree/master/samples/eventgrid)
+- [Monitor](https://github.com/Azure-Samples/azure-samples-js-management/tree/master/samples/monitor)
