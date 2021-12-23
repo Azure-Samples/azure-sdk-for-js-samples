@@ -48,7 +48,7 @@
     "@azure/arm-monitor": "^7.0.0",
     "@azure/arm-network": "^26.0.0",
     "@azure/arm-operationalinsights": "^8.0.0",
-    "@azure/arm-policy": "^5.0.0-beta.2",
+    "@azure/arm-policy": "^5.0.0",
     "@azure/arm-rediscache": "^6.0.0",
     "@azure/arm-resources": "^5.0.0",
     "@azure/arm-servicebus": "^5.0.0",

@@ -9,8 +9,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@azure/arm-eventgrid": "^12.0.0-beta.1",
-    "@azure/arm-storage": "^17.0.0-beta.2",
-    "@azure/identity": "^2.0.0"
+    "@azure/arm-eventgrid": "^12.0.0",
+    "@azure/arm-storage": "^17.0.0",
+    "@azure/identity": "^2.0.1"
   }
 }
