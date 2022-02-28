@@ -11,6 +11,6 @@
   "dependencies": {
     "@azure/arm-resources": "^5.0.0",
     "@azure/identity": "^2.0.1",
-    "azure-arm-managementGroups": "file:managementGroupsAPI-1.0.0-beta.1-2020-10.tgz"
+    "@azure/arm-managementgroups": "^2.0.0"
   }
 }

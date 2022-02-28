@@ -1,6 +1,6 @@
 import { DefaultAzureCredential } from "@azure/identity";
 // eslint-disable-next-line import/no-unresolved
-import { ManagementGroupsAPI } from "azure-arm-managementgroups";
+import { ManagementGroupsAPI } from "@azure/arm-managementgroups";
 import {
   PolicyClient,
   PolicyDefinition,
