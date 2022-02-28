@@ -9,8 +9,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@azure/arm-network": "^26.0.0-beta.1",
-    "@azure/arm-rediscache": "^6.0.0-beta.1",
+    "@azure/arm-network": "^26.0.0",
+    "@azure/arm-rediscache": "^6.0.0",
     "@azure/identity": "^2.0.0"
   }
 }

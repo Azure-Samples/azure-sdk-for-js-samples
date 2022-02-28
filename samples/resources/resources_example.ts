@@ -12,7 +12,7 @@ import {
   TagsResource,
 } from "@azure/arm-resources";
 // eslint-disable-next-line import/no-unresolved
-import { ManagementGroupsAPI } from "azure-arm-managementgroups";
+import { ManagementGroupsAPI } from "@azure/arm-managementgroups";
 
 const subscriptionId = process.env.subscriptionId;
 const credential = new DefaultAzureCredential();

@@ -9,8 +9,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@azure/arm-locks": "^2.0.0-beta.1",
-    "@azure/arm-resources": "^5.0.0-beta.1",
+    "@azure/arm-locks": "^2.0.0",
+    "@azure/arm-resources": "^5.0.0",
     "@azure/identity": "^2.0.0"
   }
 }

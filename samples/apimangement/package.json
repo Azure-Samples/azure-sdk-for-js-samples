@@ -9,7 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@azure/arm-apimanagement": "^8.0.0-beta.1",
+    "@azure/arm-apimanagement": "^8.0.0",
     "@azure/identity": "^2.0.0"
   }
 }
