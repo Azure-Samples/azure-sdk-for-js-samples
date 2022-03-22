@@ -60,7 +60,7 @@ async function create_network_interface(
   networkInterfaceName: any,
   ipconfig: any
 ) {
-  const subneyId =
+  const subnetId =
     "/subscriptions/" +
     subscriptionId +
     "/resourceGroups/" +
@@ -74,7 +74,7 @@ async function create_network_interface(
     networkInterfaceName,
     {
       location: location,
-      ipConfigurations: [{ name: ipconfig, subnet: { id: subneyId } }],
+      ipConfigurations: [{ name: ipconfig, subnet: { id: subnetId } }],
     }
   );
   console.log(networkInterface_create);
