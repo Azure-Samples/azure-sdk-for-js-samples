@@ -47,7 +47,7 @@ const newResourceId =
 const depolymentName = "jstestdeployment";
 const scope =
   "subscriptions/" + subscriptionId + "/resourcegroups/" + resourceGroupName;
-const template = createTmpleate();
+const template = createTemplate();
 const group_id = "20000000-0001-0000-0000-000000000123456";
 let resourceClient: ResourceManagementClient;
 let managementGroupsApi: ManagementGroupsAPI;
@@ -418,7 +418,7 @@ async function resources_deleteById() {
 //--DeploymentsBasicExamples--
 
 // return templeate
-function createTmpleate() {
+function createTemplate() {
   const template: any = {
     $schema:
       "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
