@@ -7,7 +7,7 @@ import {
   PolicySetDefinition,
 } from "@azure/arm-policy";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const policyName = "jspolicy";
@@ -30,7 +30,7 @@ let managementclient: ManagementGroupsAPI;
 
 //managementGroups.createOrUpdate
 async function managementGroups_createOrUpdate() {
-  const result = await managementclient.managementGroups.beginCreateOrUpdateAndWait(
+  const result = await managementclient.managementGroups.createOrUpdate(
     groupId,
     { name: groupId }
   );
@@ -100,8 +100,9 @@ async function policyDefinitions_listBuiltIn() {
 //policyDefinitions.getBuiltIn
 async function policyDefinitions_getBuiltIn() {
   const arrayOne = await policyDefinitions_listBuiltIn();
+
   await policyclient.policyDefinitions
-    .getBuiltIn(arrayOne[0].name)
+    .getBuiltIn((arrayOne[0] as any).name)
     .then((result) => {
       console.log(result);
     });
@@ -135,7 +136,7 @@ async function policyAssignments_create() {
 async function policyAssignments_get() {
   const assigment = await policyAssignments_create();
   await policyclient.policyAssignments
-    .get(assigment.scope, assigment.name)
+    .get(assigment.scope as any, assigment.name as any)
     .then((result) => {
       console.log(result);
     });
@@ -255,7 +256,7 @@ async function policySetDefinitions_list() {
 async function policySetDefinitions_getBuiltIn() {
   const arrayList = await policySetDefinitions_listBuiltIn();
   await policyclient.policySetDefinitions
-    .getBuiltIn(arrayList[0].name)
+    .getBuiltIn((arrayList[0] as any).name)
     .then((result) => {
       console.log(result);
     });
@@ -282,7 +283,7 @@ async function policyDefinitions_deleteAtManagementGroup() {
 //managementGroups.delete
 async function managementGroups_delete() {
   await managementclient.managementGroups
-    .beginDeleteAndWait(groupId)
+    .delete(groupId)
     .then((result) => {
       console.log(result);
     });
@@ -324,7 +325,7 @@ async function policyDefinitions_createOrUpdate() {
 //policyDefinitions.get
 async function policyDefinitions_get() {
   const definition = await policyDefinitions_createOrUpdate();
-  await policyclient.policyDefinitions.get(definition.name).then((result) => {
+  await policyclient.policyDefinitions.get((definition.name as any)).then((result) => {
     console.log(result);
   });
 }
@@ -350,7 +351,7 @@ async function policySetDefinitions_createOrUpdate() {
     },
     policyDefinitions: [
       {
-        policyDefinitionId: definition.id,
+        policyDefinitionId: definition.id as any,
         parameters: {},
       },
     ],
@@ -362,39 +363,11 @@ async function policySetDefinitions_createOrUpdate() {
     });
 }
 
-//policyAssignments.createById
-async function policyAssignments_createById() {
-  const definition = await policyDefinitions_createOrUpdate();
-  const assigment = await policyclient.policyAssignments.createById(policyId, {
-    policyDefinitionId: definition.id,
-  });
-  console.log(assigment);
-  return assigment;
-}
-
 //policySetDefinitions.get
 async function policySetDefinitions_get() {
   await policyclient.policySetDefinitions.get(policySetName).then((result) => {
     console.log(result);
   });
-}
-
-//policyAssignments.getById
-async function policyAssignments_getById() {
-  const assigment = await policyAssignments_createById();
-  await policyclient.policyAssignments.getById(assigment.id).then((result) => {
-    console.log(result);
-  });
-}
-
-//policyAssignments.deleteById
-async function policyAssignments_deleteById() {
-  const assigment = await policyAssignments_createById();
-  await policyclient.policyAssignments
-    .deleteById(assigment.id)
-    .then((result) => {
-      console.log(result);
-    });
 }
 
 //policySetDefinitions.delete
@@ -410,7 +383,7 @@ async function policySetDefinitions_delete() {
 async function policyDefinitions_delete() {
   const definition = await policyDefinitions_createOrUpdate();
   await policyclient.policyDefinitions
-    .delete(definition.name)
+    .delete(definition.name as any)
     .then((result) => {
       console.log(result);
     });

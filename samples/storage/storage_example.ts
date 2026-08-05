@@ -16,7 +16,7 @@ import {
 import { DefaultAzureCredential } from "@azure/identity";
 import { NetworkManagementClient, PrivateEndpoint } from "@azure/arm-network";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
 const storageAccountName = "storageaccountzzzxxx";
@@ -30,9 +30,9 @@ let network_client: NetworkManagementClient;
 
 //--StorageExamples--
 
-//network_client.virtualNetworks.beginCreateOrUpdateAndWait
-//network_client.subnets.beginCreateOrUpdateAndWait
-//privateEndpoints.beginCreateOrUpdateAndWait
+//network_client.virtualNetworks.createOrUpdate
+//network_client.subnets.createOrUpdate
+//privateEndpoints.createOrUpdate
 async function create_endpoint(
   resourceGroup: any,
   location: any,
@@ -42,7 +42,7 @@ async function create_endpoint(
   resource_id: any
 ) {
   //create VNet
-  const vnet_create = await network_client.virtualNetworks.beginCreateOrUpdateAndWait(
+  const vnet_create = await network_client.virtualNetworks.createOrUpdate(
     resourceGroup,
     vnet_name,
     { location: location, addressSpace: { addressPrefixes: ["10.0.0.0/16"] } }
@@ -50,7 +50,7 @@ async function create_endpoint(
   console.log(vnet_create);
 
   //create Subnet
-  const sunbet_create = await network_client.subnets.beginCreateOrUpdateAndWait(
+  const sunbet_create = await network_client.subnets.createOrUpdate(
     resourceGroup,
     vnet_name,
     sub_net,
@@ -84,7 +84,7 @@ async function create_endpoint(
         sub_net,
     },
   };
-  const endpoint_create = await network_client.privateEndpoints.beginCreateOrUpdateAndWait(
+  const endpoint_create = await network_client.privateEndpoints.createOrUpdate(
     resourceGroup,
     endpoint_name,
     parameter
@@ -93,8 +93,8 @@ async function create_endpoint(
   return endpoint_create.id;
 }
 
-// storageAccounts.beginCreateAndWait
-async function storageAccounts_beginCreateAndWait() {
+// storageAccounts.create
+async function storageAccounts_create() {
   const parameter: StorageAccountCreateParameters = {
     sku: {
       name: "Standard_GRS",
@@ -119,7 +119,7 @@ async function storageAccounts_beginCreateAndWait() {
       key2: "value2",
     },
   };
-  const storageaccount = await client.storageAccounts.beginCreateAndWait(
+  const storageaccount = await client.storageAccounts.create(
     resourceGroup,
     storageAccountName,
     parameter
@@ -447,8 +447,13 @@ async function managementPolicies_get() {
 
 //privateEndpointConnections.put
 async function privateEndpointConnections_put() {
-  const privateEndpointConnections = (await storageAccounts_getProperties())
-    .privateEndpointConnections[0].name;
+  const privateEndpointConnections = await storageAccounts_getProperties();
+  const privateEndpointConnectionsName =
+    privateEndpointConnections.privateEndpointConnections?.[0]?.name;
+
+  if (!privateEndpointConnectionsName) {
+    throw new Error("No private endpoint connection found.");
+  }
 
   const parameter: PrivateEndpointConnection = {
     privateLinkServiceConnectionState: {
@@ -460,7 +465,7 @@ async function privateEndpointConnections_put() {
     .put(
       resourceGroup,
       storageAccountName,
-      privateEndpointConnections,
+      privateEndpointConnectionsName,
       parameter
     )
     .then((result) => {
@@ -470,10 +475,15 @@ async function privateEndpointConnections_put() {
 
 //privateEndpointConnections.get
 async function privateEndpointConnections_get() {
-  const privateEndpointConnections = (await storageAccounts_getProperties())
-    .privateEndpointConnections[0].name;
+  const privateEndpointConnectionsName =
+    (await storageAccounts_getProperties()).privateEndpointConnections?.[0]?.name;
+
+  if (!privateEndpointConnectionsName) {
+    throw new Error("No private endpoint connection found.");
+  }
+
   await client.privateEndpointConnections
-    .get(resourceGroup, storageAccountName, privateEndpointConnections)
+    .get(resourceGroup, storageAccountName, privateEndpointConnectionsName)
     .then((result) => {
       console.log(result);
     });
@@ -593,13 +603,13 @@ async function blobContainers_update() {
 
 //blobContainers.deleteImmutabilityPolicy
 async function blobContainers_deleteImmutabilityPolicy() {
-  const etag = (await blobContainers_getImmutabilityPolicy()).eTag;
+  const etag = (await blobContainers_getImmutabilityPolicy()).etag;
   await client.blobContainers
     .deleteImmutabilityPolicy(
       resourceGroup,
       storageAccountName,
       containerName,
-      etag
+      etag as string
     )
     .then((result) => {
       console.log(result);
@@ -608,13 +618,13 @@ async function blobContainers_deleteImmutabilityPolicy() {
 
 //blobContainers.lockImmutabilityPolicy
 async function blobContainers_lockImmutabilityPolicy() {
-  const etag = (await blobContainers_getImmutabilityPolicy()).eTag;
+  const etag = (await blobContainers_getImmutabilityPolicy()).etag;
   await client.blobContainers
     .lockImmutabilityPolicy(
       resourceGroup,
       storageAccountName,
       containerName,
-      etag
+      etag as string
     )
     .then((res) => {
       console.log(res);
@@ -623,7 +633,7 @@ async function blobContainers_lockImmutabilityPolicy() {
 
 //blobContainers.extendImmutabilityPolicy
 async function blobContainers_extendImmutabilityPolicy() {
-  const etag = (await blobContainers_getImmutabilityPolicy()).eTag;
+  const etag = (await blobContainers_getImmutabilityPolicy()).etag;
   const parameter: BlobContainersExtendImmutabilityPolicyOptionalParams = {
     parameters: {
       immutabilityPeriodSinceCreationInDays: 100,
@@ -634,7 +644,7 @@ async function blobContainers_extendImmutabilityPolicy() {
       resourceGroup,
       storageAccountName,
       containerName,
-      etag,
+      etag as string,
       parameter
     )
     .then((res) => {
@@ -684,7 +694,10 @@ async function operations_list() {
 //privateEndpointConnections.delete
 async function privateEndpointConnections_delete() {
   const privateEndpointConnections = (await storageAccounts_getProperties())
-    .privateEndpointConnections[0].name;
+    .privateEndpointConnections?.[0]?.name;
+  if (!privateEndpointConnections) {
+    throw new Error("No private endpoint connection found.");
+  }
   await client.privateEndpointConnections
     .delete(resourceGroup, storageAccountName, privateEndpointConnections)
     .then((res) => {
@@ -713,7 +726,7 @@ async function storageAccounts_delete() {
 async function main() {
   client = new StorageManagementClient(credential, subscriptionId);
   network_client = new NetworkManagementClient(credential, subscriptionId);
-  await storageAccounts_beginCreateAndWait();
+  await storageAccounts_create();
 }
 
 main();

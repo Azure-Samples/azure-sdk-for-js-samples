@@ -13,7 +13,7 @@ import {
   StorageManagementClient,
 } from "@azure/arm-storage";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const AZURE_CLIENT_ID = process.env.AZURE_CLIENT_ID;
 const AZURE_TENANT_ID = process.env.AZURE_TENANT_ID;
 const credential = new DefaultAzureCredential();
@@ -34,7 +34,7 @@ let network_client: NetworkManagementClient;
 
 //--ServerSecurityAlertPoliciesExamples--
 
-//storageAccounts.beginCreateAndWait
+//storageAccounts.create
 //blobContainers.create
 async function createStorageAccountAndBlobContainer() {
   const parameter: StorageAccountCreateParameters = {
@@ -63,7 +63,7 @@ async function createStorageAccountAndBlobContainer() {
   };
   //create storageAccount
   await storage_client.storageAccounts
-    .beginCreateAndWait(resourceGroup, storageAccountName, parameter)
+    .create(resourceGroup, storageAccountName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -81,12 +81,18 @@ async function createStorageAccountAndBlobContainer() {
     { keyName: "key2" }
   );
   console.log(res);
-  return res.keys[0].value;
+
+  const storageKeys = res.keys;
+  if (!storageKeys?.length) {
+    throw new Error("No storage account keys were returned.");
+  }
+
+  return storageKeys[0].value;
 }
 
-//servers.beginCreateOrUpdateAndWait
-async function servers_beginCreateOrUpdateAndWait() {
-  const res = await client.servers.beginCreateOrUpdateAndWait(
+//servers.createOrUpdate
+async function servers_createOrUpdate() {
+  const res = await client.servers.createOrUpdate(
     resourceGroup,
     serverName,
     {
@@ -98,8 +104,8 @@ async function servers_beginCreateOrUpdateAndWait() {
   console.log(res);
 }
 
-//serverSecurityAlertPolicies.beginCreateOrUpdateAndWait
-async function serverSecurityAlertPolicies_beginCreateOrUpdateAndWait() {
+//serverSecurityAlertPolicies.createOrUpdate
+async function serverSecurityAlertPolicies_createOrUpdate() {
   const key = await createStorageAccountAndBlobContainer();
   const parameter: ServerSecurityAlertPolicy = {
     state: "Disabled",
@@ -107,7 +113,7 @@ async function serverSecurityAlertPolicies_beginCreateOrUpdateAndWait() {
     storageAccountAccessKey: key,
     storageEndpoint: "https://" + storageAccountName + ".blob.core.windows.net",
   };
-  const res = await client.serverSecurityAlertPolicies.beginCreateOrUpdateAndWait(
+  const res = await client.serverSecurityAlertPolicies.createOrUpdate(
     resourceGroup,
     serverName,
     securityAlterPolicyName,
@@ -138,8 +144,8 @@ async function serverSecurityAlertPolicies_listByServer() {
 
 //--ServerBlobAuditingPolicy--
 
-//serverBlobAuditingPolicies.beginCreateOrUpdateAndWait
-async function serverBlobAuditingPolicies_beginCreateOrUpdateAndWait() {
+//serverBlobAuditingPolicies.createOrUpdate
+async function serverBlobAuditingPolicies_createOrUpdate() {
   const accessKy = await createStorageAccountAndBlobContainer();
   const parameter: ServerBlobAuditingPolicy = {
     state: "Enabled",
@@ -147,14 +153,14 @@ async function serverBlobAuditingPolicies_beginCreateOrUpdateAndWait() {
     storageEndpoint: "https://" + storageAccountName + ".blob.core.windows.net",
   };
   await client.serverBlobAuditingPolicies
-    .beginCreateOrUpdateAndWait(resourceGroup, serverName, parameter)
+    .createOrUpdate(resourceGroup, serverName, parameter)
     .then((res) => {
       console.log(res);
     });
 }
 
-//extendedServerBlobAuditingPolicies.beginCreateOrUpdateAndWait
-async function extendedServerBlobAuditingPolicies_beginCreateOrUpdateAndWait() {
+//extendedServerBlobAuditingPolicies.createOrUpdate
+async function extendedServerBlobAuditingPolicies_createOrUpdate() {
   const accessKy = await createStorageAccountAndBlobContainer();
   const parameter: ExtendedServerBlobAuditingPolicy = {
     state: "Enabled",
@@ -163,7 +169,7 @@ async function extendedServerBlobAuditingPolicies_beginCreateOrUpdateAndWait() {
     isAzureMonitorTargetEnabled: true,
     isDevopsAuditEnabled: true,
   };
-  const res = await client.extendedServerBlobAuditingPolicies.beginCreateOrUpdateAndWait(
+  const res = await client.extendedServerBlobAuditingPolicies.createOrUpdate(
     resourceGroup,
     serverName,
     parameter
@@ -211,15 +217,15 @@ async function extendedServerBlobAuditingPolicies_listByServer() {
 
 //--ServerAzureAdAdministrator--
 
-//serverAzureADAdministrators.beginCreateOrUpdateAndWait
-async function serverAzureADAdministrators_beginCreateOrUpdateAndWait() {
+//serverAzureADAdministrators.createOrUpdate
+async function serverAzureADAdministrators_createOrUpdate() {
   const parameter: ServerAzureADAdministrator = {
     administratorType: "ActiveDirectory",
     login: "bob@contoso.com",
     sid: AZURE_CLIENT_ID,
     tenantId: AZURE_TENANT_ID,
   };
-  const res = await client.serverAzureADAdministrators.beginCreateOrUpdateAndWait(
+  const res = await client.serverAzureADAdministrators.createOrUpdate(
     resourceGroup,
     serverName,
     administratorName,
@@ -243,17 +249,17 @@ async function serverAzureADAdministrators_listByServer() {
 async function serverAzureADAdministrators_get() {
   const adminName = await serverAzureADAdministrators_listByServer();
   await client.serverAzureADAdministrators
-    .get(resourceGroup, serverName, adminName)
+    .get(resourceGroup, serverName, adminName as string)
     .then((res) => {
       console.log(res);
     });
 }
 
-//serverAzureADAdministrators.beginDeleteAndWait
-async function serverAzureADAdministrators_beginDeleteAndWait() {
+//serverAzureADAdministrators.delete
+async function serverAzureADAdministrators_delete() {
   const adminName = await serverAzureADAdministrators_listByServer();
   await client.serverAzureADAdministrators
-    .beginDeleteAndWait(resourceGroup, serverName, adminName)
+    .delete(resourceGroup, serverName, adminName as string)
     .then((res) => {
       console.log(res);
     });
@@ -280,37 +286,13 @@ async function serverAutomaticTuningOperations_update() {
   console.log(res);
 }
 
-//--ServiceObjectiveExamples--
-
-//serviceObjectives.listByServer
-async function serviceObjectives_listByServer() {
-  for await (const item of client.serviceObjectives.listByServer(
-    resourceGroup,
-    serverName
-  )) {
-    console.log(item);
-    return item.name;
-  }
-}
-
-//serviceObjectives.get
-async function serviceObjectives_get() {
-  const serviceObjectiveName = await serviceObjectives_listByServer();
-  const res = await client.serviceObjectives.get(
-    resourceGroup,
-    serverName,
-    serviceObjectiveName
-  );
-  console.log(res);
-}
-
 //--VirtualNetworkRulesExamples--
 
-//virtualNetworks.beginCreateOrUpdateAndWait
-//subnets.beginCreateOrUpdateAndWait
+//virtualNetworks.createOrUpdate
+//subnets.createOrUpdate
 async function createVirtualNetworkAndSubnet() {
   //create virtualNetwork
-  const vir_res = await network_client.virtualNetworks.beginCreateOrUpdateAndWait(
+  const vir_res = await network_client.virtualNetworks.createOrUpdate(
     resourceGroup,
     virtualNetworkName,
     { location: "eastus", addressSpace: { addressPrefixes: ["10.0.0.0/16"] } }
@@ -318,7 +300,7 @@ async function createVirtualNetworkAndSubnet() {
   console.log(vir_res);
 
   //create subnet
-  const sub_res = await network_client.subnets.beginCreateOrUpdateAndWait(
+  const sub_res = await network_client.subnets.createOrUpdate(
     resourceGroup,
     virtualNetworkName,
     subnetName,
@@ -327,8 +309,8 @@ async function createVirtualNetworkAndSubnet() {
   console.log(sub_res);
 }
 
-//virtualNetworkRules.beginCreateOrUpdateAndWait
-async function virtualNetworkRules_beginCreateOrUpdateAndWait() {
+//virtualNetworkRules.createOrUpdate
+async function virtualNetworkRules_createOrUpdate() {
   const parameter: VirtualNetworkRule = {
     ignoreMissingVnetServiceEndpoint: true,
     virtualNetworkSubnetId:
@@ -341,7 +323,7 @@ async function virtualNetworkRules_beginCreateOrUpdateAndWait() {
       "/subnets/" +
       subnetName,
   };
-  const res = await client.virtualNetworkRules.beginCreateOrUpdateAndWait(
+  const res = await client.virtualNetworkRules.createOrUpdate(
     resourceGroup,
     serverName,
     virtualNetworkRuleName,
@@ -370,56 +352,13 @@ async function virtualNetworkRules_listByServer() {
   }
 }
 
-//virtualNetworkRules.beginDeleteAndWait
-async function virtualNetworkRules_beginDeleteAndWait() {
+//virtualNetworkRules.delete
+async function virtualNetworkRules_delete() {
   await client.virtualNetworkRules
-    .beginDeleteAndWait(resourceGroup, serverName, virtualNetworkRuleName)
+    .delete(resourceGroup, serverName, virtualNetworkRuleName)
     .then((res) => {
       console.log(res);
     });
-}
-
-//--ServerCommunicationLinksExamples--
-
-//serverCommunicationLinks.beginCreateOrUpdateAndWait
-async function serverCommunicationLinks_beginCreateOrUpdateAndWait() {
-  const res = await client.serverCommunicationLinks.beginCreateOrUpdateAndWait(
-    resourceGroup,
-    serverName,
-    communicationName,
-    { partnerServer: partnerServerName }
-  );
-  console.log(res);
-}
-
-//serverCommunicationLinks.get
-async function serverCommunicationLinks_get() {
-  const res = await client.serverCommunicationLinks.get(
-    resourceGroup,
-    serverName,
-    communicationName
-  );
-  console.log(res);
-}
-
-//serverCommunicationLinks.listByServer
-async function serverCommunicationLinks_listByServer() {
-  for await (const item of client.serverCommunicationLinks.listByServer(
-    resourceGroup,
-    serverName
-  )) {
-    console.log(item);
-  }
-}
-
-//serverCommunicationLinks.delete
-async function serverCommunicationLinks_delete() {
-  const res = await client.serverCommunicationLinks.delete(
-    resourceGroup,
-    serverName,
-    communicationName
-  );
-  console.log(res);
 }
 
 //--ServersExamples--
@@ -460,9 +399,9 @@ async function serverUsages_listByServer() {
   }
 }
 
-//servers.beginUpdateAndWait
-async function servers_beginUpdateAndWait() {
-  const res = await client.servers.beginUpdateAndWait(
+//servers.update
+async function servers_update() {
+  const res = await client.servers.update(
     resourceGroup,
     serverName,
     {
@@ -482,19 +421,17 @@ async function servers_checkNameAvailability() {
   console.log(res);
 }
 
-//servers.beginDeleteAndWait
-async function servers_beginDeleteAndWait() {
-  const res = await client.servers.beginDeleteAndWait(
-    resourceGroup,
-    serverName
-  );
+//servers.delete
+async function servers_delete() {
+  const res = await client.servers.delete(resourceGroup, serverName);
   console.log(res);
 }
 
 async function main() {
   client = new SqlManagementClient(credential, subscriptionId);
   storage_client = new StorageManagementClient(credential, subscriptionId);
-  await servers_beginCreateOrUpdateAndWait();
+  network_client = new NetworkManagementClient(credential, subscriptionId);
+  await servers_createOrUpdate();
 }
 
 main();

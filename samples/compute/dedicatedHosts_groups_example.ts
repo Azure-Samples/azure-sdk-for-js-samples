@@ -7,12 +7,11 @@ import {
 } from "@azure/arm-compute";
 import { DefaultAzureCredential } from "@azure/identity";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
-const location = "eastus";
 const host_group_name = "hostgroup";
-const host_name = "hosname";
+const host_name = "hostname";
 let client: ComputeManagementClient;
 
 //--dedicatedHostGroupsExamples--
@@ -87,7 +86,7 @@ async function dedicatedHosts_createOrUpdate() {
     },
   };
   await client.dedicatedHosts
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroupName,
       host_group_name,
       host_name,
@@ -125,7 +124,7 @@ async function dedicatedHosts_update() {
     },
   };
   await client.dedicatedHosts
-    .beginUpdateAndWait(
+    .update(
       resourceGroupName,
       host_group_name,
       host_name,
@@ -139,7 +138,7 @@ async function dedicatedHosts_update() {
 //dedicatedHosts.delete
 async function dedicatedHosts_delete() {
   await client.dedicatedHosts
-    .beginDeleteAndWait(resourceGroupName, host_group_name, host_name)
+    .delete(resourceGroupName, host_group_name, host_name)
     .then((response) => {
       console.log(response);
     });

@@ -12,7 +12,7 @@ import {
 } from "@azure/arm-network";
 import { DefaultAzureCredential } from "@azure/identity";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
 const serviceName = "myapimrndzzz";
@@ -33,7 +33,7 @@ let client: NetworkManagementClient;
 
 //--NetworkBaseExamples--
 
-//publicIPAddresses.beginCreateOrUpdateAndWait
+//publicIPAddresses.createOrUpdate
 async function create_public_ip_addresses(
   resourceGroup: any,
   location: any,
@@ -44,7 +44,7 @@ async function create_public_ip_addresses(
     publicIPAllocationMethod: "Dynamic",
     idleTimeoutInMinutes: 4,
   };
-  const ip_create = await client.publicIPAddresses.beginCreateOrUpdateAndWait(
+  const ip_create = await client.publicIPAddresses.createOrUpdate(
     resourceGroup,
     pulicIpName,
     parameter
@@ -53,7 +53,7 @@ async function create_public_ip_addresses(
   return ip_create;
 }
 
-//networkInterfaces.beginCreateOrUpdateAndWait
+//networkInterfaces.createOrUpdate
 async function create_network_interface(
   resourceGroup: any,
   location: any,
@@ -69,7 +69,7 @@ async function create_network_interface(
     virtualNetworkName +
     "/subnets/" +
     subnetName;
-  const networkInterface_create = await client.networkInterfaces.beginCreateOrUpdateAndWait(
+  const networkInterface_create = await client.networkInterfaces.createOrUpdate(
     resourceGroup,
     networkInterfaceName,
     {
@@ -81,8 +81,8 @@ async function create_network_interface(
   return networkInterface_create;
 }
 
-//virtualNetworks.beginCreateOrUpdateAndWait
-async function virtualNetworks_beginCreateOrUpdateAndWait() {
+//virtualNetworks.createOrUpdate
+async function virtualNetworks_createOrUpdate() {
   const parameter: VirtualNetwork = {
     addressSpace: {
       addressPrefixes: ["10.0.0.0/16"],
@@ -90,14 +90,14 @@ async function virtualNetworks_beginCreateOrUpdateAndWait() {
     location: "eastus",
   };
   await client.virtualNetworks
-    .beginCreateOrUpdateAndWait(resourceGroup, virtualNetworkName, parameter)
+    .createOrUpdate(resourceGroup, virtualNetworkName, parameter)
     .then((res) => {
       console.log(res);
     });
 }
 
-// //virtualNetworks.beginCreateOrUpdateAndWait
-async function remote_virtualNetworks_beginCreateOrUpdateAndWait() {
+// //virtualNetworks.createOrUpdate
+async function remote_virtualNetworks_createOrUpdate() {
   await create_network_interface(
     resourceGroup,
     "eastus",
@@ -111,7 +111,7 @@ async function remote_virtualNetworks_beginCreateOrUpdateAndWait() {
     location: "eastus",
   };
   await client.virtualNetworks
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroup,
       remoteVirtualNetworkName,
       parameter
@@ -121,13 +121,13 @@ async function remote_virtualNetworks_beginCreateOrUpdateAndWait() {
     });
 }
 
-//subnets.beginCreateOrUpdateAndWait
-async function subnets_beginCreateOrUpdateAndWait() {
+//subnets.createOrUpdate
+async function subnets_createOrUpdate() {
   const parameter: Subnet = {
     addressPrefix: "10.0.0.0/24",
   };
   await client.subnets
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroup,
       virtualNetworkName,
       subnetName,
@@ -145,12 +145,12 @@ async function subnets_beginCreateOrUpdateAndWait() {
 }
 
 //
-async function gateway_subnets_beginCreateOrUpdateAndWait() {
+async function gateway_subnets_createOrUpdate() {
   const parameter: Subnet = {
     addressPrefix: "10.0.1.0/24",
   };
   await client.subnets
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroup,
       virtualNetworkName,
       gatewaySubnetName,
@@ -161,8 +161,8 @@ async function gateway_subnets_beginCreateOrUpdateAndWait() {
     });
 }
 
-//localNetworkGateways.beginCreateOrUpdateAndWait
-async function localNetworkGateways_beginCreateOrUpdateAndWait() {
+//localNetworkGateways.createOrUpdate
+async function localNetworkGateways_createOrUpdate() {
   const parameter: LocalNetworkGateway = {
     localNetworkAddressSpace: {
       addressPrefixes: ["10.1.0.0/16"],
@@ -171,7 +171,7 @@ async function localNetworkGateways_beginCreateOrUpdateAndWait() {
     location: "eastus",
   };
   await client.localNetworkGateways
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroup,
       localNetworkGatewayName,
       parameter
@@ -181,8 +181,8 @@ async function localNetworkGateways_beginCreateOrUpdateAndWait() {
     });
 }
 
-//virtualNetworkGateways.beginCreateOrUpdateAndWait
-async function virtualNetworkGateways_beginCreateOrUpdateAndWait() {
+//virtualNetworkGateways.createOrUpdate
+async function virtualNetworkGateways_createOrUpdate() {
   const parameter: VirtualNetworkGateway = {
     ipConfigurations: [
       {
@@ -230,7 +230,7 @@ async function virtualNetworkGateways_beginCreateOrUpdateAndWait() {
     location: "eastus",
   };
   await client.virtualNetworkGateways
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroup,
       virtualNetworkGatewayName,
       parameter
@@ -240,8 +240,8 @@ async function virtualNetworkGateways_beginCreateOrUpdateAndWait() {
     });
 }
 
-//virtualNetworkPeerings.beginCreateOrUpdateAndWait
-async function virtualNetworkPeerings_beginCreateOrUpdateAndWait() {
+//virtualNetworkPeerings.createOrUpdate
+async function virtualNetworkPeerings_createOrUpdate() {
   const parameter: VirtualNetworkPeering = {
     allowVirtualNetworkAccess: true,
     allowForwardedTraffic: true,
@@ -258,7 +258,7 @@ async function virtualNetworkPeerings_beginCreateOrUpdateAndWait() {
     },
   };
   await client.virtualNetworkPeerings
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroup,
       virtualNetworkName,
       virtualNetworkPeeringName,
@@ -269,8 +269,8 @@ async function virtualNetworkPeerings_beginCreateOrUpdateAndWait() {
     });
 }
 
-//virtualNetworkGatewayConnections.beginCreateOrUpdateAndWait
-async function virtualNetworkGatewayConnections_beginCreateOrUpdateAndWait() {
+//virtualNetworkGatewayConnections.createOrUpdate
+async function virtualNetworkGatewayConnections_createOrUpdate() {
   const parameter: VirtualNetworkGatewayConnection = {
     virtualNetworkGateway1: {
       ipConfigurations: [
@@ -355,19 +355,19 @@ async function virtualNetworkGatewayConnections_beginCreateOrUpdateAndWait() {
     location: "eastus",
   };
   await client.virtualNetworkGatewayConnections
-    .beginCreateOrUpdateAndWait(resourceGroup, connectionName, parameter)
+    .createOrUpdate(resourceGroup, connectionName, parameter)
     .then((res) => {
       console.log(res);
     });
 }
 
-//virtualNetworkGatewayConnections.beginSetSharedKeyAndWait
-async function virtualNetworkGatewayConnections_beginSetSharedKeyAndWait() {
+//virtualNetworkGatewayConnections.setSharedKey
+async function virtualNetworkGatewayConnections_setSharedKey() {
   const parameter: ConnectionSharedKey = {
     value: "AzureAbc123",
   };
   await client.virtualNetworkGatewayConnections
-    .beginSetSharedKeyAndWait(resourceGroup, connectionName, parameter)
+    .setSharedKey(resourceGroup, connectionName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -540,10 +540,10 @@ async function virtualNetworks_listAll() {
   }
 }
 
-//virtualNetworkGateways.beginGetAdvertisedRoutesAndWait
-async function virtualNetworkGateways_beginGetAdvertisedRoutesAndWait() {
+//virtualNetworkGateways.getAdvertisedRoutes
+async function virtualNetworkGateways_getAdvertisedRoutes() {
   await client.virtualNetworkGateways
-    .beginGetAdvertisedRoutesAndWait(
+    .getAdvertisedRoutes(
       resourceGroup,
       virtualNetworkGatewayName,
       "10.0.0.2"
@@ -553,28 +553,28 @@ async function virtualNetworkGateways_beginGetAdvertisedRoutesAndWait() {
     });
 }
 
-//virtualNetworkGateways.beginGetBgpPeerStatusAndWait
-async function virtualNetworkGateways_beginGetBgpPeerStatusAndWait() {
+//virtualNetworkGateways.getBgpPeerStatus
+async function virtualNetworkGateways_getBgpPeerStatus() {
   await client.virtualNetworkGateways
-    .beginGetBgpPeerStatusAndWait(resourceGroup, virtualNetworkGatewayName)
+    .getBgpPeerStatus(resourceGroup, virtualNetworkGatewayName)
     .then((res) => {
       console.log(res);
     });
 }
 
-//virtualNetworkGateways.beginGetLearnedRoutesAndWait
-async function virtualNetworkGateways_beginGetLearnedRoutesAndWait() {
+//virtualNetworkGateways.getLearnedRoutes
+async function virtualNetworkGateways_getLearnedRoutes() {
   await client.virtualNetworkGateways
-    .beginGetLearnedRoutesAndWait(resourceGroup, virtualNetworkGatewayName)
+    .getLearnedRoutes(resourceGroup, virtualNetworkGatewayName)
     .then((res) => {
       console.log(res);
     });
 }
 
-//virtualNetworkGatewayConnections.beginResetSharedKeyAndWait
-async function virtualNetworkGatewayConnections_beginResetSharedKeyAndWait() {
+//virtualNetworkGatewayConnections.resetSharedKey
+async function virtualNetworkGatewayConnections_resetSharedKey() {
   await client.virtualNetworkGatewayConnections
-    .beginResetSharedKeyAndWait(resourceGroup, connectionName, {
+    .resetSharedKey(resourceGroup, connectionName, {
       keyLength: 128,
     })
     .then((res) => {
@@ -582,19 +582,19 @@ async function virtualNetworkGatewayConnections_beginResetSharedKeyAndWait() {
     });
 }
 
-//virtualNetworkGateways.beginResetAndWait
-async function virtualNetworkGateways_beginResetAndWait() {
+//virtualNetworkGateways.reset
+async function virtualNetworkGateways_reset() {
   await client.virtualNetworkGateways
-    .beginResetAndWait(resourceGroup, virtualNetworkGatewayName)
+    .reset(resourceGroup, virtualNetworkGatewayName)
     .then((res) => {
       console.log(res);
     });
 }
 
-//virtualNetworkGateways.beginUpdateTagsAndWait
-async function virtualNetworkGateways_beginUpdateTagsAndWait() {
+//virtualNetworkGateways.updateTags
+async function virtualNetworkGateways_updateTags() {
   await client.virtualNetworkGateways
-    .beginUpdateTagsAndWait(resourceGroup, virtualNetworkGatewayName, {
+    .updateTags(resourceGroup, virtualNetworkGatewayName, {
       tags: { tag1: "value1", tag2: "value2" },
     })
     .then((res) => {
@@ -624,10 +624,10 @@ async function virtualNetworks_updateTags() {
     });
 }
 
-//virtualNetworkGatewayConnections.beginUpdateTagsAndWait
-async function virtualNetworkGatewayConnections_beginUpdateTagsAndWait() {
+//virtualNetworkGatewayConnections.updateTags
+async function virtualNetworkGatewayConnections_updateTags() {
   await client.virtualNetworkGatewayConnections
-    .beginUpdateTagsAndWait(resourceGroup, connectionName, {
+    .updateTags(resourceGroup, connectionName, {
       tags: { tag1: "value1", tag2: "value2" },
     })
     .then((res) => {
@@ -635,68 +635,64 @@ async function virtualNetworkGatewayConnections_beginUpdateTagsAndWait() {
     });
 }
 
-//virtualNetworkGatewayConnections.beginDeleteAndWait
-async function virtualNetworkGatewayConnections_beginDeleteAndWait() {
+//virtualNetworkGatewayConnections.delete
+async function virtualNetworkGatewayConnections_delete() {
   await client.virtualNetworkGatewayConnections
-    .beginDeleteAndWait(resourceGroup, connectionName)
+    .delete(resourceGroup, connectionName)
     .then((res) => {
       console.log(res);
     });
 }
 
-//virtualNetworkPeerings.beginDeleteAndWait
-async function virtualNetworkPeerings_beginDeleteAndWait() {
+//virtualNetworkPeerings.delete
+async function virtualNetworkPeerings_delete() {
   await client.virtualNetworkPeerings
-    .beginDeleteAndWait(
-      resourceGroup,
-      virtualNetworkName,
-      virtualNetworkPeeringName
-    )
+    .delete(resourceGroup, virtualNetworkName, virtualNetworkPeeringName)
     .then((res) => {
       console.log(res);
     });
 }
 
-//virtualNetworkGateways.beginDeleteAndWait
-async function virtualNetworkGateways_beginDeleteAndWait() {
+//virtualNetworkGateways.delete
+async function virtualNetworkGateways_delete() {
   await client.virtualNetworkGateways
-    .beginDeleteAndWait(resourceGroup, virtualNetworkGatewayName)
+    .delete(resourceGroup, virtualNetworkGatewayName)
     .then((res) => {
       console.log(res);
     });
 }
 
-//localNetworkGateways.beginDeleteAndWait
-async function localNetworkGateways_beginDeleteAndWait() {
+//localNetworkGateways.delete
+async function localNetworkGateways_delete() {
   await client.localNetworkGateways
-    .beginDeleteAndWait(resourceGroup, localNetworkGatewayName)
+    .delete(resourceGroup, localNetworkGatewayName)
     .then((res) => {
       console.log(res);
     });
 }
 
-//networkInterfaces.beginDeleteAndWait
-async function networkInterfaces_beginDeleteAndWait() {
+//networkInterfaces.delete
+async function networkInterfaces_delete() {
   await client.networkInterfaces
-    .beginDeleteAndWait(resourceGroup, networkInterfaceName)
+    .delete(resourceGroup, networkInterfaceName)
     .then((res) => {
       console.log(res);
     });
 }
 
-//subnets.beginDeleteAndWait
-async function subnets_beginDeleteAndWait() {
+//subnets.delete
+async function subnets_delete() {
   await client.subnets
-    .beginDeleteAndWait(resourceGroup, virtualNetworkName, subnetName)
+    .delete(resourceGroup, virtualNetworkName, subnetName)
     .then((res) => {
       console.log(res);
     });
 }
 
-//subnets.beginDeleteAndWait
-async function virtualNetworks_beginDeleteAndWait() {
+//subnets.delete
+async function virtualNetworks_delete() {
   await client.virtualNetworks
-    .beginDeleteAndWait(resourceGroup, virtualNetworkName)
+    .delete(resourceGroup, virtualNetworkName)
     .then((res) => {
       console.log(res);
     });
@@ -704,7 +700,7 @@ async function virtualNetworks_beginDeleteAndWait() {
 
 async function main() {
   client = new NetworkManagementClient(credential, subscriptionId);
-  await virtualNetworks_beginCreateOrUpdateAndWait();
+  await virtualNetworks_createOrUpdate();
 }
 
 main();

@@ -12,7 +12,7 @@ import {
   StorageManagementClient,
 } from "@azure/arm-storage";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const location = "eastus";
@@ -32,8 +32,8 @@ let client: EventHubManagementClient;
 let storage_client: StorageManagementClient;
 let network_client: NetworkManagementClient;
 
-// storageAccounts.beginCreateAndWait
-async function storageAccounts_beginCreateAndWait() {
+// storageAccounts.create
+async function storageAccounts_create() {
   const parameter: StorageAccountCreateParameters = {
     sku: {
       name: "Standard_GRS",
@@ -41,7 +41,7 @@ async function storageAccounts_beginCreateAndWait() {
     kind: "StorageV2",
     location: location,
   };
-  const storageaccount = await storage_client.storageAccounts.beginCreateAndWait(
+  const storageaccount = await storage_client.storageAccounts.create(
     resourceGroupName,
     storageAccountName,
     parameter
@@ -49,8 +49,8 @@ async function storageAccounts_beginCreateAndWait() {
   console.log(storageaccount);
 }
 
-// virtualNetworks.beginCreateOrUpdateAndWait
-// subnets.beginCreateOrUpdateAndWait
+// virtualNetworks.createOrUpdate
+// subnets.createOrUpdate
 async function createVirtualNetwork() {
   const parameter: VirtualNetwork = {
     location: location,
@@ -58,16 +58,15 @@ async function createVirtualNetwork() {
       addressPrefixes: ["10.0.0.0/16"],
     },
   };
-  await network_client.virtualNetworks
-    .beginCreateOrUpdateAndWait(
-      resourceGroupName,
-      virtualNetworkName,
-      parameter
-    )
+  await network_client.virtualNetworks.createOrUpdate(
+    resourceGroupName,
+    virtualNetworkName,
+    parameter
+  )
     .then((result) => {
       console.log(result);
     });
-  const subnet_info = await network_client.subnets.beginCreateOrUpdateAndWait(
+  const subnet_info = await network_client.subnets.createOrUpdate(
     resourceGroupName,
     virtualNetworkName,
     subnetName,
@@ -77,8 +76,8 @@ async function createVirtualNetwork() {
   return subnet_info;
 }
 
-//namespaces.beginCreateOrUpdateAndWait
-async function namespaces_beginCreateOrUpdateAndWait() {
+//namespaces.createOrUpdate
+async function namespaces_createOrUpdate() {
   const parameter: EHNamespace = {
     sku: {
       name: "Standard",
@@ -90,7 +89,7 @@ async function namespaces_beginCreateOrUpdateAndWait() {
       tag2: "value2",
     },
   };
-  const res = await client.namespaces.beginCreateOrUpdateAndWait(
+  const res = await client.namespaces.createOrUpdate(
     resourceGroupName,
     namespaceName,
     parameter
@@ -106,7 +105,7 @@ async function namespaces_get() {
 
 //eventHubs.createOrUpdate
 async function eventHubs_createOrUpdate() {
-  await storageAccounts_beginCreateAndWait();
+  await storageAccounts_create();
   await createVirtualNetwork();
   //create eventhub
   const parameter: Eventhub = {
@@ -298,16 +297,6 @@ async function namespaces_listAuthorizationRules() {
   }
 }
 
-//namespaces.listVirtualNetworkRules
-async function namespaces_listVirtualNetworkRules() {
-  for await (const item of client.namespaces.listVirtualNetworkRules(
-    resourceGroupName,
-    namespaceName
-  )) {
-    console.log(item);
-  }
-}
-
 //eventHubs.listByNamespace
 async function eventHubs_listByNamespace() {
   for await (const item of client.eventHubs.listByNamespace(
@@ -323,14 +312,6 @@ async function namespaces_listByResourceGroup() {
   for await (const item of client.namespaces.listByResourceGroup(
     resourceGroupName
   )) {
-    console.log(item);
-  }
-}
-
-//regions.listBySku
-async function regions_listBySku() {
-  //"Basic" supported api-versions are '2014-09-01,2015-08-01,2017-04-01'
-  for await (const item of client.regions.listBySku(skuName)) {
     console.log(item);
   }
 }
@@ -460,8 +441,8 @@ async function eventHubs_delete() {
   console.log(res);
 }
 
-//namespaces.beginCreateOrUpdateAndWait(namespaceName1)
-async function namespaces_beginCreateOrUpdateAndWait1() {
+//namespaces.createOrUpdate(namespaceName1)
+async function namespaces_createOrUpdate1() {
   const parameter: EHNamespace = {
     sku: {
       name: "Standard",
@@ -473,7 +454,7 @@ async function namespaces_beginCreateOrUpdateAndWait1() {
       tag2: "value2",
     },
   };
-  const res = await client.namespaces.beginCreateOrUpdateAndWait(
+  const res = await client.namespaces.createOrUpdate(
     resourceGroupName,
     namespaceName1,
     parameter
@@ -481,8 +462,8 @@ async function namespaces_beginCreateOrUpdateAndWait1() {
   console.log(res);
 }
 
-//namespaces.beginCreateOrUpdateAndWait(namespaceName2)
-async function namespaces_beginCreateOrUpdateAndWait2() {
+//namespaces.createOrUpdate(namespaceName2)
+async function namespaces_createOrUpdate2() {
   const parameter: EHNamespace = {
     sku: {
       name: "Standard",
@@ -494,7 +475,7 @@ async function namespaces_beginCreateOrUpdateAndWait2() {
       tag2: "value2",
     },
   };
-  const res = await client.namespaces.beginCreateOrUpdateAndWait(
+  const res = await client.namespaces.createOrUpdate(
     resourceGroupName,
     namespaceName2,
     parameter
@@ -529,7 +510,7 @@ async function disasterRecoveryConfigs_checkNameAvailability() {
 
 //disasterRecoveryConfigs.createOrUpdate
 async function disasterRecoveryConfigs_createOrUpdate() {
-  const secondNamespace = await namespaces_beginCreateOrUpdateAndWait2();
+  const secondNamespace = await namespaces_createOrUpdate2();
   const res = await client.disasterRecoveryConfigs.createOrUpdate(
     resourceGroupName,
     namespaceName1,
@@ -622,9 +603,9 @@ async function disasterRecoveryConfigs_delete() {
   console.log(res);
 }
 
-//namespaces.beginDeleteAndWait
-async function namespaces_beginDeleteAndWait() {
-  const res = await client.namespaces.beginDeleteAndWait(
+//namespaces.delete
+async function namespaces_delete() {
+  const res = await client.namespaces.delete(
     resourceGroupName,
     namespaceName
   );
@@ -635,7 +616,7 @@ async function main() {
   client = new EventHubManagementClient(credential, subscriptionId);
   storage_client = new StorageManagementClient(credential, subscriptionId);
   network_client = new NetworkManagementClient(credential, subscriptionId);
-  await namespaces_beginCreateOrUpdateAndWait();
+  await namespaces_createOrUpdate();
 }
 
 main();

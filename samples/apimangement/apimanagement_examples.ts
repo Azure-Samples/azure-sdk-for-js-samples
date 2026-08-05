@@ -5,15 +5,15 @@ import {
 } from "@azure/arm-apimanagement";
 import { DefaultAzureCredential } from "@azure/identity";
 
-const subscriptionId = process.env.SUBSCRIPTION_ID;
+const subscriptionId = process.env.SUBSCRIPTION_ID || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const location = "eastus";
 const serviceName = "myservicexxx";
 let client: ApiManagementClient;
 
-//apiManagementService.beginCreateOrUpdateAndWait
-async function apiManagementService_beginCreateOrUpdateAndWait() {
+//apiManagementService.createOrUpdate
+async function apiManagementService_createOrUpdate() {
   const parameter: ApiManagementServiceResource = {
     location: location,
     sku: {
@@ -23,7 +23,7 @@ async function apiManagementService_beginCreateOrUpdateAndWait() {
     publisherEmail: "123@microsoft.com",
     publisherName: "123",
   };
-  const res = await client.apiManagementService.beginCreateOrUpdateAndWait(
+  const res = await client.apiManagementService.createOrUpdate(
     resourceGroupName,
     serviceName,
     parameter
@@ -47,8 +47,8 @@ async function apiManagementService_listByResourceGroup() {
   }
 }
 
-//apiManagementService.beginUpdateAndWait
-async function apiManagementService_beginUpdateAndWait() {
+//apiManagementService.update
+async function apiManagementService_update() {
   let count = 0;
   while (count < 20) {
     count++;
@@ -63,7 +63,7 @@ async function apiManagementService_beginUpdateAndWait() {
             "false",
         },
       };
-      const res = await client.apiManagementService.beginUpdateAndWait(
+      const res = await client.apiManagementService.update(
         resourceGroupName,
         serviceName,
         parameter
@@ -77,8 +77,8 @@ async function apiManagementService_beginUpdateAndWait() {
   }
 }
 
-//apiManagementService.beginDeleteAndWait
-async function apiManagementService_beginDeleteAndWait() {
+//apiManagementService.delete
+async function apiManagementService_delete() {
   let count = 0;
   while (count < 20) {
     count++;
@@ -87,7 +87,7 @@ async function apiManagementService_beginDeleteAndWait() {
       serviceName
     );
     if (res.provisioningState === "Succeeded") {
-      const res = await client.apiManagementService.beginDeleteAndWait(
+      const res = await client.apiManagementService.delete(
         resourceGroupName,
         serviceName
       );
@@ -100,7 +100,7 @@ async function apiManagementService_beginDeleteAndWait() {
   }
   //soft-delete purge
   await client.deletedServices
-    .beginPurgeAndWait("myservicexxx2", location)
+    .purge("myservicexxx2", location)
     .then((res) => {
       console.log(res);
     });
@@ -108,7 +108,7 @@ async function apiManagementService_beginDeleteAndWait() {
 
 async function main() {
   client = new ApiManagementClient(credential, subscriptionId);
-  await apiManagementService_beginDeleteAndWait();
+  await apiManagementService_delete();
 }
 
 function sleep(ms: number) {

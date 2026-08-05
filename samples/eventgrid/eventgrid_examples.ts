@@ -9,7 +9,7 @@ import {
   StorageManagementClient,
 } from "@azure/arm-storage";
 
-const subscriptionId = process.env.SUBSCRIPTION_ID;
+const subscriptionId = process.env.SUBSCRIPTION_ID || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const location = "eastus";
@@ -21,7 +21,7 @@ const domainName = "mydomainxxx";
 let client: EventGridManagementClient;
 let storage_client: StorageManagementClient;
 
-//storageAccounts.beginCreateAndWait
+//storageAccounts.create
 //queue.create
 async function createStorageAccount() {
   const parameter: StorageAccountCreateParameters = {
@@ -49,7 +49,7 @@ async function createStorageAccount() {
     },
   };
   // create storageAccounts
-  const storageaccount = await storage_client.storageAccounts.beginCreateAndWait(
+  const storageaccount = await storage_client.storageAccounts.create(
     resourceGroupName,
     storageAccountName,
     parameter
@@ -65,9 +65,9 @@ async function createStorageAccount() {
   console.log(queueCreate);
 }
 
-//topics.beginCreateOrUpdateAndWait
-async function topics_beginCreateOrUpdateAndWait() {
-  const res = await client.topics.beginCreateOrUpdateAndWait(
+//topics.createOrUpdate
+async function topics_createOrUpdate() {
+  const res = await client.topics.createOrUpdate(
     resourceGroupName,
     topicName,
     { location: "westcentralus" }
@@ -75,8 +75,8 @@ async function topics_beginCreateOrUpdateAndWait() {
   console.log(res);
 }
 
-//eventSubscriptions.beginCreateOrUpdateAndWait
-async function eventSubscriptions_beginCreateOrUpdateAndWait() {
+//eventSubscriptions.createOrUpdate
+async function eventSubscriptions_createOrUpdate() {
   const scope =
     "/subscriptions/" +
     subscriptionId +
@@ -99,7 +99,7 @@ async function eventSubscriptions_beginCreateOrUpdateAndWait() {
       eventTimeToLiveInMinutes: 5,
     },
   };
-  const res = await client.eventSubscriptions.beginCreateOrUpdateAndWait(
+  const res = await client.eventSubscriptions.createOrUpdate(
     scope,
     eventsubscriptName,
     parameter
@@ -107,8 +107,8 @@ async function eventSubscriptions_beginCreateOrUpdateAndWait() {
   console.log(res);
 }
 
-//eventSubscriptions.beginDeleteAndWait
-async function eventSubscriptions_beginDeleteAndWait() {
+//eventSubscriptions.delete
+async function eventSubscriptions_delete() {
   const scope =
     "/subscriptions/" +
     subscriptionId +
@@ -116,22 +116,22 @@ async function eventSubscriptions_beginDeleteAndWait() {
     resourceGroupName +
     "/providers/Microsoft.EventGrid/topics/" +
     topicName;
-  const res = await client.eventSubscriptions.beginDeleteAndWait(
+  const res = await client.eventSubscriptions.delete(
     scope,
     eventsubscriptName
   );
   console.log(res);
 }
 
-//topics.beginDeleteAndWait
-async function topics_beginDeleteAndWait() {
-  const res = client.topics.beginDeleteAndWait(resourceGroupName, topicName);
+//topics.delete
+async function topics_delete() {
+  const res = await client.topics.delete(resourceGroupName, topicName);
   console.log(res);
 }
 
-//domains.beginCreateOrUpdateAndWait
-async function domains_beginCreateOrUpdateAndWait() {
-  const res = await client.domains.beginCreateOrUpdateAndWait(
+//domains.createOrUpdate
+async function domains_createOrUpdate() {
+  const res = await client.domains.createOrUpdate(
     resourceGroupName,
     domainName,
     { location: location }
@@ -139,15 +139,15 @@ async function domains_beginCreateOrUpdateAndWait() {
   console.log(res);
 }
 
-//domains.beginUpdateAndWait
-async function domains_beginUpdateAndWait() {
+//domains.update
+async function domains_update() {
   const parameter: DomainUpdateParameters = {
     tags: {
       tag1: "value1",
       tag2: "value2",
     },
   };
-  const res = await client.domains.beginUpdateAndWait(
+  const res = await client.domains.update(
     resourceGroupName,
     domainName,
     parameter
@@ -170,9 +170,9 @@ async function domains_listByResourceGroup() {
   }
 }
 
-//domains.beginDeleteAndWait
-async function domains_beginDeleteAndWait() {
-  const res = await client.domains.beginDeleteAndWait(
+//domains.delete
+async function domains_delete() {
+  const res = await client.domains.delete(
     resourceGroupName,
     domainName
   );
@@ -182,7 +182,7 @@ async function domains_beginDeleteAndWait() {
 async function main() {
   client = new EventGridManagementClient(credential, subscriptionId);
   storage_client = new StorageManagementClient(credential, subscriptionId);
-  await eventSubscriptions_beginCreateOrUpdateAndWait();
+  await eventSubscriptions_createOrUpdate();
 }
 
 main();

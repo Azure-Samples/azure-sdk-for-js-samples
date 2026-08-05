@@ -1,5 +1,4 @@
 import {
-  AgentPool,
   ContainerRegistryManagementClient,
   Registry,
   ScopeMap,
@@ -9,40 +8,19 @@ import {
 } from "@azure/arm-containerregistry";
 import { DefaultAzureCredential } from "@azure/identity";
 
-const subscriptionId = process.env.SUBSCRIPTION_ID;
+const subscriptionId = process.env.SUBSCRIPTION_ID || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const location = "westus";
 const resourceGroup = "myjstest";
 const registryName = "myregistryxxxyy";
 const replicationName = "myreplicationxxx";
 const webhookName = "mywebhookxxx";
-const agentPoolName = "myagentpollxxx";
 const scopeMapName = "myscopemapxxx";
 let client: ContainerRegistryManagementClient;
 
-//registries.beginCreateAndWait for replications
-async function registries_beginCreateAndWaitForReplications() {
-  const parameter: Registry = {
-    location: location,
-    tags: {
-      key: "value",
-    },
-    sku: {
-      name: "Premium",
-    },
-    adminUserEnabled: true,
-  };
-  const res = await client.registries.beginCreateAndWait(
-    resourceGroup,
-    registryName,
-    parameter
-  );
-  console.log(res);
-}
-
-//replications.beginCreateAndWait
-async function replications_beginCreateAndWait() {
-  const res = await client.replications.beginCreateAndWait(
+//replications.create
+async function replications_create() {
+  const res = await client.replications.create(
     resourceGroup,
     registryName,
     replicationName,
@@ -71,9 +49,9 @@ async function replications_list() {
   }
 }
 
-//replications.beginUpdateAndWait
-async function replications_beginUpdateAndWait() {
-  const res = await client.replications.beginUpdateAndWait(
+//replications.update
+async function replications_update() {
+  const res = await client.replications.update(
     resourceGroup,
     registryName,
     replicationName,
@@ -82,9 +60,9 @@ async function replications_beginUpdateAndWait() {
   console.log(res);
 }
 
-//replications.beginDeleteAndWait
-async function replications_beginDeleteAndWait() {
-  const res = await client.replications.beginDeleteAndWait(
+//replications.delete
+async function replications_delete() {
+  const res = await client.replications.delete(
     resourceGroup,
     registryName,
     replicationName
@@ -92,44 +70,15 @@ async function replications_beginDeleteAndWait() {
   console.log(res);
 }
 
-//registries.beginDeleteAndWait
-async function registries_beginDeleteAndWaitForReplications() {
-  const res = await client.registries.beginDeleteAndWait(
-    resourceGroup,
-    registryName
-  );
-  console.log(res);
-}
-
-//registries.beginCreateAndWait for webhooks
-async function registries_beginCreateAndWaitForWebhooks() {
-  const parameter: Registry = {
-    location: location,
-    tags: {
-      key: "value",
-    },
-    sku: {
-      name: "Standard",
-    },
-    adminUserEnabled: true,
-  };
-  const res = await client.registries.beginCreateAndWait(
-    resourceGroup,
-    registryName,
-    parameter
-  );
-  console.log(res);
-}
-
-//webhooks.beginCreateAndWait
-async function webhooks_beginCreateAndWait() {
+//webhooks.create
+async function webhooks_create() {
   const parameter: WebhookCreateParameters = {
     location: location,
     serviceUri: "http://www.microsoft.com",
     status: "enabled",
     actions: ["push"],
   };
-  const res = await client.webhooks.beginCreateAndWait(
+  const res = await client.webhooks.create(
     resourceGroup,
     registryName,
     webhookName,
@@ -186,14 +135,14 @@ async function webhooks_ping() {
   console.log(res);
 }
 
-//webhooks.beginUpdateAndWait
-async function webhooks_beginUpdateAndWait() {
+//webhooks.update
+async function webhooks_update() {
   const parameter: WebhookUpdateParameters = {
     serviceUri: "http://www.microsoft.com",
     status: "enabled",
     actions: ["push"],
   };
-  const res = await client.webhooks.beginUpdateAndWait(
+  const res = await client.webhooks.update(
     resourceGroup,
     registryName,
     webhookName,
@@ -202,9 +151,9 @@ async function webhooks_beginUpdateAndWait() {
   console.log(res);
 }
 
-//webhooks.beginDeleteAndWait
-async function webhooks_beginDeleteAndWait() {
-  const res = await client.webhooks.beginDeleteAndWait(
+//webhooks.delete
+async function webhooks_delete() {
+  const res = await client.webhooks.delete(
     resourceGroup,
     registryName,
     webhookName
@@ -212,17 +161,8 @@ async function webhooks_beginDeleteAndWait() {
   console.log(res);
 }
 
-//registries.beginDeleteAndWait
-async function registries_beginDeleteAndWaitForWebhooks() {
-  const res = await client.registries.beginDeleteAndWait(
-    resourceGroup,
-    registryName
-  );
-  console.log(res);
-}
-
-//registries.beginCreateAndWait for agentPools
-async function registries_beginCreateAndWaitForAgentPools() {
+//registries.create
+async function registries_create() {
   const parameter: Registry = {
     location: location,
     tags: {
@@ -233,7 +173,7 @@ async function registries_beginCreateAndWaitForAgentPools() {
     },
     adminUserEnabled: false,
   };
-  const res = await client.registries.beginCreateAndWait(
+  const res = await client.registries.create(
     resourceGroup,
     registryName,
     parameter
@@ -241,79 +181,8 @@ async function registries_beginCreateAndWaitForAgentPools() {
   console.log(res);
 }
 
-//agentPools.beginCreateAndWait
-async function agentPools_beginCreateAndWait() {
-  const parameter: AgentPool = {
-    location: location,
-    tags: {
-      key: "value",
-    },
-    count: 1,
-    tier: "S1",
-    os: "Linux",
-  };
-  const res = await client.agentPools.beginCreateAndWait(
-    resourceGroup,
-    registryName,
-    agentPoolName,
-    parameter
-  );
-  console.log(res);
-}
-
-//agentPools.get
-async function agentPools_get() {
-  const res = await client.agentPools.get(
-    resourceGroup,
-    registryName,
-    agentPoolName
-  );
-  console.log(res);
-}
-
-//agentPools.list
-async function agentPools_list() {
-  for await (const item of client.agentPools.list(
-    resourceGroup,
-    registryName
-  )) {
-    console.log(item);
-  }
-}
-
-//agentPools.getQueueStatus
-async function agentPools_getQueueStatus() {
-  const res = await client.agentPools.getQueueStatus(
-    resourceGroup,
-    registryName,
-    agentPoolName
-  );
-  console.log(res);
-}
-
-//agentPools.beginUpdateAndWait
-async function agentPools_beginUpdateAndWait() {
-  const res = await client.agentPools.beginUpdateAndWait(
-    resourceGroup,
-    registryName,
-    agentPoolName,
-    { count: 1 }
-  );
-  console.log(res);
-}
-
-//agentPools.beginDeleteAndWait
-async function agentPools_beginDeleteAndWait() {
-  const res = await client.agentPools.beginDeleteAndWait(
-    resourceGroup,
-    registryName,
-    agentPoolName
-  );
-  console.log(res);
-}
-
-//scopeMaps.beginCreateAndWait
-async function scopeMaps_beginCreateAndWait() {
+//scopeMaps.create
+async function scopeMaps_create() {
   const parameter: ScopeMap = {
     description: "Developer Scopes",
     actions: [
@@ -321,7 +190,7 @@ async function scopeMaps_beginCreateAndWait() {
       "repositories/foo/content/delete",
     ],
   };
-  const res = await client.scopeMaps.beginCreateAndWait(
+  const res = await client.scopeMaps.create(
     resourceGroup,
     registryName,
     scopeMapName,
@@ -347,8 +216,8 @@ async function scopeMaps_list() {
   }
 }
 
-//scopeMaps.beginUpdateAndWait
-async function scopeMaps_beginUpdateAndWait() {
+//scopeMaps.update
+async function scopeMaps_update() {
   const parameter: ScopeMapUpdateParameters = {
     description: "Developer Scopes",
     actions: [
@@ -356,7 +225,7 @@ async function scopeMaps_beginUpdateAndWait() {
       "repositories/foo/content/delete",
     ],
   };
-  const res = await client.scopeMaps.beginUpdateAndWait(
+  const res = await client.scopeMaps.update(
     resourceGroup,
     registryName,
     scopeMapName,
@@ -365,9 +234,9 @@ async function scopeMaps_beginUpdateAndWait() {
   console.log(res);
 }
 
-//scopeMaps.beginDeleteAndWait
-async function scopeMaps_beginDeleteAndWait() {
-  const res = await client.scopeMaps.beginDeleteAndWait(
+//scopeMaps.delete
+async function scopeMaps_delete() {
+  const res = await client.scopeMaps.delete(
     resourceGroup,
     registryName,
     scopeMapName
@@ -375,11 +244,18 @@ async function scopeMaps_beginDeleteAndWait() {
   console.log(res);
 }
 
-//registries.beginDeleteAndWait
-async function registries_beginDeleteAndWaitForAgentPools() {
-  const res = await client.registries.beginDeleteAndWait(
+//registries.delete
+async function registries_delete() {
+  const res = await client.registries.delete(
     resourceGroup,
     registryName
   );
   console.log(res);
 }
+
+async function main() {
+  client = new ContainerRegistryManagementClient(credential, subscriptionId);
+  await registries_delete();
+}
+
+main();

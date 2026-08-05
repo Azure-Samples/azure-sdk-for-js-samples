@@ -9,10 +9,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@azure/arm-compute": "^17.0.0",
-    "@azure/arm-network": "^26.0.0",
-    "@azure/arm-resources": "^5.0.0",
-    "@azure/identity": "^2.0.1",
-    "@azure/keyvault-keys": "^4.2.1"
+    "@azure/arm-compute": "^24.1.0",
+    "@azure/arm-network": "^37.0.0",
+    "@azure/arm-resources": "^8.0.0",
+    "@azure/identity": "^4.13.1",
+    "@azure/keyvault-keys": "^4.10.2"
   }
 }

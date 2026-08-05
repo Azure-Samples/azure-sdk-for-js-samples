@@ -1,7 +1,7 @@
 import { DefaultAzureCredential } from "@azure/identity";
 import { IpGroup, NetworkManagementClient } from "@azure/arm-network";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
 const virtualnetworkName = "virtualnetworkyyy";
@@ -10,10 +10,10 @@ let client: NetworkManagementClient;
 
 //--NetworkIpExamples--
 
-//virtualNetworks.beginCreateOrUpdateAndWait
-async function virtualNetworks_beginCreateOrUpdateAndWait() {
+//virtualNetworks.createOrUpdate
+async function virtualNetworks_createOrUpdate() {
   await client.virtualNetworks
-    .beginCreateOrUpdateAndWait(resourceGroup, virtualnetworkName, {
+    .createOrUpdate(resourceGroup, virtualnetworkName, {
       location: "eastus",
       addressSpace: { addressPrefixes: ["10.0.0.0/16"] },
     })
@@ -22,8 +22,8 @@ async function virtualNetworks_beginCreateOrUpdateAndWait() {
     });
 }
 
-//ipGroups.beginCreateOrUpdateAndWait
-async function ipGroups_beginCreateOrUpdateAndWait() {
+//ipGroups.createOrUpdate
+async function ipGroups_createOrUpdate() {
   const parameter: IpGroup = {
     tags: {
       key1: "value1",
@@ -32,7 +32,7 @@ async function ipGroups_beginCreateOrUpdateAndWait() {
     ipAddresses: ["13.64.39.16/32", "40.74.146.80/31", "40.74.147.32/28"],
   };
   await client.ipGroups
-    .beginCreateOrUpdateAndWait(resourceGroup, ipGroupName, parameter)
+    .createOrUpdate(resourceGroup, ipGroupName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -59,10 +59,10 @@ async function ipGroups_list() {
   }
 }
 
-//ipGroups.beginDeleteAndWait
-async function ipGroups_beginDeleteAndWait() {
+//ipGroups.delete
+async function ipGroups_delete() {
   await client.ipGroups
-    .beginDeleteAndWait(resourceGroup, ipGroupName)
+    .delete(resourceGroup, ipGroupName)
     .then((res) => {
       console.log(res);
     });
@@ -70,7 +70,7 @@ async function ipGroups_beginDeleteAndWait() {
 
 async function main() {
   client = new NetworkManagementClient(credential, subscriptionId);
-  await virtualNetworks_beginCreateOrUpdateAndWait();
+  await virtualNetworks_createOrUpdate();
 }
 
 main();

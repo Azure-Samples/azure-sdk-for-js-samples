@@ -7,7 +7,7 @@ import {
   RedisPatchSchedule,
 } from "@azure/arm-rediscache";
 
-const subscriptionId = process.env.SUBSCRIPTION_ID;
+const subscriptionId = process.env.SUBSCRIPTION_ID || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const location = "eastus";
@@ -19,8 +19,8 @@ const ruleName = "myrulexxxx";
 let client: RedisManagementClient;
 let network_client: NetworkManagementClient;
 
-// virtualNetworks.beginCreateOrUpdateAndWait
-// subnets.beginCreateOrUpdateAndWait
+// virtualNetworks.createOrUpdate
+// subnets.createOrUpdate
 async function createVirtualNetwork(
   groupName: any,
   location: any,
@@ -34,11 +34,11 @@ async function createVirtualNetwork(
     },
   };
   await network_client.virtualNetworks
-    .beginCreateOrUpdateAndWait(groupName, networkName, parameter)
+    .createOrUpdate(groupName, networkName, parameter)
     .then((result) => {
       console.log(result);
     });
-  const subnet_info = await network_client.subnets.beginCreateOrUpdateAndWait(
+  const subnet_info = await network_client.subnets.createOrUpdate(
     groupName,
     networkName,
     subnetName,
@@ -48,8 +48,8 @@ async function createVirtualNetwork(
   return subnet_info;
 }
 
-//redis.beginCreateAndWait
-async function redis_beginCreateAndWait() {
+//redis.create
+async function redis_create() {
   //create network resource
   await createVirtualNetwork(
     resourceGroupName,
@@ -83,7 +83,7 @@ async function redis_beginCreateAndWait() {
     staticIP: "10.0.0.5",
     minimumTlsVersion: "1.2",
   };
-  const res = await client.redis.beginCreateAndWait(
+  const res = await client.redis.create(
     resourceGroupName,
     name,
     parameter
@@ -109,8 +109,8 @@ async function patchSchedules_createOrUpdate() {
   const res = await client.patchSchedules.createOrUpdate(
     resourceGroupName,
     name,
-    parameter,
-    "default"
+    "default",
+    parameter
   );
   console.log(res);
 }
@@ -246,9 +246,9 @@ async function patchSchedules_delete() {
   console.log(res);
 }
 
-//redis.beginDeleteAndWait
-async function redis_beginDeleteAndWait() {
-  const res = await client.redis.beginDeleteAndWait(resourceGroupName, name);
+//redis.delete
+async function redis_delete() {
+  const res = await client.redis.delete(resourceGroupName, name);
   console.log(res);
 }
 

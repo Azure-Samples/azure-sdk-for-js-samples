@@ -4,7 +4,7 @@ import {
   WebSiteManagementClient,
 } from "@azure/arm-appservice";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const token = process.env.GITHUB_TOKEN_FOR_APPSERVICE;
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
@@ -13,8 +13,8 @@ let client: WebSiteManagementClient;
 
 //--StaticSiteExamples--
 
-//staticSites.beginCreateOrUpdateStaticSiteAndWait
-async function staticSites_beginCreateOrUpdateStaticSiteAndWait() {
+//staticSites.createOrUpdateStaticSite
+async function staticSites_createOrUpdateStaticSite() {
   const parameter: StaticSiteARMResource = {
     location: "eastus2",
     sku: {
@@ -30,7 +30,7 @@ async function staticSites_beginCreateOrUpdateStaticSiteAndWait() {
     },
   };
   await client.staticSites
-    .beginCreateOrUpdateStaticSiteAndWait(resourceGroup, name, parameter)
+    .createOrUpdateStaticSite(resourceGroup, name, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -72,10 +72,10 @@ async function staticSites_resetStaticSiteApiKey() {
     });
 }
 
-//staticSites.beginDetachStaticSiteAndWait
-async function staticSites_beginDetachStaticSiteAndWait() {
+//staticSites.detachStaticSite
+async function staticSites_detachStaticSite() {
   await client.staticSites
-    .beginDetachStaticSiteAndWait(resourceGroup, name)
+    .detachStaticSite(resourceGroup, name)
     .then((res) => {
       console.log(res);
     });
@@ -91,10 +91,10 @@ async function staticSites_listStaticSiteCustomDomains() {
   }
 }
 
-//staticSites.beginDeleteStaticSiteAndWait
-async function staticSites_beginDeleteStaticSiteAndWait() {
+//staticSites.deleteStaticSite
+async function staticSites_deleteStaticSite() {
   await client.staticSites
-    .beginDeleteStaticSiteAndWait(resourceGroup, name)
+    .deleteStaticSite(resourceGroup, name)
     .then((res) => {
       console.log(res);
     });
@@ -102,7 +102,7 @@ async function staticSites_beginDeleteStaticSiteAndWait() {
 
 async function main() {
   client = new WebSiteManagementClient(credential, subscriptionId);
-  await staticSites_beginCreateOrUpdateStaticSiteAndWait();
+  await staticSites_createOrUpdateStaticSite();
 }
 
 main();

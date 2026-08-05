@@ -3,26 +3,20 @@ import {
   ExportPipeline,
   ImportPipeline,
   Registry,
-  Task,
-  TaskRun,
-  TaskRunUpdateParameters,
-  TaskUpdateParameters,
 } from "@azure/arm-containerregistry";
 import { DefaultAzureCredential } from "@azure/identity";
 
-const subscriptionId = process.env.SUBSCRIPTION_ID;
+const subscriptionId = process.env.SUBSCRIPTION_ID || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const location = "eastus";
 const resourceGroup = "myjstest";
 const registryName = "myregistryxxxyy";
 const importPipelineName = "myimportpipelinexxx";
 const exportPipelineName = "myexportpipelinexxx";
-const taskRunName = "mytaskrunxxx";
-const taskName = "mytaskxxx";
 let client: ContainerRegistryManagementClient;
 
-//registries.beginCreateAndWait
-async function registries_beginCreateAndWait() {
+//registries.create
+async function registries_create() {
   const parameter: Registry = {
     location: location,
     tags: {
@@ -33,7 +27,7 @@ async function registries_beginCreateAndWait() {
     },
     adminUserEnabled: false,
   };
-  const res = await client.registries.beginCreateAndWait(
+  const res = await client.registries.create(
     resourceGroup,
     registryName,
     parameter
@@ -41,8 +35,8 @@ async function registries_beginCreateAndWait() {
   console.log(res);
 }
 
-//importPipelines.beginCreateAndWait
-async function importPipelines_beginCreateAndWait() {
+//importPipelines.create
+async function importPipelines_create() {
   const parameter: ImportPipeline = {
     location: location,
     identity: {
@@ -55,7 +49,7 @@ async function importPipelines_beginCreateAndWait() {
     },
     options: ["OverwriteTags", "DeleteSourceBlobOnSuccess", "ContinueOnErrors"],
   };
-  const res = await client.importPipelines.beginCreateAndWait(
+  const res = await client.importPipelines.create(
     resourceGroup,
     registryName,
     importPipelineName,
@@ -64,8 +58,8 @@ async function importPipelines_beginCreateAndWait() {
   console.log(res);
 }
 
-//exportPipelines.beginCreateAndWait
-async function exportPipelines_beginCreateAndWait() {
+//exportPipelines.create
+async function exportPipelines_create() {
   const parameter: ExportPipeline = {
     location: location,
     identity: {
@@ -78,7 +72,7 @@ async function exportPipelines_beginCreateAndWait() {
     },
     options: ["OverwriteBlobs"],
   };
-  const res = await client.exportPipelines.beginCreateAndWait(
+  const res = await client.exportPipelines.create(
     resourceGroup,
     registryName,
     exportPipelineName,
@@ -127,9 +121,9 @@ async function exportPipelines_list() {
   }
 }
 
-//importPipelines.beginDeleteAndWait
-async function importPipelines_beginDeleteAndWait() {
-  const res = await client.importPipelines.beginDeleteAndWait(
+//importPipelines.delete
+async function importPipelines_delete() {
+  const res = await client.importPipelines.delete(
     resourceGroup,
     registryName,
     importPipelineName
@@ -137,9 +131,9 @@ async function importPipelines_beginDeleteAndWait() {
   console.log(res);
 }
 
-//exportPipelines.beginDeleteAndWait
-async function exportPipelines_beginDeleteAndWait() {
-  const res = await client.exportPipelines.beginDeleteAndWait(
+//exportPipelines.delete
+async function exportPipelines_delete() {
+  const res = await client.exportPipelines.delete(
     resourceGroup,
     registryName,
     exportPipelineName
@@ -147,146 +141,9 @@ async function exportPipelines_beginDeleteAndWait() {
   console.log(res);
 }
 
-//taskRuns.beginCreateAndWait
-async function taskRuns_beginCreateAndWait() {
-  const parameter: TaskRun = {
-    forceUpdateTag: "test",
-    runRequest: {
-      type: "DockerBuildRequest",
-      imageNames: ["testtaskrun:v1"],
-      isPushEnabled: true,
-      noCache: false,
-      dockerFilePath: "Dockerfile",
-      platform: {
-        os: "linux",
-        architecture: "amd64",
-      },
-      sourceLocation:
-        "https://github.com/Azure-Samples/acr-build-helloworld-node.git",
-      isArchiveEnabled: true,
-    },
-  };
-  const res = await client.taskRuns.beginCreateAndWait(
-    resourceGroup,
-    registryName,
-    taskRunName,
-    parameter
-  );
-}
-
-//taskRuns.get
-async function taskRuns_get() {
-  const res = await client.taskRuns.get(
-    resourceGroup,
-    registryName,
-    taskRunName
-  );
-  console.log(res);
-}
-
-//runs.get
-async function runs_get() {
-  const runid = await client.taskRuns.get(
-    resourceGroup,
-    registryName,
-    taskRunName
-  );
-  const res = await client.runs.get(
-    resourceGroup,
-    registryName,
-    runid.runResult.runId
-  );
-  console.log(res);
-}
-
-//taskRuns.list
-async function taskRuns_list() {
-  for await (const item of client.taskRuns.list(resourceGroup, registryName)) {
-    console.log(item);
-  }
-}
-
-//taskRuns.getDetails
-async function taskRuns_getDetails() {
-  const res = await client.taskRuns.getDetails(
-    resourceGroup,
-    registryName,
-    taskRunName
-  );
-  console.log(res);
-}
-
-//taskRuns.beginUpdateAndWait
-async function taskRuns_beginUpdateAndWait() {
-  const parameter: TaskRunUpdateParameters = {
-    forceUpdateTag: "test",
-    runRequest: {
-      type: "DockerBuildRequest",
-      imageNames: ["testtaskrun:v1"],
-      isPushEnabled: true,
-      noCache: false,
-      dockerFilePath: "Dockerfile",
-      platform: {
-        os: "Linux",
-        architecture: "amd64",
-      },
-      sourceLocation:
-        "https://github.com/Azure-Samples/acr-build-helloworld-node.git",
-      isArchiveEnabled: true,
-    },
-  };
-  const res = await client.taskRuns.beginUpdateAndWait(
-    resourceGroup,
-    registryName,
-    taskRunName,
-    parameter
-  );
-  console.log(res);
-}
-
-//runs.getLogSasUrl
-async function runs_getLogSasUrl() {
-  const runid = await client.taskRuns.get(
-    resourceGroup,
-    registryName,
-    taskRunName
-  );
-  const res = await client.runs.getLogSasUrl(
-    resourceGroup,
-    registryName,
-    runid.runResult.runId
-  );
-  console.log(res);
-}
-
-//runs.beginCancelAndWait
-async function runs_beginCancelAndWait() {
-  const runid = await client.taskRuns.get(
-    resourceGroup,
-    registryName,
-    taskRunName
-  );
-  const res = await client.runs.beginCancelAndWait(
-    resourceGroup,
-    registryName,
-    runid.runResult.runId
-  );
-  console.log(res);
-}
-
-//taskRuns.beginDeleteAndWait
-async function taskRuns_beginDeleteAndWait() {
-  const res = await client.taskRuns.beginDeleteAndWait(
-    resourceGroup,
-    registryName,
-    taskRunName
-  );
-  console.log(res);
-}
-
-//registries.beginCreateAndWait for Tasks
-async function registries_beginCreateAndWaitForTasks() {
-  const resDelete = await client.registries.beginDeleteAndWait(
+//registries.create
+async function registries_Create() {
+  const resDelete = await client.registries.delete(
     resourceGroup,
     registryName
   );
@@ -300,130 +157,16 @@ async function registries_beginCreateAndWaitForTasks() {
     },
     adminUserEnabled: true,
   };
-  const resCreate = await client.registries.beginCreateAndWait(
+  const resCreate = await client.registries.create(
     resourceGroup,
     registryName,
     parameter
   );
 }
 
-//tasks.beginCreateAndWait
-async function tasks_beginCreateAndWait() {
-  const parameter: Task = {
-    location: location,
-    tags: {
-      testkey: "value",
-    },
-    status: "Enabled",
-    platform: {
-      os: "Linux",
-      architecture: "amd64",
-    },
-    agentConfiguration: {
-      cpu: 2,
-    },
-    step: {
-      type: "Docker",
-      contextPath: "https://github.com/SteveLasker/node-helloworld",
-      imageNames: ["testtask:v1"],
-      dockerFilePath: "DockerFile",
-      isPushEnabled: true,
-      noCache: false,
-    },
-    trigger: {
-      baseImageTrigger: {
-        name: "myBaseImageTrigger",
-        baseImageTriggerType: "Runtime",
-        updateTriggerPayloadType: "Default",
-        status: "Enabled",
-      },
-    },
-  };
-  const res = await client.tasks.beginCreateAndWait(
-    resourceGroup,
-    registryName,
-    taskName,
-    parameter
-  );
-  console.log(res);
-}
-
-//tasks.get
-async function tasks_get() {
-  const res = await client.tasks.get(resourceGroup, registryName, taskName);
-  console.log(res);
-}
-
-//tasks.list
-async function tasks_list() {
-  for await (const item of client.tasks.list(resourceGroup, registryName)) {
-    console.log(item);
-  }
-}
-
-//tasks.getDetails
-async function tasks_getDetails() {
-  const res = await client.tasks.getDetails(
-    resourceGroup,
-    registryName,
-    taskName
-  );
-  console.log(res);
-}
-
-//tasks.beginUpdateAndWait
-async function tasks_beginUpdateAndWait() {
-  const parameter: TaskUpdateParameters = {
-    tags: {
-      testkey: "value",
-    },
-    status: "Enabled",
-    platform: {
-      os: "Linux",
-      architecture: "amd64",
-    },
-    agentConfiguration: {
-      cpu: 2,
-    },
-    step: {
-      type: "Docker",
-      contextPath: "https://github.com/SteveLasker/node-helloworld",
-      imageNames: ["testtask:v1"],
-      dockerFilePath: "DockerFile",
-      isPushEnabled: true,
-      noCache: false,
-    },
-    trigger: {
-      baseImageTrigger: {
-        name: "myBaseImageTrigger",
-        baseImageTriggerType: "Runtime",
-        updateTriggerPayloadType: "Default",
-        status: "Enabled",
-      },
-    },
-  };
-  const res = await client.tasks.beginUpdateAndWait(
-    resourceGroup,
-    registryName,
-    taskName,
-    parameter
-  );
-  console.log(res);
-}
-
-//tasks.beginDeleteAndWait
-async function tasks_beginDeleteAndWait() {
-  const res = await client.tasks.beginDeleteAndWait(
-    resourceGroup,
-    registryName,
-    taskName
-  );
-  console.log(res);
-}
-
-//registries.beginDeleteAndWait
-async function registries_beginDeleteAndWait() {
-  const res = await client.registries.beginDeleteAndWait(
+//registries.delete
+async function registries_delete() {
+  const res = await client.registries.delete(
     resourceGroup,
     registryName
   );
@@ -432,7 +175,7 @@ async function registries_beginDeleteAndWait() {
 
 async function main() {
   client = new ContainerRegistryManagementClient(credential, subscriptionId);
-  await registries_beginDeleteAndWait();
+  await registries_delete();
 }
 
 main();

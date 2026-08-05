@@ -1,7 +1,6 @@
 import { DefaultAzureCredential } from "@azure/identity";
 // eslint-disable-next-line import/no-unresolved
 import {
-  MigrationConfigProperties,
   NetworkRuleSet,
   RegenerateAccessKeyParameters,
   SBAuthorizationRule,
@@ -10,13 +9,12 @@ import {
   ServiceBusManagementClient,
 } from "@azure/arm-servicebus";
 import {
-  NetworkInterface,
   NetworkManagementClient,
   Subnet,
   VirtualNetwork,
 } from "@azure/arm-network";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const location = "eastus";
@@ -24,7 +22,7 @@ const subnet_name = "subnetnamex";
 const network_name = "networknamex";
 const namespacesName = "mynamespacexxx";
 const namespace2 = "mynamespacexxx2";
-const authorizationRuleName = "myAuthoriztionRule";
+const authorizationRuleName = "myAuthorizationRule";
 const sku = "Premium";
 const configName = "default";
 const postMigrationName = "postmigrationxxx";
@@ -40,7 +38,7 @@ async function createVirtualNetwork() {
       addressPrefixes: ["10.0.0.0/16"],
     },
   };
-  const virtualNetworks_create_info = await network_client.virtualNetworks.beginCreateOrUpdateAndWait(
+  const virtualNetworks_create_info = await network_client.virtualNetworks.createOrUpdate(
     resourceGroupName,
     network_name,
     parameter
@@ -50,7 +48,7 @@ async function createVirtualNetwork() {
   const subnet_parameter: Subnet = {
     addressPrefix: "10.0.0.0/24",
   };
-  const subnet__create_info = await network_client.subnets.beginCreateOrUpdateAndWait(
+  const subnet__create_info = await network_client.subnets.createOrUpdate(
     resourceGroupName,
     network_name,
     subnet_name,
@@ -59,8 +57,8 @@ async function createVirtualNetwork() {
   console.log(subnet__create_info);
 }
 
-//namespaces.beginCreateOrUpdateAndWait
-async function namespaces_beginCreateOrUpdateAndWait() {
+//namespaces.createOrUpdate
+async function namespaces_createOrUpdate() {
   const parameter: SBNamespace = {
     sku: {
       name: "Premium",
@@ -72,7 +70,7 @@ async function namespaces_beginCreateOrUpdateAndWait() {
       tag2: "value2",
     },
   };
-  const res = await client.namespaces.beginCreateOrUpdateAndWait(
+  const res = await client.namespaces.createOrUpdate(
     resourceGroupName,
     namespacesName,
     parameter
@@ -210,20 +208,6 @@ async function operations_list() {
   }
 }
 
-//premiumMessagingRegionsOperations.list
-async function premiumMessagingRegionsOperations_list() {
-  for await (const item of client.premiumMessagingRegionsOperations.list()) {
-    console.log(item);
-  }
-}
-
-//regions.listBySku
-async function regions_listBySku() {
-  for await (const item of client.regions.listBySku(sku)) {
-    console.log(item);
-  }
-}
-
 //namespaces.regenerateKeys
 async function namespaces_regenerateKeys() {
   const parameter: RegenerateAccessKeyParameters = {
@@ -299,7 +283,7 @@ async function disasterRecoveryConfigs_createOrUpdate() {
       tag2: "value2",
     },
   };
-  const res = await client.namespaces.beginCreateOrUpdateAndWait(
+  const res = await client.namespaces.createOrUpdate(
     resourceGroupName,
     namespace2,
     parameter
@@ -397,10 +381,10 @@ async function disasterRecoveryConfigs_delete() {
     });
 }
 
-//namespaces.beginDeleteAndWait
-async function namespaces_beginDeleteAndWait() {
+//namespaces.delete
+async function namespaces_delete() {
   await client.namespaces
-    .beginDeleteAndWait(resourceGroupName, namespacesName)
+    .delete(resourceGroupName, namespacesName)
     .then((res) => {
       console.log(res);
     });
@@ -409,7 +393,7 @@ async function namespaces_beginDeleteAndWait() {
 async function main() {
   client = new ServiceBusManagementClient(credential, subscriptionId);
   network_client = new NetworkManagementClient(credential, subscriptionId);
-  await namespaces_beginCreateOrUpdateAndWait();
+  await namespaces_createOrUpdate();
 }
 
 main();

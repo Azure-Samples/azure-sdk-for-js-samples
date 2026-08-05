@@ -1,7 +1,7 @@
 import { DefaultAzureCredential } from "@azure/identity";
 import { NetworkManagementClient, PublicIPPrefix } from "@azure/arm-network";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
 const publicIpPrefixName = "publicipprefixyyy";
@@ -10,8 +10,8 @@ let client: NetworkManagementClient;
 
 //--NetworkIpAddressExamples--
 
-//publicIPPrefixes.beginCreateOrUpdateAndWait
-async function publicIPPrefixes_beginCreateOrUpdateAndWait() {
+//publicIPPrefixes.createOrUpdate
+async function publicIPPrefixes_createOrUpdate() {
   const parameter: PublicIPPrefix = {
     location: "eastus",
     prefixLength: 30,
@@ -20,16 +20,16 @@ async function publicIPPrefixes_beginCreateOrUpdateAndWait() {
     },
   };
   await client.publicIPPrefixes
-    .beginCreateOrUpdateAndWait(resourceGroup, publicIpPrefixName, parameter)
+    .createOrUpdate(resourceGroup, publicIpPrefixName, parameter)
     .then((res) => {
       console.log(res);
     });
 }
 
-//publicIPAddresses.beginCreateOrUpdate
-async function publicIPAddresses_beginCreateOrUpdate() {
+//publicIPAddresses.createOrUpdate
+async function publicIPAddresses_createOrUpdate() {
   await client.publicIPAddresses
-    .beginCreateOrUpdateAndWait(resourceGroup, publicIpAddressName, {
+    .createOrUpdate(resourceGroup, publicIpAddressName, {
       location: "eastus",
     })
     .then((res) => {
@@ -105,19 +105,19 @@ async function publicIPAddresses_updateTags() {
     });
 }
 
-//publicIPAddresses.beginDeleteAndWait
-async function publicIPAddresses_beginDeleteAndWait() {
+//publicIPAddresses.delete
+async function publicIPAddresses_delete() {
   client.publicIPAddresses
-    .beginDeleteAndWait(resourceGroup, publicIpAddressName)
+    .delete(resourceGroup, publicIpAddressName)
     .then((res) => {
       console.log(res);
     });
 }
 
-//publicIPPrefixes.beginDeleteAndWait
-async function publicIPPrefixes_beginDeleteAndWait() {
+//publicIPPrefixes.delete
+async function publicIPPrefixes_delete() {
   client.publicIPPrefixes
-    .beginDeleteAndWait(resourceGroup, publicIpPrefixName)
+    .delete(resourceGroup, publicIpPrefixName)
     .then((res) => {
       console.log(res);
     });
@@ -125,7 +125,7 @@ async function publicIPPrefixes_beginDeleteAndWait() {
 
 async function main() {
   client = new NetworkManagementClient(credential, subscriptionId);
-  await publicIPPrefixes_beginCreateOrUpdateAndWait();
+  await publicIPPrefixes_createOrUpdate();
 }
 
 main();

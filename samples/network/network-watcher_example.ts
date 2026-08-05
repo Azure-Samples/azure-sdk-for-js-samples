@@ -16,7 +16,7 @@ import {
   StorageManagementClient,
 } from "@azure/arm-storage";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
 const networkWatcherName = "networkwatchernnn";
@@ -36,11 +36,11 @@ let storage_client: StorageManagementClient;
 
 //--NetworkWatcherTroubleshootExamples--
 
-//virtualNetworks.beginCreateOrUpdateAndWait
-//subnets.beginCreateOrUpdateAndWait
+//virtualNetworks.createOrUpdate
+//subnets.createOrUpdate
 async function virtualNetworksAndSubnetCreate() {
   await client.virtualNetworks
-    .beginCreateOrUpdateAndWait(resourceGroup, virtualnetworkName, {
+    .createOrUpdate(resourceGroup, virtualnetworkName, {
       location: "eastus",
       addressSpace: { addressPrefixes: ["10.0.0.0/16"] },
     })
@@ -49,7 +49,7 @@ async function virtualNetworksAndSubnetCreate() {
     });
   //create subnet
   await client.subnets
-    .beginCreateOrUpdateAndWait(resourceGroup, virtualnetworkName, subnetName, {
+    .createOrUpdate(resourceGroup, virtualnetworkName, subnetName, {
       addressPrefix: "10.0.0.0/24",
     })
     .then((res) => {
@@ -57,8 +57,8 @@ async function virtualNetworksAndSubnetCreate() {
     });
 }
 
-//networkInterfaces.beginCreateOrUpdateAndWait
-async function networkInterfaces_beginCreateOrUpdateAndWait() {
+//networkInterfaces.createOrUpdate
+async function networkInterfaces_createOrUpdate() {
   const subneyId =
     "/subscriptions/" +
     subscriptionId +
@@ -68,7 +68,7 @@ async function networkInterfaces_beginCreateOrUpdateAndWait() {
     virtualnetworkName +
     "/subnets/" +
     subnetName;
-  const networkInterface_create = await client.networkInterfaces.beginCreateOrUpdateAndWait(
+  const networkInterface_create = await client.networkInterfaces.createOrUpdate(
     resourceGroup,
     networkInterfaceName,
     {
@@ -80,10 +80,10 @@ async function networkInterfaces_beginCreateOrUpdateAndWait() {
   return networkInterface_create;
 }
 
-//publicIPAddresses.beginCreateOrUpdateAndWait
-async function publicIPAddresses_beginCreateOrUpdateAndWait() {
+//publicIPAddresses.createOrUpdate
+async function publicIPAddresses_createOrUpdate() {
   const parameter: PublicIPAddress = {
-    publicIPAllocationMethod: "Staic",
+    publicIPAllocationMethod: "Static",
     idleTimeoutInMinutes: 10,
     publicIPAddressVersion: "IPv4",
     location: "eastus",
@@ -92,14 +92,14 @@ async function publicIPAddresses_beginCreateOrUpdateAndWait() {
     },
   };
   await client.publicIPAddresses
-    .beginCreateOrUpdateAndWait(resourceGroup, publicIpAddressName, parameter)
+    .createOrUpdate(resourceGroup, publicIpAddressName, parameter)
     .then((res) => {
       console.log(res);
     });
 }
 
-//virtualNetworkGateways.beginCreateOrUpdateAndWait
-async function virtualNetworkGateways_beginCreateOrUpdateAndWait() {
+//virtualNetworkGateways.createOrUpdate
+async function virtualNetworkGateways_createOrUpdate() {
   const parameter: VirtualNetworkGateway = {
     ipConfigurations: [
       {
@@ -147,7 +147,7 @@ async function virtualNetworkGateways_beginCreateOrUpdateAndWait() {
     location: "eastus",
   };
   await client.virtualNetworkGateways
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroup,
       virtualNetworkGatewayName,
       parameter
@@ -157,8 +157,8 @@ async function virtualNetworkGateways_beginCreateOrUpdateAndWait() {
     });
 }
 
-//storageAccounts.beginCreateAndWait
-async function storageAccounts_beginCreateAndWait() {
+//storageAccounts.create
+async function storageAccounts_create() {
   const parameter: StorageAccountCreateParameters = {
     location: "eastus",
     sku: {
@@ -167,7 +167,7 @@ async function storageAccounts_beginCreateAndWait() {
     kind: "StorageV2",
   };
   await storage_client.storageAccounts
-    .beginCreateAndWait(resourceGroup, storageAccountName, parameter)
+    .create(resourceGroup, storageAccountName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -182,8 +182,8 @@ async function networkWatchers_createOrUpdate() {
     });
 }
 
-//networkWatchers.beginGetTroubleshootingAndWait
-async function networkWatchers_beginGetTroubleshootingAndWait() {
+//networkWatchers.getTroubleshooting
+async function networkWatchers_getTroubleshooting() {
   const parameter: TroubleshootingParameters = {
     targetResourceId:
       "/subscriptions/" +
@@ -205,7 +205,7 @@ async function networkWatchers_beginGetTroubleshootingAndWait() {
       ".blob.core.windows.net/troubleshooting",
   };
   await client.networkWatchers
-    .beginGetTroubleshootingAndWait(
+    .getTroubleshooting(
       resourceGroup,
       networkWatcherName,
       parameter
@@ -215,10 +215,10 @@ async function networkWatchers_beginGetTroubleshootingAndWait() {
     });
 }
 
-//networkWatchers.beginGetTroubleshootingResultAndWait
-async function networkWatchers_beginGetTroubleshootingResultAndWait() {
+//networkWatchers.getTroubleshootingResult
+async function networkWatchers_getTroubleshootingResult() {
   await client.networkWatchers
-    .beginGetTroubleshootingResultAndWait(resourceGroup, networkWatcherName, {
+    .getTroubleshootingResult(resourceGroup, networkWatcherName, {
       targetResourceId:
         "/subscriptions/" +
         subscriptionId +
@@ -232,9 +232,9 @@ async function networkWatchers_beginGetTroubleshootingResultAndWait() {
     });
 }
 
-//virtualMachines.beginCreateOrUpdateAndWait
-async function virtualMachines_beginCreateOrUpdateAndWait() {
-  const nic_id = await networkInterfaces_beginCreateOrUpdateAndWait();
+//virtualMachines.createOrUpdate
+async function virtualMachines_createOrUpdate() {
+  const nic_id = await networkInterfaces_createOrUpdate();
   const parameter: VirtualMachine = {
     location: "eastus",
     hardwareProfile: {
@@ -285,14 +285,14 @@ async function virtualMachines_beginCreateOrUpdateAndWait() {
     },
   };
   await compute_client.virtualMachines
-    .beginCreateOrUpdateAndWait(resourceGroup, vmName, parameter)
+    .createOrUpdate(resourceGroup, vmName, parameter)
     .then((res) => {
       console.log(res);
     });
 }
 
-//virtualMachineExtensions.beginCreateOrUpdateAndWait
-async function virtualMachineExtensions_beginCreateOrUpdateAndWait() {
+//virtualMachineExtensions.createOrUpdate
+async function virtualMachineExtensions_createOrUpdate() {
   const parameter: VirtualMachineExtension = {
     location: "eastus",
     autoUpgradeMinorVersion: true,
@@ -300,7 +300,7 @@ async function virtualMachineExtensions_beginCreateOrUpdateAndWait() {
     typeHandlerVersion: "1.4",
   };
   await compute_client.virtualMachineExtensions
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroup,
       vmName,
       vm_extensionName,
@@ -321,9 +321,10 @@ async function networkInterfaces_get() {
   return getResult;
 }
 
-//networkWatchers.beginVerifyIPFlowAndWait
-async function networkWatchers_beginVerifyIPFlowAndWait() {
+//networkWatchers.verifyIPFlow
+async function networkWatchers_verifyIPFlow() {
   const nic = await networkInterfaces_get();
+  nic.ipConfigurations = nic.ipConfigurations as any[];
   const parameter: VerificationIPFlowParameters = {
     targetResourceId:
       "/subscriptions/" +
@@ -336,11 +337,11 @@ async function networkWatchers_beginVerifyIPFlowAndWait() {
     protocol: "TCP",
     localPort: "80",
     remotePort: "80",
-    localIPAddress: nic.ipConfigurations[0].privateIPAddress,
+    localIPAddress: (nic.ipConfigurations[0] as any).privateIPAddress,
     remoteIPAddress: "121.10.1.1",
   };
   await client.networkWatchers
-    .beginVerifyIPFlowAndWait(resourceGroup, networkWatcherName, parameter)
+    .verifyIPFlow(resourceGroup, networkWatcherName, parameter)
     .then((res) => {
       console.log(res);
     });

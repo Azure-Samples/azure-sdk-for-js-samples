@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "@azure/arm-locks": "^2.0.0",
-    "@azure/arm-resources": "^5.0.0",
-    "@azure/identity": "^2.0.1"
+    "@azure/arm-resources": "^8.0.0",
+    "@azure/identity": "^4.13.1"
   }
 }

@@ -18,29 +18,29 @@ These code samples will show you how to manage Eventgrid using Azure SDK for Jav
 This project framework provides examples for the following services:
 
 ### Eventgrid
-* Using the Azure SDK for JavaScript/TypeScript - Eventgrid Management Library [@azure/arm-eventgrid](https://www.npmjs.com/package/@azure/arm-eventgrid) for the [Azure Eventgrid API](https://docs.microsoft.com/en-us/rest/api/eventgrid/)
 
+* Using the Azure SDK for JavaScript/TypeScript - Eventgrid Management Library [@azure/arm-eventgrid](https://www.npmjs.com/package/@azure/arm-eventgrid) for the [Azure Eventgrid API](https://docs.microsoft.com/en-us/rest/api/eventgrid/)
 
 ### Installation
 
-1.  Before using the sdk package,we need [install nodejs](https://nodejs.org/en/download/) and add it into environment variables.
+1. Before using the sdk package,we need [install nodejs](https://nodejs.org/en/download/) and add it into environment variables.
 
     reference :
-    
+
     ```
-    nodejs version: 14.16.0
-    typescript version: 4.1.3
+    nodejs version: >=22
+    typescript version: 5.9.3
     ```
 
 ### Quickstart
 
-1.  Clone the repository.
+1. Clone the repository.
 
     ```
     git clone https://github.com/Azure-Samples/azure-samples-js-management
     ```
 
-2.  Install the dependencies using npm.
+2. Install the dependencies using npm.
 
     ```
     cd azure-samples-js-management/samples/eventgrid
@@ -71,4 +71,4 @@ execute below command on terminal
 
 ## Resources
 
-- https://github.com/Azure/azure-sdk-for-js
+* <https://github.com/Azure/azure-sdk-for-js>

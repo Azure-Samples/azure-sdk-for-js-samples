@@ -2,17 +2,17 @@ import { DefaultAzureCredential } from "@azure/identity";
 // eslint-disable-next-line import/no-unresolved
 import { SBNamespace, ServiceBusManagementClient } from "@azure/arm-servicebus";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const location = "eastus";
 const namespacesName = "mynamespacexxx";
-const authorizationRuleName = "myAuthoriztionRule";
+const authorizationRuleName = "myAuthorizationRule";
 const queueName = "myQueue";
 let client: ServiceBusManagementClient;
 
-//namespaces.beginCreateOrUpdateAndWait
-async function namespaces_beginCreateOrUpdateAndWait() {
+//namespaces.createOrUpdate
+async function namespaces_createOrUpdate() {
   const parameter: SBNamespace = {
     sku: {
       name: "Standard",
@@ -24,7 +24,7 @@ async function namespaces_beginCreateOrUpdateAndWait() {
       tag2: "value2",
     },
   };
-  const res = await client.namespaces.beginCreateOrUpdateAndWait(
+  const res = await client.namespaces.createOrUpdate(
     resourceGroupName,
     namespacesName,
     parameter
@@ -144,9 +144,9 @@ async function queues_delete() {
   console.log(res);
 }
 
-//namespaces.beginDeleteAndWait
-async function namespaces_beginDeleteAndWait() {
-  const res = await client.namespaces.beginDeleteAndWait(
+//namespaces.delete
+async function namespaces_delete() {
+  const res = await client.namespaces.delete(
     resourceGroupName,
     namespacesName
   );

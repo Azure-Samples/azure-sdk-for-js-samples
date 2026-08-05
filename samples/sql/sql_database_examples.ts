@@ -16,7 +16,7 @@ import {
   StorageManagementClient,
 } from "@azure/arm-storage";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
 const databaseName = "mydatabasezzz";
@@ -34,23 +34,20 @@ let storage_client: StorageManagementClient;
 
 //--BackUpShortTermRetentionPolicyExamples--
 
-//servers.beginCreateOrUpdateAndWait
-async function servers_beginCreateOrUpdateAndWait() {
+//servers.createOrUpdate
+async function servers_createOrUpdate() {
   const parameter: Server = {
     location: "eastus",
     administratorLogin: "dummylogin",
     administratorLoginPassword: "Un53cuRE!",
     version: "12.0",
   };
-  await client.servers
-    .beginCreateOrUpdateAndWait(resourceGroup, serverName, parameter)
-    .then((res) => {
-      console.log(res);
-    });
+  const res = await client.servers.createOrUpdate(resourceGroup, serverName, parameter);
+  console.log(res);
 }
 
-//databases.beginCreateOrUpdateAndWait
-async function databases_beginCreateOrUpdateAndWaitAboutBackupShortTermRetentionPolicies() {
+//databases.createOrUpdate
+async function databases_createOrUpdateAboutBackupShortTermRetentionPolicies() {
   const parameter: Database = {
     location: "eastus",
     sku: {
@@ -59,7 +56,7 @@ async function databases_beginCreateOrUpdateAndWaitAboutBackupShortTermRetention
     },
   };
   await client.databases
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroup,
       serverName,
       databaseName,
@@ -70,13 +67,13 @@ async function databases_beginCreateOrUpdateAndWaitAboutBackupShortTermRetention
     });
 }
 
-//backupShortTermRetentionPolicies.beginCreateOrUpdateAndWait
-async function backupShortTermRetentionPolicies_beginCreateOrUpdateAndWait() {
+//backupShortTermRetentionPolicies.createOrUpdate
+async function backupShortTermRetentionPolicies_createOrUpdate() {
   const parameter: BackupShortTermRetentionPolicy = {
     retentionDays: 14,
   };
   await client.backupShortTermRetentionPolicies
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroup,
       serverName,
       databaseName,
@@ -108,13 +105,13 @@ async function backupShortTermRetentionPolicies_listByDatabase() {
   }
 }
 
-//backupShortTermRetentionPolicies.beginUpdateAndWait
-async function backupShortTermRetentionPolicies_beginUpdateAndWait() {
+//backupShortTermRetentionPolicies.update
+async function backupShortTermRetentionPolicies_update() {
   const parameter: BackupShortTermRetentionPolicy = {
     retentionDays: 14,
   };
   await client.backupShortTermRetentionPolicies
-    .beginUpdateAndWait(
+    .update(
       resourceGroup,
       serverName,
       databaseName,
@@ -126,9 +123,9 @@ async function backupShortTermRetentionPolicies_beginUpdateAndWait() {
     });
 }
 
-//databases.beginDeleteAndWaitAboutBackupShortTermRetentionPolicies
-async function databases_beginDeleteAndWaitAboutBackupShortTermRetentionPolicies() {
-  const res = await client.databases.beginDeleteAndWait(
+//databases.delete
+async function databases_deleteAboutBackupShortTermRetentionPolicies() {
+  const res = await client.databases.delete(
     resourceGroup,
     serverName,
     databaseName
@@ -138,8 +135,8 @@ async function databases_beginDeleteAndWaitAboutBackupShortTermRetentionPolicies
 
 //--RestorePointsExamples--
 
-//databases.beginCreateOrUpdateAndWait
-async function databases_beginCreateOrUpdateAndWaitAboutRestorePoints() {
+//databases.createOrUpdate
+async function databases_createOrUpdateAboutRestorePoints() {
   const parameter: Database = {
     location: "eastus",
     sku: {
@@ -148,7 +145,7 @@ async function databases_beginCreateOrUpdateAndWaitAboutRestorePoints() {
     },
   };
   await client.databases
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroup,
       serverName,
       databaseName,
@@ -159,13 +156,13 @@ async function databases_beginCreateOrUpdateAndWaitAboutRestorePoints() {
     });
 }
 
-//restorePoints.beginCreateAndWait
-async function restorePoints_beginCreateAndWait() {
+//restorePoints.create
+async function restorePoints_create() {
   const parameter: CreateDatabaseRestorePointDefinition = {
     restorePointLabel: "mylabel",
   };
   await client.restorePoints
-    .beginCreateAndWait(resourceGroup, serverName, databaseName, parameter)
+    .create(resourceGroup, serverName, databaseName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -187,7 +184,7 @@ async function restorePoints_listByDatabase() {
 async function restorePoints_get() {
   const restorePointName = await restorePoints_listByDatabase();
   await client.restorePoints
-    .get(resourceGroup, serverName, databaseName, restorePointName)
+    .get(resourceGroup, serverName, databaseName, restorePointName as string)
     .then((res) => {
       console.log(res);
     });
@@ -197,15 +194,15 @@ async function restorePoints_get() {
 async function restorePoints_delete() {
   const restorePointName = await restorePoints_listByDatabase();
   await client.restorePoints
-    .delete(resourceGroup, serverName, databaseName, restorePointName)
+    .delete(resourceGroup, serverName, databaseName, restorePointName as string)
     .then((res) => {
       console.log(res);
     });
 }
 
-//databases.beginDeleteAndWaitAboutRestorePoints
-async function databases_beginDeleteAndWaitAboutRestorePoints() {
-  const res = await client.databases.beginDeleteAndWait(
+//databases.delete
+async function databases_deleteAboutRestorePoints() {
+  const res = await client.databases.delete(
     resourceGroup,
     serverName,
     databaseName
@@ -215,13 +212,13 @@ async function databases_beginDeleteAndWaitAboutRestorePoints() {
 
 //--DatabaseAutomaticTuningExamples--
 
-//databases.beginCreateOrUpdateAndWaitInCommon
-async function databases_beginCreateOrUpdateAndWaitInCommon() {
+//databases.createOrUpdate
+async function databases_createOrUpdateInCommon() {
   const parameter: Database = {
     location: "eastus",
   };
   await client.databases
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroup,
       serverName,
       databaseName,
@@ -274,7 +271,7 @@ async function databaseAdvisors_get() {
 
 //--DatabaseBlobAuditingPoliciesExamples--
 
-//storageAccounts.beginCreateAndWait
+//storageAccounts.create
 //blobContainers.create
 async function createStorageAccountAndBlobContainer() {
   const parameter: StorageAccountCreateParameters = {
@@ -303,7 +300,7 @@ async function createStorageAccountAndBlobContainer() {
   };
   //create storageAccount
   await storage_client.storageAccounts
-    .beginCreateAndWait(resourceGroup, storageAccountName, parameter)
+    .create(resourceGroup, storageAccountName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -321,7 +318,11 @@ async function createStorageAccountAndBlobContainer() {
     { keyName: "key2" }
   );
   console.log(res);
-  return res.keys[0].value;
+  const keys = res.keys;
+  if (!keys || keys.length === 0) {
+    throw new Error("No storage account keys were returned.");
+  }
+  return keys[0].value;
 }
 
 //databaseBlobAuditingPolicies.createOrUpdate
@@ -350,15 +351,15 @@ async function databaseBlobAuditingPolicies_get() {
 
 //--WordLoadExamples--
 
-//workloadGroups.beginCreateOrUpdateAndWait
-async function workloadGroups_beginCreateOrUpdateAndWait() {
+//workloadGroups.createOrUpdate
+async function workloadGroups_createOrUpdate() {
   const parameter: WorkloadGroup = {
     minResourcePercent: 0,
     maxResourcePercent: 100,
     minResourcePercentPerRequest: 3,
   };
   await client.workloadGroups
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroup,
       serverName,
       databaseName,
@@ -390,10 +391,10 @@ async function workloadGroups_listByDatabase() {
   }
 }
 
-//workloadGroups.beginDeleteAndWait
-async function workloadGroups_beginDeleteAndWait() {
+//workloadGroups.delete
+async function workloadGroups_delete() {
   await client.workloadGroups
-    .beginDeleteAndWait(
+    .delete(
       resourceGroup,
       serverName,
       databaseName,
@@ -439,8 +440,8 @@ async function longTermRetentionBackups_listByResourceGroupLocation() {
   }
 }
 
-//longTermRetentionPolicies.beginCreateOrUpdateAndWait
-async function longTermRetentionPolicies_beginCreateOrUpdateAndWait() {
+//longTermRetentionPolicies.createOrUpdate
+async function longTermRetentionPolicies_createOrUpdate() {
   const parameter: LongTermRetentionPolicy = {
     weeklyRetention: "P1M",
     monthlyRetention: "P1Y",
@@ -448,7 +449,7 @@ async function longTermRetentionPolicies_beginCreateOrUpdateAndWait() {
     weekOfYear: 5,
   };
   await client.longTermRetentionPolicies
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroup,
       serverName,
       databaseName,
@@ -490,7 +491,7 @@ async function transparentDataEncryptions_createOrUpdate() {
       serverName,
       databaseName,
       transparentDataEncryptionName,
-      { status: "Enabled" }
+      { state: "Enabled" }
     )
     .then((res) => {
       console.log(res);
@@ -504,18 +505,6 @@ async function transparentDataEncryptions_get() {
     .then((res) => {
       console.log(res);
     });
-}
-
-//transparentDataEncryptions.listByConfiguration
-async function transparentDataEncryptions_listByConfiguration() {
-  for await (const item of client.transparentDataEncryptionActivities.listByConfiguration(
-    resourceGroup,
-    serverName,
-    databaseName,
-    transparentDataEncryptionName
-  )) {
-    console.log(item);
-  }
 }
 
 //--GeoBackupPolicyExamples--
@@ -546,7 +535,7 @@ async function geoBackupPolicies_get() {
 
 //geoBackupPolicies.listByDatabase
 async function geoBackupPolicies_listByDatabase() {
-  for await (const item of client.geoBackupPolicies.listByDatabase(
+  for await (const item of client.geoBackupPolicies.list(
     resourceGroup,
     serverName,
     databaseName
@@ -588,9 +577,9 @@ async function dataMaskingRules_listByDatabase() {
   }
 }
 
-//databases.beginDeleteAndWaitInCommon
-async function databases_beginDeleteAndWaitInCommon() {
-  const res = await client.databases.beginDeleteAndWait(
+//databases.delete
+async function databases_delete() {
+  const res = await client.databases.delete(
     resourceGroup,
     serverName,
     databaseName
@@ -600,14 +589,14 @@ async function databases_beginDeleteAndWaitInCommon() {
 
 //--DatabaseOperationExamples--
 
-//databases.beginCreateOrUpdateAndWaitAboutdatabaseOperations
-async function databases_beginCreateOrUpdateAndWaitAboutdatabaseOperations() {
+//databases.createOrUpdate
+async function databases_createOrUpdateAboutdatabaseOperations() {
   const parameter: Database = {
     location: "eastus",
     readScale: "Disabled",
   };
   await client.databases
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroup,
       serverName,
       databaseName,
@@ -634,15 +623,15 @@ async function databaseOperations_listByDatabase() {
 async function databaseOperations_cancel() {
   const opdatetionId = await databaseOperations_listByDatabase();
   await client.databaseOperations
-    .cancel(resourceGroup, serverName, databaseName, opdatetionId)
+    .cancel(resourceGroup, serverName, databaseName, opdatetionId as string)
     .then((res) => {
       console.log(res);
     });
 }
 
-//databases.beginDeleteAndWaitAboutdatabaseOperations
-async function databases_beginDeleteAndWaitAboutdatabaseOperations() {
-  const res = await client.databases.beginDeleteAndWait(
+//databases.delete
+async function databases_deleteAboutdatabaseOperations() {
+  const res = await client.databases.delete(
     resourceGroup,
     serverName,
     databaseName
@@ -652,14 +641,14 @@ async function databases_beginDeleteAndWaitAboutdatabaseOperations() {
 
 //--DatabaseExamples--
 
-//databases.beginCreateOrUpdateAndWait
-async function databases_beginCreateOrUpdateAndWait() {
+//databases.createOrUpdate
+async function databases_createOrUpdate() {
   const parameter: Database = {
     location: "eastus",
     readScale: "Disabled",
   };
   await client.databases
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroup,
       serverName,
       databaseName,
@@ -679,18 +668,6 @@ async function serverConnectionPolicies_createOrUpdate() {
     .then((res) => {
       console.log(res);
     });
-}
-
-//databases.listMetrics
-async function databases_listMetrics() {
-  for await (const item of client.databases.listMetrics(
-    resourceGroup,
-    serverName,
-    databaseName,
-    "name/value eq 'cpu_percent' and timeGrain eq '00:10:00' and startTime eq '2017-06-02T18:35:00Z' and endTime eq '2017-06-02T18:55:00Z'"
-  )) {
-    console.log(item);
-  }
 }
 
 //serverConnectionPolicies.get
@@ -753,8 +730,8 @@ async function databases_rename() {
     });
 }
 
-//databases.beginUpdateAndWait
-async function databases_beginUpdateAndWait() {
+//databases.update
+async function databases_update() {
   const parameter: DatabaseUpdate = {
     sku: {
       name: "S1",
@@ -764,16 +741,16 @@ async function databases_beginUpdateAndWait() {
     maxLogSizeBytes: 1073741824,
   };
   await client.databases
-    .beginUpdateAndWait(resourceGroup, serverName, databaseName2, parameter)
+    .update(resourceGroup, serverName, databaseName2, parameter)
     .then((res) => {
       console.log(res);
     });
 }
 
-//databases.beginFailoverAndWait
-async function databases_beginFailoverAndWait() {
+//databases.failover
+async function databases_failover() {
   await client.databases
-    .beginFailoverAndWait(resourceGroup, serverName, databaseName2, {
+    .failover(resourceGroup, serverName, databaseName2, {
       replicaType: "Primary",
     })
     .then((res) => {
@@ -781,19 +758,9 @@ async function databases_beginFailoverAndWait() {
     });
 }
 
-//databases.beginDeleteAndWait
-async function databases_beginDeleteAndWait() {
-  const res = await client.databases.beginDeleteAndWait(
-    resourceGroup,
-    serverName,
-    databaseName
-  );
-  console.log(res);
-}
-
-//servers.beginDeleteAndWait
-async function servers_beginDeleteAndWait() {
-  const res = await client.servers.beginDeleteAndWait(
+//servers.delete
+async function servers_delete() {
+  const res = await client.servers.delete(
     resourceGroup,
     serverName
   );
@@ -803,7 +770,7 @@ async function servers_beginDeleteAndWait() {
 async function main() {
   client = new SqlManagementClient(credential, subscriptionId);
   storage_client = new StorageManagementClient(credential, subscriptionId);
-  await servers_beginCreateOrUpdateAndWait();
+  await servers_createOrUpdate();
 }
 
 main();

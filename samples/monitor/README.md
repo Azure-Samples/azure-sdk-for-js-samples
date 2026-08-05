@@ -18,29 +18,29 @@ These code samples will show you how to manage Monitor using Azure SDK for JavaS
 This project framework provides examples for the following services:
 
 ### Monitor
-* Using the Azure SDK for JavaScript/TypeScript - Monitor Management Library [@azure/arm-monitor](https://www.npmjs.com/package/@azure/arm-monitor) for the [Azure Monitor API](https://docs.microsoft.com/en-us/rest/api/monitor/)
 
+* Using the Azure SDK for JavaScript/TypeScript - Monitor Management Library [@azure/arm-monitor](https://www.npmjs.com/package/@azure/arm-monitor) for the [Azure Monitor API](https://docs.microsoft.com/en-us/rest/api/monitor/)
 
 ### Installation
 
-1.  Before using the sdk package,we need [install nodejs](https://nodejs.org/en/download/) and add it into environment variables.
+1. Before using the sdk package,we need [install nodejs](https://nodejs.org/en/download/) and add it into environment variables.
 
     reference :
-    
+
     ```
-    nodejs version: 14.16.0
-    typescript version: 4.1.3
+    nodejs version: >=22
+    typescript version: 5.9.3
     ```
 
 ### Quickstart
 
-1.  Clone the repository.
+1. Clone the repository.
 
     ```
     git clone https://github.com/Azure-Samples/azure-samples-js-management
     ```
 
-2.  Install the dependencies using npm.
+2. Install the dependencies using npm.
 
     ```
     cd azure-samples-js-management/samples/monitor
@@ -52,7 +52,7 @@ This project framework provides examples for the following services:
 
 A demo app is included to show how to use the project.
 
-To run the complete demo, you need to call the methods you want to test in main method. 
+To run the complete demo, you need to call the methods you want to test in main method.
 
     ```
     async function main() {
@@ -74,4 +74,4 @@ execute below command on terminal
 
 ## Resources
 
-- https://github.com/Azure/azure-sdk-for-js
+* <https://github.com/Azure/azure-sdk-for-js>

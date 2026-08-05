@@ -8,12 +8,10 @@ import {
   Snapshot,
 } from "@azure/arm-compute";
 import { DefaultAzureCredential } from "@azure/identity";
-import { ResourceManagementClient } from "@azure/arm-resources";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
-const location = "eastus";
 const disk_name = "disknamex";
 const shapshot_name = "snapshotx";
 const image_name = "imagex";
@@ -31,7 +29,7 @@ async function disks_createOrUpdate() {
     diskSizeGB: 200,
   };
   await client.disks
-    .beginCreateOrUpdateAndWait(resourceGroupName, disk_name, parameter)
+    .createOrUpdate(resourceGroupName, disk_name, parameter)
     .then((response) => {
       console.log(response);
     });
@@ -66,7 +64,7 @@ async function disks_update() {
     diskSizeGB: 200,
   };
   await client.disks
-    .beginUpdateAndWait(resourceGroupName, disk_name, parameter)
+    .update(resourceGroupName, disk_name, parameter)
     .then((response) => {
       console.log(response);
     });
@@ -79,7 +77,7 @@ async function disks_grantAccess() {
     durationInSeconds: 1800,
   };
   await client.disks
-    .beginGrantAccessAndWait(resourceGroupName, disk_name, parameter)
+    .grantAccess(resourceGroupName, disk_name, parameter)
     .then((response) => {
       console.log(response);
     });
@@ -88,7 +86,7 @@ async function disks_grantAccess() {
 //disks.revokeAccess
 async function disks_revokeAccess() {
   await client.disks
-    .beginRevokeAccessAndWait(resourceGroupName, disk_name)
+    .revokeAccess(resourceGroupName, disk_name)
     .then((response) => {
       console.log(response);
     });
@@ -112,7 +110,7 @@ async function snapshots_createOrUpdate() {
     },
   };
   await client.snapshots
-    .beginCreateOrUpdateAndWait(resourceGroupName, shapshot_name, parameter)
+    .createOrUpdate(resourceGroupName, shapshot_name, parameter)
     .then((response) => {
       console.log(response);
     });
@@ -150,7 +148,7 @@ async function snapshots_grantAccess() {
     durationInSeconds: 1800,
   };
   await client.snapshots
-    .beginGrantAccessAndWait(resourceGroupName, shapshot_name, parameter)
+    .grantAccess(resourceGroupName, shapshot_name, parameter)
     .then((response) => {
       console.log(response);
     });
@@ -159,7 +157,7 @@ async function snapshots_grantAccess() {
 //snapshots.revokeAccess
 async function snapshots_revokeAccess() {
   await client.snapshots
-    .beginRevokeAccessAndWait(resourceGroupName, shapshot_name)
+    .revokeAccess(resourceGroupName, shapshot_name)
     .then((response) => {
       console.log(response);
     });
@@ -168,7 +166,7 @@ async function snapshots_revokeAccess() {
 //snapshots.delete
 async function snapshots_delete() {
   await client.snapshots
-    .beginDeleteAndWait(resourceGroupName, shapshot_name)
+    .delete(resourceGroupName, shapshot_name)
     .then((response) => {
       console.log(response);
     });
@@ -197,7 +195,7 @@ async function images_createOrUpdate() {
     hyperVGeneration: "V1",
   };
   await client.images
-    .beginCreateOrUpdateAndWait(resourceGroupName, image_name, parameter)
+    .createOrUpdate(resourceGroupName, image_name, parameter)
     .then((response) => {
       console.log(response);
     });
@@ -234,7 +232,7 @@ async function images_update() {
     },
   };
   await client.images
-    .beginUpdateAndWait(resourceGroupName, image_name, parameter)
+    .update(resourceGroupName, image_name, parameter)
     .then((response) => {
       console.log(response);
     });
@@ -243,7 +241,7 @@ async function images_update() {
 //images.delete
 async function images_delete() {
   await client.images
-    .beginDeleteAndWait(resourceGroupName, image_name)
+    .delete(resourceGroupName, image_name)
     .then((response) => {
       console.log(response);
     });
@@ -252,7 +250,7 @@ async function images_delete() {
 //disks.delete
 async function disks_delete() {
   await client.disks
-    .beginDeleteAndWait(resourceGroupName, disk_name)
+    .delete(resourceGroupName, disk_name)
     .then((response) => {
       console.log(response);
     });

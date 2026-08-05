@@ -1,7 +1,7 @@
 import { AppServicePlan, WebSiteManagementClient } from "@azure/arm-appservice";
 import { DefaultAzureCredential } from "@azure/identity";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const token = process.env.GITHUB_TOKEN_FOR_APPSERVICE;
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
@@ -10,8 +10,8 @@ let client: WebSiteManagementClient;
 
 //--AppservicePlanExamples--
 
-//appServicePlans.beginCreateOrUpdateAndWait
-async function appServicePlans_beginCreateOrUpdateAndWait() {
+//appServicePlans.createOrUpdate
+async function appServicePlans_createOrUpdate() {
   const parameter: AppServicePlan = {
     kind: "app",
     location: "eastus",
@@ -24,7 +24,7 @@ async function appServicePlans_beginCreateOrUpdateAndWait() {
     },
   };
   await client.appServicePlans
-    .beginCreateOrUpdateAndWait(resourceGroup, name, parameter)
+    .createOrUpdate(resourceGroup, name, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -71,7 +71,7 @@ async function appServicePlans_delete() {
 
 async function main() {
   client = new WebSiteManagementClient(credential, subscriptionId);
-  await appServicePlans_beginCreateOrUpdateAndWait();
+  await appServicePlans_createOrUpdate();
 }
 
 main();
