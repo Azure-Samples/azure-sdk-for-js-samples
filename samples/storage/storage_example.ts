@@ -16,7 +16,8 @@ import {
 import { DefaultAzureCredential } from "@azure/identity";
 import { NetworkManagementClient, PrivateEndpoint } from "@azure/arm-network";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
 const storageAccountName = "storageaccountzzzxxx";
@@ -475,8 +476,8 @@ async function privateEndpointConnections_put() {
 
 //privateEndpointConnections.get
 async function privateEndpointConnections_get() {
-  const privateEndpointConnectionsName =
-    (await storageAccounts_getProperties()).privateEndpointConnections?.[0]?.name;
+  const privateEndpointConnectionsName = (await storageAccounts_getProperties())
+    .privateEndpointConnections?.[0]?.name;
 
   if (!privateEndpointConnectionsName) {
     throw new Error("No private endpoint connection found.");

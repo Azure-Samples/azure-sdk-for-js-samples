@@ -5,7 +5,8 @@ import {
 } from "@azure/arm-resources";
 import { ManagementLockClient } from "@azure/arm-locks";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const lockName = "jslockrg";

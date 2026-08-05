@@ -8,7 +8,8 @@ import {
 } from "@azure/arm-appservice";
 import { DefaultAzureCredential } from "@azure/identity";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const token = process.env.GITHUB_TOKEN_FOR_APPSERVICE;
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
@@ -182,12 +183,7 @@ async function webApps_createOrUpdateSourceControlSlot() {
     isMercurial: false,
   };
   await client.webApps
-    .createOrUpdateSourceControlSlot(
-      resourceGroup,
-      name,
-      soltName,
-      parameter
-    )
+    .createOrUpdateSourceControlSlot(resourceGroup, name, soltName, parameter)
     .then((res) => {
       console.log(res);
     });

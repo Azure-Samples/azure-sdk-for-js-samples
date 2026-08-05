@@ -6,7 +6,8 @@ import {
 } from "@azure/arm-containerregistry";
 import { DefaultAzureCredential } from "@azure/identity";
 
-const subscriptionId = process.env.SUBSCRIPTION_ID || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.SUBSCRIPTION_ID || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const location = "eastus";
 const resourceGroup = "myjstest";
@@ -143,10 +144,7 @@ async function exportPipelines_delete() {
 
 //registries.create
 async function registries_Create() {
-  const resDelete = await client.registries.delete(
-    resourceGroup,
-    registryName
-  );
+  const resDelete = await client.registries.delete(resourceGroup, registryName);
   const parameter: Registry = {
     location: location,
     tags: {
@@ -166,10 +164,7 @@ async function registries_Create() {
 
 //registries.delete
 async function registries_delete() {
-  const res = await client.registries.delete(
-    resourceGroup,
-    registryName
-  );
+  const res = await client.registries.delete(resourceGroup, registryName);
   console.log(res);
 }
 

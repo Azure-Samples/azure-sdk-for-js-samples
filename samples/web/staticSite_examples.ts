@@ -4,7 +4,8 @@ import {
   WebSiteManagementClient,
 } from "@azure/arm-appservice";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const token = process.env.GITHUB_TOKEN_FOR_APPSERVICE;
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
@@ -74,11 +75,9 @@ async function staticSites_resetStaticSiteApiKey() {
 
 //staticSites.detachStaticSite
 async function staticSites_detachStaticSite() {
-  await client.staticSites
-    .detachStaticSite(resourceGroup, name)
-    .then((res) => {
-      console.log(res);
-    });
+  await client.staticSites.detachStaticSite(resourceGroup, name).then((res) => {
+    console.log(res);
+  });
 }
 
 //staticSites.listStaticSiteCustomDomains
@@ -93,11 +92,9 @@ async function staticSites_listStaticSiteCustomDomains() {
 
 //staticSites.deleteStaticSite
 async function staticSites_deleteStaticSite() {
-  await client.staticSites
-    .deleteStaticSite(resourceGroup, name)
-    .then((res) => {
-      console.log(res);
-    });
+  await client.staticSites.deleteStaticSite(resourceGroup, name).then((res) => {
+    console.log(res);
+  });
 }
 
 async function main() {

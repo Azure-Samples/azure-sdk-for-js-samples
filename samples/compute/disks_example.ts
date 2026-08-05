@@ -9,7 +9,8 @@ import {
 } from "@azure/arm-compute";
 import { DefaultAzureCredential } from "@azure/identity";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const disk_name = "disknamex";
@@ -240,20 +241,16 @@ async function images_update() {
 
 //images.delete
 async function images_delete() {
-  await client.images
-    .delete(resourceGroupName, image_name)
-    .then((response) => {
-      console.log(response);
-    });
+  await client.images.delete(resourceGroupName, image_name).then((response) => {
+    console.log(response);
+  });
 }
 
 //disks.delete
 async function disks_delete() {
-  await client.disks
-    .delete(resourceGroupName, disk_name)
-    .then((response) => {
-      console.log(response);
-    });
+  await client.disks.delete(resourceGroupName, disk_name).then((response) => {
+    console.log(response);
+  });
 }
 
 async function main() {

@@ -4,7 +4,8 @@ import {
 } from "@azure/arm-authorization";
 import { DefaultAzureCredential } from "@azure/identity";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
 const roleDefinitionName = "e078ab98-ef3a-4c9a-aba7-12f5172b45d0";

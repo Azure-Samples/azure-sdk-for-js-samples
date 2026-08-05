@@ -7,7 +7,8 @@ import {
 } from "@azure/arm-compute";
 import { DefaultAzureCredential } from "@azure/identity";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const host_group_name = "hostgroup";
@@ -86,12 +87,7 @@ async function dedicatedHosts_createOrUpdate() {
     },
   };
   await client.dedicatedHosts
-    .createOrUpdate(
-      resourceGroupName,
-      host_group_name,
-      host_name,
-      parameter
-    )
+    .createOrUpdate(resourceGroupName, host_group_name, host_name, parameter)
     .then((response) => {
       console.log(response);
     });
@@ -124,12 +120,7 @@ async function dedicatedHosts_update() {
     },
   };
   await client.dedicatedHosts
-    .update(
-      resourceGroupName,
-      host_group_name,
-      host_name,
-      parameter
-    )
+    .update(resourceGroupName, host_group_name, host_name, parameter)
     .then((response) => {
       console.log(response);
     });

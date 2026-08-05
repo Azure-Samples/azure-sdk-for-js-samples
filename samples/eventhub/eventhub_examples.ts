@@ -12,7 +12,8 @@ import {
   StorageManagementClient,
 } from "@azure/arm-storage";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const location = "eastus";
@@ -58,11 +59,8 @@ async function createVirtualNetwork() {
       addressPrefixes: ["10.0.0.0/16"],
     },
   };
-  await network_client.virtualNetworks.createOrUpdate(
-    resourceGroupName,
-    virtualNetworkName,
-    parameter
-  )
+  await network_client.virtualNetworks
+    .createOrUpdate(resourceGroupName, virtualNetworkName, parameter)
     .then((result) => {
       console.log(result);
     });
@@ -605,10 +603,7 @@ async function disasterRecoveryConfigs_delete() {
 
 //namespaces.delete
 async function namespaces_delete() {
-  const res = await client.namespaces.delete(
-    resourceGroupName,
-    namespaceName
-  );
+  const res = await client.namespaces.delete(resourceGroupName, namespaceName);
   console.log(res);
 }
 

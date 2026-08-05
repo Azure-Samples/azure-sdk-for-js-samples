@@ -12,7 +12,8 @@ import {
 } from "@azure/arm-network";
 import { DefaultAzureCredential } from "@azure/identity";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
 const serviceName = "myapimrndzzz";
@@ -111,11 +112,7 @@ async function remote_virtualNetworks_createOrUpdate() {
     location: "eastus",
   };
   await client.virtualNetworks
-    .createOrUpdate(
-      resourceGroup,
-      remoteVirtualNetworkName,
-      parameter
-    )
+    .createOrUpdate(resourceGroup, remoteVirtualNetworkName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -127,12 +124,7 @@ async function subnets_createOrUpdate() {
     addressPrefix: "10.0.0.0/24",
   };
   await client.subnets
-    .createOrUpdate(
-      resourceGroup,
-      virtualNetworkName,
-      subnetName,
-      parameter
-    )
+    .createOrUpdate(resourceGroup, virtualNetworkName, subnetName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -171,11 +163,7 @@ async function localNetworkGateways_createOrUpdate() {
     location: "eastus",
   };
   await client.localNetworkGateways
-    .createOrUpdate(
-      resourceGroup,
-      localNetworkGatewayName,
-      parameter
-    )
+    .createOrUpdate(resourceGroup, localNetworkGatewayName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -230,11 +218,7 @@ async function virtualNetworkGateways_createOrUpdate() {
     location: "eastus",
   };
   await client.virtualNetworkGateways
-    .createOrUpdate(
-      resourceGroup,
-      virtualNetworkGatewayName,
-      parameter
-    )
+    .createOrUpdate(resourceGroup, virtualNetworkGatewayName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -543,11 +527,7 @@ async function virtualNetworks_listAll() {
 //virtualNetworkGateways.getAdvertisedRoutes
 async function virtualNetworkGateways_getAdvertisedRoutes() {
   await client.virtualNetworkGateways
-    .getAdvertisedRoutes(
-      resourceGroup,
-      virtualNetworkGatewayName,
-      "10.0.0.2"
-    )
+    .getAdvertisedRoutes(resourceGroup, virtualNetworkGatewayName, "10.0.0.2")
     .then((res) => {
       console.log(res);
     });

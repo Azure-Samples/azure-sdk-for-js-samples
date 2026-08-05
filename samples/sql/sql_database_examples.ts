@@ -16,7 +16,8 @@ import {
   StorageManagementClient,
 } from "@azure/arm-storage";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
 const databaseName = "mydatabasezzz";
@@ -42,7 +43,11 @@ async function servers_createOrUpdate() {
     administratorLoginPassword: "Un53cuRE!",
     version: "12.0",
   };
-  const res = await client.servers.createOrUpdate(resourceGroup, serverName, parameter);
+  const res = await client.servers.createOrUpdate(
+    resourceGroup,
+    serverName,
+    parameter
+  );
   console.log(res);
 }
 
@@ -56,12 +61,7 @@ async function databases_createOrUpdateAboutBackupShortTermRetentionPolicies() {
     },
   };
   await client.databases
-    .createOrUpdate(
-      resourceGroup,
-      serverName,
-      databaseName,
-      parameter
-    )
+    .createOrUpdate(resourceGroup, serverName, databaseName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -111,13 +111,7 @@ async function backupShortTermRetentionPolicies_update() {
     retentionDays: 14,
   };
   await client.backupShortTermRetentionPolicies
-    .update(
-      resourceGroup,
-      serverName,
-      databaseName,
-      policyName,
-      parameter
-    )
+    .update(resourceGroup, serverName, databaseName, policyName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -145,12 +139,7 @@ async function databases_createOrUpdateAboutRestorePoints() {
     },
   };
   await client.databases
-    .createOrUpdate(
-      resourceGroup,
-      serverName,
-      databaseName,
-      parameter
-    )
+    .createOrUpdate(resourceGroup, serverName, databaseName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -218,12 +207,7 @@ async function databases_createOrUpdateInCommon() {
     location: "eastus",
   };
   await client.databases
-    .createOrUpdate(
-      resourceGroup,
-      serverName,
-      databaseName,
-      parameter
-    )
+    .createOrUpdate(resourceGroup, serverName, databaseName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -394,12 +378,7 @@ async function workloadGroups_listByDatabase() {
 //workloadGroups.delete
 async function workloadGroups_delete() {
   await client.workloadGroups
-    .delete(
-      resourceGroup,
-      serverName,
-      databaseName,
-      workloadGroupName
-    )
+    .delete(resourceGroup, serverName, databaseName, workloadGroupName)
     .then((res) => {
       console.log(res);
     });
@@ -596,12 +575,7 @@ async function databases_createOrUpdateAboutdatabaseOperations() {
     readScale: "Disabled",
   };
   await client.databases
-    .createOrUpdate(
-      resourceGroup,
-      serverName,
-      databaseName,
-      parameter
-    )
+    .createOrUpdate(resourceGroup, serverName, databaseName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -648,12 +622,7 @@ async function databases_createOrUpdate() {
     readScale: "Disabled",
   };
   await client.databases
-    .createOrUpdate(
-      resourceGroup,
-      serverName,
-      databaseName,
-      parameter
-    )
+    .createOrUpdate(resourceGroup, serverName, databaseName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -760,10 +729,7 @@ async function databases_failover() {
 
 //servers.delete
 async function servers_delete() {
-  const res = await client.servers.delete(
-    resourceGroup,
-    serverName
-  );
+  const res = await client.servers.delete(resourceGroup, serverName);
   console.log(res);
 }
 

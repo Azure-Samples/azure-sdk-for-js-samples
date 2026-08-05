@@ -1,7 +1,8 @@
 import { AppServicePlan, WebSiteManagementClient } from "@azure/arm-appservice";
 import { DefaultAzureCredential } from "@azure/identity";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const token = process.env.GITHUB_TOKEN_FOR_APPSERVICE;
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";

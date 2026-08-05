@@ -2,7 +2,8 @@ import { ApplicationClient } from "@azure/arm-managedapplications";
 import { DefaultAzureCredential } from "@azure/identity";
 import { ResourceManagementClient } from "@azure/arm-resources";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const applicationName = "jsapplictiontest";
 const resourceGroupName = "jssdktest";

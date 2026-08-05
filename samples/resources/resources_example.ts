@@ -12,7 +12,8 @@ import {
 // eslint-disable-next-line import/no-unresolved
 import { ManagementGroupsAPI } from "@azure/arm-managementgroups";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const tagName = "tagyyy";
 const tagValue = "valueyyy";

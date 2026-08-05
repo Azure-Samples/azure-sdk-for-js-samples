@@ -14,7 +14,8 @@ import {
   VirtualNetwork,
 } from "@azure/arm-network";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const location = "eastus";
@@ -157,11 +158,7 @@ async function virtualMachines_createOrUpdate() {
     },
   };
   await client.virtualMachines
-    .createOrUpdate(
-      resourceGroupName,
-      virtual_machine_name,
-      parameter
-    )
+    .createOrUpdate(resourceGroupName, virtual_machine_name, parameter)
     .then((response) => {
       console.log(response);
     });

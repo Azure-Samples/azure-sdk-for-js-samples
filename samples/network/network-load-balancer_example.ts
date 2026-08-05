@@ -6,7 +6,8 @@ import {
   PublicIPAddress,
 } from "@azure/arm-network";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
 const virtualNetwork = "virtualnetworkttt";

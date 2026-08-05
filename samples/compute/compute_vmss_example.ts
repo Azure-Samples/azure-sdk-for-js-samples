@@ -11,7 +11,8 @@ import {
 import { DefaultAzureCredential } from "@azure/identity";
 import { NetworkManagementClient, VirtualNetwork } from "@azure/arm-network";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const location = "eastus";
@@ -141,10 +142,7 @@ async function virtualMachineScaleSets_createOrUpdate() {
 //virtualMachineScaleSetRollingUpgrades.startExtensionUpgrade
 async function virtualMachineScaleSetRollingUpgrades_startExtensionUpgrade() {
   await client.virtualMachineScaleSetRollingUpgrades
-    .startExtensionUpgrade(
-      resourceGroupName,
-      virtual_machine_scale_set_name
-    )
+    .startExtensionUpgrade(resourceGroupName, virtual_machine_scale_set_name)
     .then((response) => {
       console.log(response);
     });
@@ -259,11 +257,7 @@ async function virtualMachineScaleSetVMs_update() {
 async function virtualMachineScaleSetVMs_restart() {
   const instanceId = await getInstanceId();
   await client.virtualMachineScaleSetVMs
-    .restart(
-      resourceGroupName,
-      virtual_machine_scale_set_name,
-      instanceId
-    )
+    .restart(resourceGroupName, virtual_machine_scale_set_name, instanceId)
     .then((response) => {
       console.log(response);
     });
@@ -273,11 +267,7 @@ async function virtualMachineScaleSetVMs_restart() {
 async function virtualMachineScaleSetVMs_powerOff() {
   const instanceId = await getInstanceId();
   await client.virtualMachineScaleSetVMs
-    .powerOff(
-      resourceGroupName,
-      virtual_machine_scale_set_name,
-      instanceId
-    )
+    .powerOff(resourceGroupName, virtual_machine_scale_set_name, instanceId)
     .then((response) => {
       console.log(response);
       //success
@@ -288,11 +278,7 @@ async function virtualMachineScaleSetVMs_powerOff() {
 async function virtualMachineScaleSetVMs_start() {
   const instanceId = await getInstanceId();
   await client.virtualMachineScaleSetVMs
-    .start(
-      resourceGroupName,
-      virtual_machine_scale_set_name,
-      instanceId
-    )
+    .start(resourceGroupName, virtual_machine_scale_set_name, instanceId)
     .then((response) => {
       console.log(response);
       //success
@@ -322,11 +308,7 @@ async function virtualMachineScaleSetVMs_runCommand() {
 async function virtualMachineScaleSetVMs_deallocate() {
   const instanceId = await getInstanceId();
   await client.virtualMachineScaleSetVMs
-    .deallocate(
-      resourceGroupName,
-      virtual_machine_scale_set_name,
-      instanceId
-    )
+    .deallocate(resourceGroupName, virtual_machine_scale_set_name, instanceId)
     .then((response) => {
       console.log(response);
       //success
@@ -337,11 +319,7 @@ async function virtualMachineScaleSetVMs_deallocate() {
 async function virtualMachineScaleSetVMs_reimage() {
   const instanceId = await getInstanceId();
   await client.virtualMachineScaleSetVMs
-    .reimage(
-      resourceGroupName,
-      virtual_machine_scale_set_name,
-      instanceId
-    )
+    .reimage(resourceGroupName, virtual_machine_scale_set_name, instanceId)
     .then((response) => {
       console.log(response);
     });
@@ -351,11 +329,7 @@ async function virtualMachineScaleSetVMs_reimage() {
 async function virtualMachineScaleSetVMs_reimageAll() {
   const instanceId = await getInstanceId();
   await client.virtualMachineScaleSetVMs
-    .reimageAll(
-      resourceGroupName,
-      virtual_machine_scale_set_name,
-      instanceId
-    )
+    .reimageAll(resourceGroupName, virtual_machine_scale_set_name, instanceId)
     .then((response) => {
       console.log(response);
     });
@@ -365,11 +339,7 @@ async function virtualMachineScaleSetVMs_reimageAll() {
 async function virtualMachineScaleSetVMs_delete() {
   const instanceId = await getInstanceId();
   await client.virtualMachineScaleSetVMs
-    .delete(
-      resourceGroupName,
-      virtual_machine_scale_set_name,
-      instanceId
-    )
+    .delete(resourceGroupName, virtual_machine_scale_set_name, instanceId)
     .then((response) => {
       console.log(response);
     });
@@ -452,11 +422,7 @@ async function virtualMachineScaleSets_update() {
     },
   };
   await client.virtualMachineScaleSets
-    .update(
-      resourceGroupName,
-      virtual_machine_scale_set_name,
-      parameter
-    )
+    .update(resourceGroupName, virtual_machine_scale_set_name, parameter)
     .then((response) => {
       console.log(response);
     });

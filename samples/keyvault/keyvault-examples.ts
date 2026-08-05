@@ -6,7 +6,8 @@ import {
   VaultPatchParameters,
 } from "@azure/arm-keyvault";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
 const tenantId = "72f988bf-86f1-41af-91ab-2d7cd011db47";
@@ -244,11 +245,9 @@ async function vaults_getDeleted() {
 
 //vaults.purgeDeleted
 async function vaults_purgeDeleted() {
-  await client.vaults
-    .purgeDeleted(vaultName, "eastus")
-    .then((res) => {
-      console.log(res);
-    });
+  await client.vaults.purgeDeleted(vaultName, "eastus").then((res) => {
+    console.log(res);
+  });
 }
 
 //operations.list

@@ -1,6 +1,11 @@
 import { DefaultAzureCredential } from "@azure/identity";
 // eslint-disable-next-line import/no-unresolved
 import {
+  NetworkManagementClient,
+  Subnet,
+  VirtualNetwork,
+} from "@azure/arm-network";
+import {
   NetworkRuleSet,
   RegenerateAccessKeyParameters,
   SBAuthorizationRule,
@@ -8,13 +13,9 @@ import {
   SBNamespaceUpdateParameters,
   ServiceBusManagementClient,
 } from "@azure/arm-servicebus";
-import {
-  NetworkManagementClient,
-  Subnet,
-  VirtualNetwork,
-} from "@azure/arm-network";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const location = "eastus";

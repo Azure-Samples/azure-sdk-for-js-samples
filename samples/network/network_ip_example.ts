@@ -1,7 +1,8 @@
 import { DefaultAzureCredential } from "@azure/identity";
 import { IpGroup, NetworkManagementClient } from "@azure/arm-network";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
 const virtualnetworkName = "virtualnetworkyyy";
@@ -61,11 +62,9 @@ async function ipGroups_list() {
 
 //ipGroups.delete
 async function ipGroups_delete() {
-  await client.ipGroups
-    .delete(resourceGroup, ipGroupName)
-    .then((res) => {
-      console.log(res);
-    });
+  await client.ipGroups.delete(resourceGroup, ipGroupName).then((res) => {
+    console.log(res);
+  });
 }
 
 async function main() {

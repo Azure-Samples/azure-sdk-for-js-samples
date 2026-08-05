@@ -7,7 +7,8 @@ import {
   RedisPatchSchedule,
 } from "@azure/arm-rediscache";
 
-const subscriptionId = process.env.SUBSCRIPTION_ID || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.SUBSCRIPTION_ID || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const location = "eastus";
@@ -83,11 +84,7 @@ async function redis_create() {
     staticIP: "10.0.0.5",
     minimumTlsVersion: "1.2",
   };
-  const res = await client.redis.create(
-    resourceGroupName,
-    name,
-    parameter
-  );
+  const res = await client.redis.create(resourceGroupName, name, parameter);
   console.log(res);
 }
 

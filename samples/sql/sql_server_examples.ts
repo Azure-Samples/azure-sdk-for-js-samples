@@ -13,7 +13,8 @@ import {
   StorageManagementClient,
 } from "@azure/arm-storage";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const AZURE_CLIENT_ID = process.env.AZURE_CLIENT_ID;
 const AZURE_TENANT_ID = process.env.AZURE_TENANT_ID;
 const credential = new DefaultAzureCredential();
@@ -92,15 +93,11 @@ async function createStorageAccountAndBlobContainer() {
 
 //servers.createOrUpdate
 async function servers_createOrUpdate() {
-  const res = await client.servers.createOrUpdate(
-    resourceGroup,
-    serverName,
-    {
-      location: "eastus",
-      administratorLogin: "dummylogin",
-      administratorLoginPassword: "Un53cuRE!",
-    }
-  );
+  const res = await client.servers.createOrUpdate(resourceGroup, serverName, {
+    location: "eastus",
+    administratorLogin: "dummylogin",
+    administratorLoginPassword: "Un53cuRE!",
+  });
   console.log(res);
 }
 
@@ -401,14 +398,10 @@ async function serverUsages_listByServer() {
 
 //servers.update
 async function servers_update() {
-  const res = await client.servers.update(
-    resourceGroup,
-    serverName,
-    {
-      administratorLogin: "dummylogin",
-      administratorLoginPassword: "Un53cuRE!",
-    }
-  );
+  const res = await client.servers.update(resourceGroup, serverName, {
+    administratorLogin: "dummylogin",
+    administratorLoginPassword: "Un53cuRE!",
+  });
   console.log(res);
 }
 

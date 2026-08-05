@@ -2,7 +2,8 @@ import { DefaultAzureCredential } from "@azure/identity";
 // eslint-disable-next-line import/no-unresolved
 import { SBNamespace, ServiceBusManagementClient } from "@azure/arm-servicebus";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const location = "eastus";
@@ -146,10 +147,7 @@ async function queues_delete() {
 
 //namespaces.delete
 async function namespaces_delete() {
-  const res = await client.namespaces.delete(
-    resourceGroupName,
-    namespacesName
-  );
+  const res = await client.namespaces.delete(resourceGroupName, namespacesName);
   console.log(res);
 }
 

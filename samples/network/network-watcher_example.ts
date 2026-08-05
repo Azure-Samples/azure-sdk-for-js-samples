@@ -16,7 +16,8 @@ import {
   StorageManagementClient,
 } from "@azure/arm-storage";
 
-const subscriptionId = process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
 const networkWatcherName = "networkwatchernnn";
@@ -147,11 +148,7 @@ async function virtualNetworkGateways_createOrUpdate() {
     location: "eastus",
   };
   await client.virtualNetworkGateways
-    .createOrUpdate(
-      resourceGroup,
-      virtualNetworkGatewayName,
-      parameter
-    )
+    .createOrUpdate(resourceGroup, virtualNetworkGatewayName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -205,11 +202,7 @@ async function networkWatchers_getTroubleshooting() {
       ".blob.core.windows.net/troubleshooting",
   };
   await client.networkWatchers
-    .getTroubleshooting(
-      resourceGroup,
-      networkWatcherName,
-      parameter
-    )
+    .getTroubleshooting(resourceGroup, networkWatcherName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -300,12 +293,7 @@ async function virtualMachineExtensions_createOrUpdate() {
     typeHandlerVersion: "1.4",
   };
   await compute_client.virtualMachineExtensions
-    .createOrUpdate(
-      resourceGroup,
-      vmName,
-      vm_extensionName,
-      parameter
-    )
+    .createOrUpdate(resourceGroup, vmName, vm_extensionName, parameter)
     .then((res) => {
       console.log(res);
     });
