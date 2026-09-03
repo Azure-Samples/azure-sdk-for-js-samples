@@ -64,8 +64,8 @@ To run the complete demo, you need to call the methods you want to test in main 
 execute below command on terminal
 
     ```
-    tsc availabiliablitySets_examples.ts (it will create a same name js file)
-    node availabiliablitySets_examples.js
+    tsc availabilitySets_example.ts (it will create a same name js file)
+    node availabilitySets_example.js
     ```
 
 ## Resources
