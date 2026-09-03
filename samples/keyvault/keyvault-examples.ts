@@ -6,7 +6,8 @@ import {
   VaultPatchParameters,
 } from "@azure/arm-keyvault";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
 const tenantId = "72f988bf-86f1-41af-91ab-2d7cd011db47";
@@ -15,8 +16,8 @@ let client: KeyVaultManagementClient;
 
 //--keyvaultExamples--
 
-//vaults.beginCreateOrUpdateAndWait
-async function vaults_beginCreateOrUpdateAndWait() {
+//vaults.createOrUpdate
+async function vaults_createOrUpdate() {
   const parameter: VaultCreateOrUpdateParameters = {
     location: "eastus",
     properties: {
@@ -83,7 +84,7 @@ async function vaults_beginCreateOrUpdateAndWait() {
     },
   };
   await client.vaults
-    .beginCreateOrUpdateAndWait(resourceGroup, vaultName, parameter)
+    .createOrUpdate(resourceGroup, vaultName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -242,13 +243,11 @@ async function vaults_getDeleted() {
   });
 }
 
-//vaults.beginPurgeDeletedAndWait
-async function vaults_beginPurgeDeletedAndWait() {
-  await client.vaults
-    .beginPurgeDeletedAndWait(vaultName, "eastus")
-    .then((res) => {
-      console.log(res);
-    });
+//vaults.purgeDeleted
+async function vaults_purgeDeleted() {
+  await client.vaults.purgeDeleted(vaultName, "eastus").then((res) => {
+    console.log(res);
+  });
 }
 
 //operations.list
@@ -260,7 +259,7 @@ async function operations_list() {
 
 async function main() {
   client = new KeyVaultManagementClient(credential, subscriptionId);
-  await vaults_beginCreateOrUpdateAndWait();
+  await vaults_createOrUpdate();
 }
 
 main();

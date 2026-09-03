@@ -4,7 +4,8 @@ import {
 } from "@azure/arm-authorization";
 import { DefaultAzureCredential } from "@azure/identity";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
 const roleDefinitionName = "e078ab98-ef3a-4c9a-aba7-12f5172b45d0";
@@ -24,7 +25,7 @@ async function roleAssignments_createById() {
       subscriptionId +
       "/providers/Microsoft.Authorization/roleDefinitions/" +
       roleDefinitionName,
-    principalId: process.env.principalId, //create a management identity and copy objectId
+    principalId: process.env.principalId || "", //create a management identity and copy objectId
   };
   await client.roleAssignments.createById(roleId, parameter).then((res) => {
     console.log(res);
@@ -44,7 +45,7 @@ async function roleAssignments_get() {
 }
 
 async function roleAssignments_list() {
-  for await (const item of client.roleAssignments.list()) {
+  for await (const item of client.roleAssignments.listForSubscription()) {
     console.log(item);
   }
 }

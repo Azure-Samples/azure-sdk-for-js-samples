@@ -5,7 +5,8 @@ import { MonitorClient } from "@azure/arm-monitor";
 import { OperationalInsightsManagementClient } from "@azure/arm-operationalinsights";
 import { StorageManagementClient } from "@azure/arm-storage";
 
-const subscriptionId = process.env.SUBSCRIPTION_ID;
+const subscriptionId =
+  process.env.SUBSCRIPTION_ID || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const location = "westus";
 const resourceGroup = "myjstest";
@@ -45,9 +46,9 @@ async function workflows_createOrUpdate() {
   return res;
 }
 
-// storageAccounts.beginCreateAndWait
-async function storageAccounts_beginCreateAndWait() {
-  const storageaccount = await storage_client.storageAccounts.beginCreateAndWait(
+// storageAccounts.create
+async function storageAccounts_create() {
+  const storageaccount = await storage_client.storageAccounts.create(
     resourceGroup,
     storageAccountName,
     {
@@ -85,8 +86,8 @@ async function storageAccounts_beginCreateAndWait() {
 
 //authorization.create
 async function eventHubs_createOrUpdateAuthorizationRule() {
-  //namespaces.beginCreateOrUpdateAndWait
-  const namespaces = await eventhub_client.namespaces.beginCreateOrUpdateAndWait(
+  //namespaces.createOrUpdate
+  const namespaces = await eventhub_client.namespaces.createOrUpdate(
     resourceGroup,
     namespaceName,
     {
@@ -142,9 +143,9 @@ async function eventHubs_createOrUpdateAuthorizationRule() {
   return authorization;
 }
 
-//workspaces.beginCreateOrUpdateAndWait
-async function workspaces_beginCreateOrUpdateAndWait() {
-  const res = await op_client.workspaces.beginCreateOrUpdateAndWait(
+//workspaces.createOrUpdate
+async function workspaces_createOrUpdate() {
+  const res = await op_client.workspaces.createOrUpdate(
     resourceGroup,
     workspaceName,
     {
@@ -165,11 +166,11 @@ async function workspaces_beginCreateOrUpdateAndWait() {
 //diagnosticSettings.createOrUpdate
 async function diagnosticSettings_createOrUpdate() {
   const resourUrl = await workflows_createOrUpdate();
-  const storageAccount = await storageAccounts_beginCreateAndWait();
+  const storageAccount = await storageAccounts_create();
   const authorization = await eventHubs_createOrUpdateAuthorizationRule();
-  const workspace = await workspaces_beginCreateOrUpdateAndWait();
+  const workspace = await workspaces_createOrUpdate();
   const res = await client.diagnosticSettings.createOrUpdate(
-    resourUrl.id,
+    resourUrl.id as string,
     diagnosticName,
     {
       storageAccountId: storageAccount.id,
@@ -207,7 +208,7 @@ async function diagnosticSettings_list() {
     resourceGroup,
     workflowName
   );
-  const res = await client.diagnosticSettings.list(resourceUrl.id);
+  const res = await client.diagnosticSettings.list(resourceUrl.id as string);
   console.log(res);
 }
 
@@ -218,10 +219,10 @@ async function diagnosticSettings_delete() {
     workflowName
   );
   const resDelete = await client.diagnosticSettings.delete(
-    resourceUrl.id,
+    resourceUrl.id as string,
     diagnosticName
   );
-  const res = await client.diagnosticSettings.list(resourceUrl.id);
+  const res = await client.diagnosticSettings.list(resourceUrl.id as string);
   console.log(res);
 }
 

@@ -8,7 +8,8 @@ import {
 } from "@azure/arm-appservice";
 import { DefaultAzureCredential } from "@azure/identity";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const token = process.env.GITHUB_TOKEN_FOR_APPSERVICE;
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
@@ -19,8 +20,8 @@ let client: WebSiteManagementClient;
 
 //--WebAppSlotExamples--
 
-//appServicePlans.beginCreateOrUpdateAndWait
-async function appServicePlans_beginCreateOrUpdateAndWait() {
+//appServicePlans.createOrUpdate
+async function appServicePlans_createOrUpdate() {
   const parameter: AppServicePlan = {
     location: "eastus",
     sku: {
@@ -32,14 +33,14 @@ async function appServicePlans_beginCreateOrUpdateAndWait() {
     isXenon: false,
   };
   await client.appServicePlans
-    .beginCreateOrUpdateAndWait(resourceGroup, appservicePlanName, parameter)
+    .createOrUpdate(resourceGroup, appservicePlanName, parameter)
     .then((res) => {
       console.log(res);
     });
 }
 
-//webApps.beginCreateOrUpdateAndWait
-async function webApps_beginCreateOrUpdateAndWait() {
+//webApps.createOrUpdate
+async function webApps_createOrUpdate() {
   const parameter: Site = {
     location: "eastus",
     serverFarmId:
@@ -64,14 +65,14 @@ async function webApps_beginCreateOrUpdateAndWait() {
     httpsOnly: false,
   };
   await client.webApps
-    .beginCreateOrUpdateAndWait(resourceGroup, name, parameter)
+    .createOrUpdate(resourceGroup, name, parameter)
     .then((res) => {
       console.log(res);
     });
 }
 
-//webApps.beginCreateOrUpdateSlotAndWait
-async function webApps_beginCreateOrUpdateSlotAndWait() {
+//webApps.createOrUpdateSlot
+async function webApps_createOrUpdateSlot() {
   const parameter: Site = {
     location: "eastus",
     serverFarmId:
@@ -89,7 +90,7 @@ async function webApps_beginCreateOrUpdateSlotAndWait() {
     scmSiteAlsoStopped: false,
   };
   await client.webApps
-    .beginCreateOrUpdateSlotAndWait(resourceGroup, name, soltName, parameter)
+    .createOrUpdateSlot(resourceGroup, name, soltName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -173,8 +174,8 @@ async function webApps_createOrUpdateConfigurationSlot() {
     });
 }
 
-//webApps.beginCreateOrUpdateSourceControlSlotAndWait
-async function webApps_beginCreateOrUpdateSourceControlSlotAndWait() {
+//webApps.createOrUpdateSourceControlSlot
+async function webApps_createOrUpdateSourceControlSlot() {
   const parameter: SiteSourceControl = {
     repoUrl: "https://github.com/colawwj/azure-site-test",
     branch: "staging",
@@ -182,12 +183,7 @@ async function webApps_beginCreateOrUpdateSourceControlSlotAndWait() {
     isMercurial: false,
   };
   await client.webApps
-    .beginCreateOrUpdateSourceControlSlotAndWait(
-      resourceGroup,
-      name,
-      soltName,
-      parameter
-    )
+    .createOrUpdateSourceControlSlot(resourceGroup, name, soltName, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -461,8 +457,8 @@ async function webApps_createOrUpdateConfiguration() {
     });
 }
 
-//webApps.beginCreateOrUpdateSourceControlAndWait
-async function webApps_beginCreateOrUpdateSourceControlAndWait() {
+//webApps.createOrUpdateSourceControl
+async function webApps_createOrUpdateSourceControl() {
   const parameter: SiteSourceControl = {
     repoUrl: "https://github.com/colawwj/azure-site-test",
     branch: "staging",
@@ -470,7 +466,7 @@ async function webApps_beginCreateOrUpdateSourceControlAndWait() {
     isMercurial: false,
   };
   await client.webApps
-    .beginCreateOrUpdateSourceControlAndWait(resourceGroup, name, parameter)
+    .createOrUpdateSourceControl(resourceGroup, name, parameter)
     .then((res) => {
       console.log(res);
     });
@@ -719,7 +715,7 @@ async function webApps_delete() {
 
 async function main() {
   client = new WebSiteManagementClient(credential, subscriptionId);
-  await appServicePlans_beginCreateOrUpdateAndWait();
+  await appServicePlans_createOrUpdate();
 }
 
 main();

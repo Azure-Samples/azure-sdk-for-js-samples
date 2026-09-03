@@ -13,31 +13,30 @@ urlFragment: KeyVault
 
 These code samples will show you how to manage KeyVault using Azure SDK for JavaScript/TypeScript.
 
-
 ### Features
-* Using the Azure SDK for JavaScript/TypeScript - KeyVault Management Library [@azure/arm-keyvault](https://www.npmjs.com/package/@azure/arm-keyvault) for the [Azure KeyVault API](https://docs.microsoft.com/en-us/rest/api/keyvault/)
 
+* Using the Azure SDK for JavaScript/TypeScript - KeyVault Management Library [@azure/arm-keyvault](https://www.npmjs.com/package/@azure/arm-keyvault) for the [Azure KeyVault API](https://docs.microsoft.com/en-us/rest/api/keyvault/)
 
 ### Installation
 
-1.  Before using the sdk package,we need [install nodejs](https://nodejs.org/en/download/) and add it into environment variables.
+1. Before using the sdk package,we need [install nodejs](https://nodejs.org/en/download/) and add it into environment variables.
 
     reference :
-    
+
     ```
-    nodejs version: 14.16.0
-    typescript version: 4.1.3
+    nodejs version: >=22
+    typescript version: 5.9.3
     ```
 
 ### Quickstart
 
-1.  Clone the repository.
+1. Clone the repository.
 
     ```
     git clone https://github.com/Azure-Samples/azure-samples-js-management
     ```
 
-2.  Install the dependencies using npm.
+2. Install the dependencies using npm.
 
     ```
     cd azure-samples-js-management/samples/links
@@ -67,4 +66,4 @@ execute below command on terminal
 
 ## Resources
 
-- https://github.com/Azure/azure-sdk-for-js
+* <https://github.com/Azure/azure-sdk-for-js>

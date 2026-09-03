@@ -2,7 +2,8 @@ import { DefaultAzureCredential } from "@azure/identity";
 import { ManagementLinkClient } from "@azure/arm-links";
 import { ResourceManagementClient } from "@azure/arm-resources";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstestzzz";
 const resourceName = "myresourcezzz";
@@ -12,9 +13,9 @@ let resources_client: ResourceManagementClient;
 
 //--LinksExamples--
 
-//resources.beginCreateOrUpdateAndWait
+//resources.createOrUpdate
 async function create_resourceId() {
-  const result = await resources_client.resources.beginCreateOrUpdateAndWait(
+  const result = await resources_client.resources.createOrUpdate(
     resourceGroup,
     "Microsoft.Compute",
     "",
@@ -24,11 +25,11 @@ async function create_resourceId() {
     { location: "eastus" }
   );
   console.log(result);
-  return result.id;
+  return result.id ? result.id : "";
 }
 
 async function create_resourceId2() {
-  const result = await resources_client.resources.beginCreateOrUpdateAndWait(
+  const result = await resources_client.resources.createOrUpdate(
     resourceGroup,
     "Microsoft.Compute",
     "",
@@ -38,7 +39,7 @@ async function create_resourceId2() {
     { location: "eastus" }
   );
   console.log(result);
-  return result.id;
+  return result.id ? result.id : "";
 }
 
 //resourceLinks.createOrUpdate
@@ -95,11 +96,11 @@ async function resourceLinks_delete() {
   console.log(result);
 }
 
-//resources.beginDeleteAndWait
-async function resources_beginDeleteAndWait() {
+//resources.delete
+async function resources_delete() {
   //delete reource
   await resources_client.resources
-    .beginDeleteAndWait(
+    .delete(
       resourceGroup,
       "Microsoft.Compute",
       "",
@@ -113,7 +114,7 @@ async function resources_beginDeleteAndWait() {
 
   //delete reources2
   await resources_client.resources
-    .beginDeleteAndWait(
+    .delete(
       resourceGroup,
       "Microsoft.Compute",
       "",

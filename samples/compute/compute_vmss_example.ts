@@ -11,7 +11,8 @@ import {
 import { DefaultAzureCredential } from "@azure/identity";
 import { NetworkManagementClient, VirtualNetwork } from "@azure/arm-network";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const location = "eastus";
@@ -39,11 +40,11 @@ async function createVirtualNetwork(
     },
   };
   await network_client.virtualNetworks
-    .beginCreateOrUpdateAndWait(groupName, networkName, parameter)
+    .createOrUpdate(groupName, networkName, parameter)
     .then((result) => {
       console.log(result);
     });
-  const subnet_info = await network_client.subnets.beginCreateOrUpdateAndWait(
+  const subnet_info = await network_client.subnets.createOrUpdate(
     groupName,
     networkName,
     subnetName,
@@ -128,7 +129,7 @@ async function virtualMachineScaleSets_createOrUpdate() {
   };
   // start an extension rolling upgrade.post
   await client.virtualMachineScaleSets
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroupName,
       virtual_machine_scale_set_name,
       parameter
@@ -141,10 +142,7 @@ async function virtualMachineScaleSets_createOrUpdate() {
 //virtualMachineScaleSetRollingUpgrades.startExtensionUpgrade
 async function virtualMachineScaleSetRollingUpgrades_startExtensionUpgrade() {
   await client.virtualMachineScaleSetRollingUpgrades
-    .beginStartExtensionUpgradeAndWait(
-      resourceGroupName,
-      virtual_machine_scale_set_name
-    )
+    .startExtensionUpgrade(resourceGroupName, virtual_machine_scale_set_name)
     .then((response) => {
       console.log(response);
     });
@@ -153,7 +151,7 @@ async function virtualMachineScaleSetRollingUpgrades_startExtensionUpgrade() {
 // virtualMachineScaleSetRollingUpgrades.cancel
 async function virtualMachineScaleSetRollingUpgrades_cancel() {
   await client.virtualMachineScaleSetRollingUpgrades
-    .beginCancelAndWait(resourceGroupName, virtual_machine_scale_set_name)
+    .cancel(resourceGroupName, virtual_machine_scale_set_name)
     .then((response) => {
       console.log(response);
     });
@@ -173,7 +171,7 @@ async function virtualMachineScaleSetRollingUpgrades_getLatest() {
 //virtualMachineScaleSets.beginDeleteAndWait
 async function virtualMachineScaleSet_delete() {
   await client.virtualMachineScaleSets
-    .beginDeleteAndWait(resourceGroupName, virtual_machine_scale_set_name)
+    .delete(resourceGroupName, virtual_machine_scale_set_name)
     .then((response) => {
       console.log(response);
     });
@@ -191,7 +189,9 @@ async function getInstanceId() {
       console.log(item.instanceId);
       return item.instanceId;
     }
+    return "";
   }
+  return "";
 }
 
 //virtualMachineScaleSetVMs.getInstanceView
@@ -242,7 +242,7 @@ async function virtualMachineScaleSetVMs_update() {
     },
   };
   await client.virtualMachineScaleSetVMs
-    .beginUpdateAndWait(
+    .update(
       resourceGroupName,
       virtual_machine_scale_set_name,
       instanceId,
@@ -257,11 +257,7 @@ async function virtualMachineScaleSetVMs_update() {
 async function virtualMachineScaleSetVMs_restart() {
   const instanceId = await getInstanceId();
   await client.virtualMachineScaleSetVMs
-    .beginRestartAndWait(
-      resourceGroupName,
-      virtual_machine_scale_set_name,
-      instanceId
-    )
+    .restart(resourceGroupName, virtual_machine_scale_set_name, instanceId)
     .then((response) => {
       console.log(response);
     });
@@ -271,11 +267,7 @@ async function virtualMachineScaleSetVMs_restart() {
 async function virtualMachineScaleSetVMs_powerOff() {
   const instanceId = await getInstanceId();
   await client.virtualMachineScaleSetVMs
-    .beginPowerOffAndWait(
-      resourceGroupName,
-      virtual_machine_scale_set_name,
-      instanceId
-    )
+    .powerOff(resourceGroupName, virtual_machine_scale_set_name, instanceId)
     .then((response) => {
       console.log(response);
       //success
@@ -286,11 +278,7 @@ async function virtualMachineScaleSetVMs_powerOff() {
 async function virtualMachineScaleSetVMs_start() {
   const instanceId = await getInstanceId();
   await client.virtualMachineScaleSetVMs
-    .beginStartAndWait(
-      resourceGroupName,
-      virtual_machine_scale_set_name,
-      instanceId
-    )
+    .start(resourceGroupName, virtual_machine_scale_set_name, instanceId)
     .then((response) => {
       console.log(response);
       //success
@@ -304,7 +292,7 @@ async function virtualMachineScaleSetVMs_runCommand() {
     commandId: "RunPowerShellScript",
   };
   await client.virtualMachineScaleSetVMs
-    .beginRunCommandAndWait(
+    .runCommand(
       resourceGroupName,
       virtual_machine_scale_set_name,
       instanceId,
@@ -320,11 +308,7 @@ async function virtualMachineScaleSetVMs_runCommand() {
 async function virtualMachineScaleSetVMs_deallocate() {
   const instanceId = await getInstanceId();
   await client.virtualMachineScaleSetVMs
-    .beginDeallocateAndWait(
-      resourceGroupName,
-      virtual_machine_scale_set_name,
-      instanceId
-    )
+    .deallocate(resourceGroupName, virtual_machine_scale_set_name, instanceId)
     .then((response) => {
       console.log(response);
       //success
@@ -335,11 +319,7 @@ async function virtualMachineScaleSetVMs_deallocate() {
 async function virtualMachineScaleSetVMs_reimage() {
   const instanceId = await getInstanceId();
   await client.virtualMachineScaleSetVMs
-    .beginReimageAndWait(
-      resourceGroupName,
-      virtual_machine_scale_set_name,
-      instanceId
-    )
+    .reimage(resourceGroupName, virtual_machine_scale_set_name, instanceId)
     .then((response) => {
       console.log(response);
     });
@@ -349,11 +329,7 @@ async function virtualMachineScaleSetVMs_reimage() {
 async function virtualMachineScaleSetVMs_reimageAll() {
   const instanceId = await getInstanceId();
   await client.virtualMachineScaleSetVMs
-    .beginReimageAllAndWait(
-      resourceGroupName,
-      virtual_machine_scale_set_name,
-      instanceId
-    )
+    .reimageAll(resourceGroupName, virtual_machine_scale_set_name, instanceId)
     .then((response) => {
       console.log(response);
     });
@@ -363,11 +339,7 @@ async function virtualMachineScaleSetVMs_reimageAll() {
 async function virtualMachineScaleSetVMs_delete() {
   const instanceId = await getInstanceId();
   await client.virtualMachineScaleSetVMs
-    .beginDeleteAndWait(
-      resourceGroupName,
-      virtual_machine_scale_set_name,
-      instanceId
-    )
+    .delete(resourceGroupName, virtual_machine_scale_set_name, instanceId)
     .then((response) => {
       console.log(response);
     });
@@ -380,7 +352,7 @@ async function virtualMachineScaleSets_deleteInstances() {
     instanceIds: [instanceId],
   };
   await client.virtualMachineScaleSets
-    .beginDeleteInstancesAndWait(
+    .deleteInstances(
       resourceGroupName,
       virtual_machine_scale_set_name,
       parameter
@@ -433,7 +405,7 @@ async function virtualMachineScaleSets_listSkus() {
     resourceGroupName,
     virtual_machine_scale_set_name
   )) {
-    console.log;
+    console.log(item);
   }
 }
 
@@ -450,11 +422,7 @@ async function virtualMachineScaleSets_update() {
     },
   };
   await client.virtualMachineScaleSets
-    .beginUpdateAndWait(
-      resourceGroupName,
-      virtual_machine_scale_set_name,
-      parameter
-    )
+    .update(resourceGroupName, virtual_machine_scale_set_name, parameter)
     .then((response) => {
       console.log(response);
     });
@@ -463,7 +431,7 @@ async function virtualMachineScaleSets_update() {
 //virtualMachineScaleSets.restart
 async function virtualMachineScaleSets_restart() {
   await client.virtualMachineScaleSets
-    .beginRestartAndWait(resourceGroupName, virtual_machine_scale_set_name)
+    .restart(resourceGroupName, virtual_machine_scale_set_name)
     .then((response) => {
       console.log(response);
     });
@@ -472,7 +440,7 @@ async function virtualMachineScaleSets_restart() {
 //virtualMachineScaleSets.powerOff
 async function virtualMachineScaleSets_powerOff() {
   await client.virtualMachineScaleSets
-    .beginPowerOffAndWait(resourceGroupName, virtual_machine_scale_set_name)
+    .powerOff(resourceGroupName, virtual_machine_scale_set_name)
     .then((response) => {
       console.log(response);
     });
@@ -482,7 +450,7 @@ async function virtualMachineScaleSets_powerOff() {
 async function virtualMachineScaleSets_start() {
   // before start should poweroff scale set
   await client.virtualMachineScaleSets
-    .beginStartAndWait(resourceGroupName, virtual_machine_scale_set_name)
+    .start(resourceGroupName, virtual_machine_scale_set_name)
     .then((response) => {
       console.log(response);
     });
@@ -492,13 +460,13 @@ async function virtualMachineScaleSets_start() {
 async function virtualMachineScaleSets_redeploy() {
   try {
     await client.virtualMachineScaleSets
-      .beginRedeployAndWait(resourceGroupName, virtual_machine_scale_set_name)
+      .redeploy(resourceGroupName, virtual_machine_scale_set_name)
       .then((response) => {
         console.log(response);
       });
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
-    if (error.message.startswith("(VMRedeploymentTimedOut)")) {
+    if (error.message.startsWith("(VMRedeploymentTimedOut)")) {
       throw new Error(error);
     }
   }
@@ -507,7 +475,7 @@ async function virtualMachineScaleSets_redeploy() {
 //virtualMachineScaleSets.start
 async function virtualMachineScaleSets_deallocate() {
   await client.virtualMachineScaleSets
-    .beginDeallocateAndWait(resourceGroupName, virtual_machine_scale_set_name)
+    .deallocate(resourceGroupName, virtual_machine_scale_set_name)
     .then((response) => {
       console.log(response);
     });
@@ -523,7 +491,7 @@ async function virtualMachineScaleSetExtensions_createOrUpdate() {
     typeHandlerVersion: "1.4",
   };
   await client.virtualMachineScaleSetExtensions
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroupName,
       virtual_machine_scale_set_name,
       vmss_extension_name,
@@ -560,7 +528,7 @@ async function virtualMachineScaleSetExtensions_update() {
     autoUpgradeMinorVersion: true,
   };
   await client.virtualMachineScaleSetExtensions
-    .beginUpdateAndWait(
+    .update(
       resourceGroupName,
       virtual_machine_scale_set_name,
       vmss_extension_name,
@@ -574,7 +542,7 @@ async function virtualMachineScaleSetExtensions_update() {
 //virtualMachineScaleSetExtensions.delete
 async function virtualMachineScaleSetExtensions_delete() {
   await client.virtualMachineScaleSetExtensions
-    .beginDeleteAndWait(
+    .delete(
       resourceGroupName,
       virtual_machine_scale_set_name,
       vmss_extension_name
@@ -587,7 +555,7 @@ async function virtualMachineScaleSetExtensions_delete() {
 //virtualMachineScaleSets.delete
 async function virtualMachineScaleSets_delete() {
   await client.virtualMachineScaleSets
-    .beginDeleteAndWait(resourceGroupName, virtual_machine_scale_set_name)
+    .delete(resourceGroupName, virtual_machine_scale_set_name)
     .then((response) => {
       console.log(response);
     });

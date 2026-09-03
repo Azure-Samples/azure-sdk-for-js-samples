@@ -5,7 +5,8 @@ import {
 } from "@azure/arm-resources";
 import { ManagementLockClient } from "@azure/arm-locks";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const lockName = "jslockrg";
@@ -63,7 +64,7 @@ async function resources_createOrUpdateById() {
     location: "eastus",
   };
   await resourceClient.resources
-    .beginCreateOrUpdateByIdAndWait(resourceId, "2019-07-01", parameter)
+    .createOrUpdateById(resourceId, "2019-07-01", parameter)
     .then((result) => {
       console.log(result);
     });
@@ -107,7 +108,7 @@ async function managementLocks_deleteByScope() {
 //resources.deleteById
 async function resources_deleteById() {
   await resourceClient.resources
-    .beginDeleteByIdAndWait(resourceId, "2019-07-01")
+    .deleteById(resourceId, "2019-07-01")
     .then((result) => {
       console.log(result);
     });
@@ -117,7 +118,7 @@ async function resources_deleteById() {
 
 //resources.createOrUpdate
 async function resources_createOrUpdate() {
-  const create_result = await resourceClient.resources.beginCreateOrUpdateAndWait(
+  const create_result = await resourceClient.resources.createOrUpdate(
     resourceGroupName,
     "Microsoft.Compute",
     "",
@@ -195,7 +196,7 @@ async function managementLocks_deleteAtResourceLevel() {
 //resources.delete
 async function resources_delete() {
   await resourceClient.resources
-    .beginDeleteAndWait(
+    .delete(
       resourceGroupName,
       "Microsoft.Compute",
       "",

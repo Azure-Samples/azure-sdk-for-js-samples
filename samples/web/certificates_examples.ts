@@ -1,7 +1,8 @@
 import { Certificate, WebSiteManagementClient } from "@azure/arm-appservice";
 import { DefaultAzureCredential } from "@azure/identity";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const token = process.env.GITHUB_TOKEN_FOR_APPSERVICE;
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
@@ -43,13 +44,6 @@ async function certificates_listByResourceGroup() {
 //certificates.list
 async function certificates_list() {
   for await (const item of client.certificates.list()) {
-    console.log(item);
-  }
-}
-
-//certificateRegistrationProvider.listOperations
-async function certificateRegistrationProvider_listOperations() {
-  for await (const item of client.certificateRegistrationProvider.listOperations()) {
     console.log(item);
   }
 }

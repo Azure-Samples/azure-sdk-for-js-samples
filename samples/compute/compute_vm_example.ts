@@ -14,7 +14,8 @@ import {
   VirtualNetwork,
 } from "@azure/arm-network";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroupName = "myjstest";
 const location = "eastus";
@@ -43,7 +44,7 @@ async function createVirtualNetwork() {
       addressPrefixes: ["10.0.0.0/16"],
     },
   };
-  const virtualNetworks_create_info = await network_client.virtualNetworks.beginCreateOrUpdateAndWait(
+  const virtualNetworks_create_info = await network_client.virtualNetworks.createOrUpdate(
     resourceGroupName,
     network_name,
     parameter
@@ -53,7 +54,7 @@ async function createVirtualNetwork() {
   const subnet_parameter: Subnet = {
     addressPrefix: "10.0.0.0/24",
   };
-  const subnet__create_info = await network_client.subnets.beginCreateOrUpdateAndWait(
+  const subnet__create_info = await network_client.subnets.createOrUpdate(
     resourceGroupName,
     network_name,
     subnet_name,
@@ -87,7 +88,7 @@ async function createNetworkInterface(
       },
     ],
   };
-  const nic_info = await network_client.networkInterfaces.beginCreateOrUpdateAndWait(
+  const nic_info = await network_client.networkInterfaces.createOrUpdate(
     group_name,
     nic_name,
     parameter
@@ -157,11 +158,7 @@ async function virtualMachines_createOrUpdate() {
     },
   };
   await client.virtualMachines
-    .beginCreateOrUpdateAndWait(
-      resourceGroupName,
-      virtual_machine_name,
-      parameter
-    )
+    .createOrUpdate(resourceGroupName, virtual_machine_name, parameter)
     .then((response) => {
       console.log(response);
     });
@@ -222,7 +219,7 @@ async function virtualMachines_runCommand() {
     commandId: "RunPowerShellScript",
   };
   await client.virtualMachines
-    .beginRunCommandAndWait(resourceGroupName, virtual_machine_name, parameter)
+    .runCommand(resourceGroupName, virtual_machine_name, parameter)
     .then((response) => {
       console.log(response);
     });
@@ -231,7 +228,7 @@ async function virtualMachines_runCommand() {
 //virtualMachines.restart
 async function virtualMachines_restart() {
   await client.virtualMachines
-    .beginRestartAndWait(resourceGroupName, virtual_machine_name)
+    .restart(resourceGroupName, virtual_machine_name)
     .then((response) => {
       console.log(response);
     });
@@ -240,7 +237,7 @@ async function virtualMachines_restart() {
 //virtualMachines.powerOff
 async function virtualMachines_powerOff() {
   await client.virtualMachines
-    .beginPowerOffAndWait(resourceGroupName, virtual_machine_name)
+    .powerOff(resourceGroupName, virtual_machine_name)
     .then((response) => {
       console.log(response);
     });
@@ -249,7 +246,7 @@ async function virtualMachines_powerOff() {
 //virtualMachines.start
 async function virtualMachines_start() {
   await client.virtualMachines
-    .beginStartAndWait(resourceGroupName, virtual_machine_name)
+    .start(resourceGroupName, virtual_machine_name)
     .then((response) => {
       console.log(response);
     });
@@ -259,7 +256,7 @@ async function virtualMachines_start() {
 async function virtualMachines_reapply() {
   await virtualMachines_powerOff(); //before reapply
   await client.virtualMachines
-    .beginReapplyAndWait(resourceGroupName, virtual_machine_name)
+    .reapply(resourceGroupName, virtual_machine_name)
     .then((response) => {
       console.log(response);
     });
@@ -268,7 +265,7 @@ async function virtualMachines_reapply() {
 //virtualMachines.redeploy
 async function virtualMachines_redeploy() {
   await client.virtualMachines
-    .beginRedeployAndWait(resourceGroupName, virtual_machine_name)
+    .redeploy(resourceGroupName, virtual_machine_name)
     .then((response) => {
       console.log(response);
     });
@@ -294,7 +291,7 @@ async function virtualMachines_update() {
     },
   };
   await client.virtualMachines
-    .beginUpdateAndWait(resourceGroupName, virtual_machine_name, parameter)
+    .update(resourceGroupName, virtual_machine_name, parameter)
     .then((response) => {
       console.log(response);
     });
@@ -312,7 +309,7 @@ async function virtualMachines_generalize() {
 //virtualMachines.deallocate
 async function virtualMachines_deallocate() {
   await client.virtualMachines
-    .beginDeallocateAndWait(resourceGroupName, virtual_machine_name)
+    .deallocate(resourceGroupName, virtual_machine_name)
     .then((response) => {
       console.log(response);
     });
@@ -321,7 +318,7 @@ async function virtualMachines_deallocate() {
 //virtualMachines.delete
 async function virtualMachines_delete() {
   await client.virtualMachines
-    .beginDeleteAndWait(resourceGroupName, virtual_machine_name)
+    .delete(resourceGroupName, virtual_machine_name)
     .then((response) => {
       console.log(response);
     });
@@ -337,7 +334,7 @@ async function MachineExtensions_createOrUpdate() {
     typeHandlerVersion: "1.4",
   };
   await client.virtualMachineExtensions
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroupName,
       virtual_machine_name,
       virtual_machine_extension_name,
@@ -377,7 +374,7 @@ async function MachineExtensions_update() {
     // type:  "CustomScriptExtension",  // "PropertyChangeNotAllowed"
   };
   await client.virtualMachineExtensions
-    .beginUpdateAndWait(
+    .update(
       resourceGroupName,
       virtual_machine_name,
       virtual_machine_extension_name,
@@ -391,7 +388,7 @@ async function MachineExtensions_update() {
 //virtualMachineExtensions.delete
 async function MachineExtensions_delete() {
   await client.virtualMachineExtensions
-    .beginDeleteAndWait(
+    .delete(
       resourceGroupName,
       virtual_machine_name,
       virtual_machine_extension_name

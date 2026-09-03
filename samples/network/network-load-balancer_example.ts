@@ -6,7 +6,8 @@ import {
   PublicIPAddress,
 } from "@azure/arm-network";
 
-const subscriptionId = process.env.subscriptionId;
+const subscriptionId =
+  process.env.subscriptionId || "00000000-0000-0000-0000-000000000000";
 const credential = new DefaultAzureCredential();
 const resourceGroup = "myjstest";
 const virtualNetwork = "virtualnetworkttt";
@@ -23,7 +24,7 @@ let client: NetworkManagementClient;
 
 //--NetworkLoadBalancerExamples--
 
-//publicIPAddresses.beginCreateOrUpdateAndWait
+//publicIPAddresses.createOrUpdate
 async function createPublicIpAddress() {
   const parameter: PublicIPAddress = {
     publicIPAllocationMethod: "Static",
@@ -35,18 +36,18 @@ async function createPublicIpAddress() {
     },
   };
   await client.publicIPAddresses
-    .beginCreateOrUpdateAndWait(resourceGroup, publicIpAddressName, parameter)
+    .createOrUpdate(resourceGroup, publicIpAddressName, parameter)
     .then((res) => {
       console.log(res);
     });
 }
 
-//virtualNetworks.beginCreateOrUpdateAndWait
-//subnets.beginCreateOrUpdateAndWait
+//virtualNetworks.createOrUpdate
+//subnets.createOrUpdate
 async function createVirtualnetworkAndSubnet() {
   //create virtualnetwork
   await client.virtualNetworks
-    .beginCreateOrUpdateAndWait(resourceGroup, virtualNetwork, {
+    .createOrUpdate(resourceGroup, virtualNetwork, {
       location: "eastus",
       addressSpace: { addressPrefixes: ["10.0.0.0/16"] },
     })
@@ -55,7 +56,7 @@ async function createVirtualnetworkAndSubnet() {
     });
   //create subnet
   await client.subnets
-    .beginCreateOrUpdateAndWait(resourceGroup, virtualNetwork, subnetName, {
+    .createOrUpdate(resourceGroup, virtualNetwork, subnetName, {
       addressPrefix: "10.0.0.0/24",
     })
     .then((res) => {
@@ -63,8 +64,8 @@ async function createVirtualnetworkAndSubnet() {
     });
 }
 
-//loadBalancers.beginCreateOrUpdateAndWait
-async function loadBalancers_beginCreateOrUpdateAndWait() {
+//loadBalancers.createOrUpdate
+async function loadBalancers_createOrUpdate() {
   const parameter: LoadBalancer = {
     location: "eastus",
     sku: {
@@ -176,14 +177,14 @@ async function loadBalancers_beginCreateOrUpdateAndWait() {
     ],
   };
   await client.loadBalancers
-    .beginCreateOrUpdateAndWait(resourceGroup, loadBalancerName, parameter)
+    .createOrUpdate(resourceGroup, loadBalancerName, parameter)
     .then((res) => {
       console.log(res);
     });
 }
 
-//inboundNatRules.beginCreateOrUpdateAndWait
-async function inboundNatRules_beginCreateOrUpdateAndWait() {
+//inboundNatRules.createOrUpdate
+async function inboundNatRules_createOrUpdate() {
   const parameter: InboundNatRule = {
     protocol: "Tcp",
     frontendIPConfiguration: {
@@ -204,7 +205,7 @@ async function inboundNatRules_beginCreateOrUpdateAndWait() {
     enableFloatingIP: false,
   };
   await client.inboundNatRules
-    .beginCreateOrUpdateAndWait(
+    .createOrUpdate(
       resourceGroup,
       loadBalancerName,
       inboundNatRuleName,
@@ -354,19 +355,19 @@ async function loadBalancers_updateTags() {
     });
 }
 
-//inboundNatRules.beginDeleteAndWait
-async function inboundNatRules_beginDeleteAndWait() {
+//inboundNatRules.delete
+async function inboundNatRules_delete() {
   await client.inboundNatRules
-    .beginDeleteAndWait(resourceGroup, loadBalancerName, inboundNatRuleName)
+    .delete(resourceGroup, loadBalancerName, inboundNatRuleName)
     .then((res) => {
       console.log(res);
     });
 }
 
-//loadBalancers.beginDeleteAndWait
-async function loadBalancers_beginDeleteAndWait() {
+//loadBalancers.delete
+async function loadBalancers_delete() {
   await client.loadBalancers
-    .beginDeleteAndWait(resourceGroup, loadBalancerName)
+    .delete(resourceGroup, loadBalancerName)
     .then((res) => {
       console.log(res);
     });
