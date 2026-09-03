@@ -4,7 +4,7 @@ trigger:
 jobs:
   - job: ESLint
     pool:
-      vmImage: 'vs2017-win2016'
+      vmImage: 'windows-2022'
     steps:
       - task: Npm@1
         displayName: 'npm install'
@@ -16,7 +16,7 @@ jobs:
   - job: Windows
     displayName: CredScan
     pool:
-      vmImage: "windows-2019"
+      vmImage: "windows-2022"
     steps:
       - task:  ea576cd4-c61f-48f8-97e7-a3cb07b90a6f@3
         inputs:
